@@ -56,8 +56,9 @@ struct page {
 		atomic_t _mapcount;
 
 		struct {		/* SLUB */
-			u16 inuse;
-			u16 objects;
+			unsigned inuse:16;
+			unsigned objects:15;
+			unsigned frozen:1;
 		};
 	};
 	union {
