@@ -36,6 +36,7 @@ config PREEMPT_VOLUNTARY
 
 config PREEMPT
 	bool "Preemptible Kernel (Low-Latency Desktop)"
+	select PREEMPT_COUNT
 	help
 	  This option reduces the latency of the kernel by making
 	  all kernel code (that is not executing in a critical section)
@@ -52,6 +53,9 @@ config PREEMPT
 	  range.
 
 endchoice
+
+config PREEMPT_COUNT
+       bool
 
 config SCHED_INFLUENCE_LOAD_BALANCING
 	bool "Scheduler Influence Load Balancing"
