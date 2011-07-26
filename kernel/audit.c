@@ -43,7 +43,7 @@
 
 #include <linux/init.h>
 #include <asm/types.h>
-#include <asm/atomic.h>
+#include <linux/atomic.h>
 #include <linux/mm.h>
 #include <linux/export.h>
 #include <linux/slab.h>
