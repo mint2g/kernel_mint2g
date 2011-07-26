@@ -94,13 +94,13 @@ static inline int atomic_test_mask(int mask, atomic_t *v)
 #define atomic_cmpxchg(v, o, n) ((int)cmpxchg(&((v)->counter), (o), (n)))
 #define atomic_xchg(v, new) (xchg(&((v)->counter), new))
 
-#define atomic_add_unless(v, a, u)				\
+#define __atomic_add_unless(v, a, u)				\
 ({								\
 	int c, old;						\
 	c = atomic_read(v);					\
 	while (c != (u) && (old = atomic_cmpxchg((v), c, c + (a))) != c) \
 		c = old;					\
-	c != (u);						\
+	c;							\
 })
 
 /*
