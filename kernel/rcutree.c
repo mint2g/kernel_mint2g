@@ -574,6 +574,7 @@ int rcu_is_cpu_idle(void)
 {
 	return (atomic_read(&__get_cpu_var(rcu_dynticks).dynticks) & 0x1) == 0;
 }
+EXPORT_SYMBOL(rcu_is_cpu_idle);
 
 #endif /* #ifdef CONFIG_PROVE_RCU */
 
