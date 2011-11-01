@@ -338,7 +338,7 @@ static ssize_t scan_sleep_millisecs_store(struct kobject *kobj,
 	unsigned long msecs;
 	int err;
 
-	err = strict_strtoul(buf, 10, &msecs);
+	err = kstrtoul(buf, 10, &msecs);
 	if (err || msecs > UINT_MAX)
 		return -EINVAL;
 
@@ -365,7 +365,7 @@ static ssize_t alloc_sleep_millisecs_store(struct kobject *kobj,
 	unsigned long msecs;
 	int err;
 
-	err = strict_strtoul(buf, 10, &msecs);
+	err = kstrtoul(buf, 10, &msecs);
 	if (err || msecs > UINT_MAX)
 		return -EINVAL;
 
@@ -391,7 +391,7 @@ static ssize_t pages_to_scan_store(struct kobject *kobj,
 	int err;
 	unsigned long pages;
 
-	err = strict_strtoul(buf, 10, &pages);
+	err = kstrtoul(buf, 10, &pages);
 	if (err || !pages || pages > UINT_MAX)
 		return -EINVAL;
 
@@ -459,7 +459,7 @@ static ssize_t khugepaged_max_ptes_none_store(struct kobject *kobj,
 	int err;
 	unsigned long max_ptes_none;
 
-	err = strict_strtoul(buf, 10, &max_ptes_none);
+	err = kstrtoul(buf, 10, &max_ptes_none);
 	if (err || max_ptes_none > HPAGE_PMD_NR-1)
 		return -EINVAL;
 
