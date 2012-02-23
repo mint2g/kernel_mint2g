@@ -116,6 +116,10 @@ static struct logger_entry *get_entry_header(struct logger_log *log,
  * get_entry_msg_len - Grabs the length of the message of the entry
  * starting from from 'off'.
  *
+ * An entry length is 2 bytes (16 bits) in host endian order.
+ * In the log, the length does not include the size of the log entry structure.
+ * This function returns the size including the log entry structure.
+ *
  * Caller needs to hold log->mutex.
  */
 static __u32 get_entry_msg_len(struct logger_log *log, size_t off)
