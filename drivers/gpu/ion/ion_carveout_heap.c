@@ -138,7 +138,7 @@ int ion_carveout_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
 		printk(KERN_INFO "pgprot_noncached buffer->flags 0x%x\n",buffer->flags);
 		return remap_pfn_range(vma, vma->vm_start,
 			       __phys_to_pfn(buffer->priv_phys) + vma->vm_pgoff,
-			       buffer->size,
+			       vma->vm_end - vma->vm_start,
 			       pgprot_noncached(vma->vm_page_prot));
 
 	}
