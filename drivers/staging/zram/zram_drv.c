@@ -225,7 +225,7 @@ static int zram_decompress_page(struct zram *zram, char *mem, u32 index)
 	zs_unmap_object(meta->mem_pool, handle);
 
 	/* Should NEVER happen. Return bio error if it does. */
-	if (unlikely(ret)) {
+	if (unlikely(ret != 0)) {
 		pr_err("Decompression failed! err=%d, page=%u\n", ret, index);
 		zram_stat64_inc(zram, &zram->stats.failed_reads);
 		return ret;
@@ -265,11 +265,8 @@ static int zram_bvec_read(struct zram *zram, struct bio_vec *bvec,
 
 	ret = zram_decompress_page(zram, uncmem, index);
 	/* Should NEVER happen. Return bio error if it does. */
-	if (unlikely(ret)) {
-		pr_err("Decompression failed! err=%d, page=%u\n", ret, index);
-		zram_stat64_inc(zram, &zram->stats.failed_reads);
+	if (unlikely(ret != 0))
 		goto out_cleanup;
-	}
 
 	if (is_partial_io(bvec))
 		memcpy(user_mem + bvec->bv_offset, uncmem + offset,
@@ -351,7 +348,7 @@ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index,
 		uncmem = NULL;
 	}
 
-	if (unlikely(ret)) {
+	if (unlikely(ret != 0)) {
 		pr_err("Compression failed! err=%d\n", ret);
 		goto out;
 	}
