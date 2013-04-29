@@ -121,6 +121,16 @@ void end_swap_bio_read(struct bio *bio, int err)
 					offset);
 		}
 	}
+	ret = __swap_writepage(page, wbc);
+out:
+	return ret;
+}
+
+int __swap_writepage(struct page *page, struct writeback_control *wbc)
+{
+	struct bio *bio;
+	int ret = 0, rw = WRITE;
+	struct swap_info_struct *sis = page_swap_info(page);
 
 out:
 	unlock_page(page);
