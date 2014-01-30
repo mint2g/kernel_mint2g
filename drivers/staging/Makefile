@@ -45,7 +45,6 @@ obj-$(CONFIG_IIO)		+= iio/
 obj-$(CONFIG_CS5535_GPIO)	+= cs5535_gpio/
 obj-$(CONFIG_SNAPPY_COMPRESS)	+= snappy/
 obj-$(CONFIG_SNAPPY_DECOMPRESS)	+= snappy/
-obj-$(CONFIG_ZRAM)		+= zram/
 obj-$(CONFIG_ZCACHE)		+= zcache/
 obj-$(CONFIG_WLAGS49_H2)	+= wlags49_h2/
 obj-$(CONFIG_WLAGS49_H25)	+= wlags49_h25/
