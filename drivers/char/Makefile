@@ -67,3 +67,5 @@ obj-$(CONFIG_MODEM_INTF)	+= modem_interface/
 obj-$(CONFIG_MUX_SDIO_HAL)	+= mux_sdio_hal/
 obj-$(CONFIG_JS_RTC)		+= js-rtc.o
 js-rtc-y = rtc.o
+
+obj-$(CONFIG_S3C_MEM)		+= s3c_mem.o
