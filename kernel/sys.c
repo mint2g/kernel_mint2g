@@ -42,6 +42,7 @@
 #include <linux/ctype.h>
 
 #include <linux/compat.h>
+#include <linux/sched.h>
 #include <linux/syscalls.h>
 #include <linux/kprobes.h>
 #include <linux/user_namespace.h>
@@ -492,7 +493,7 @@ void ctrl_alt_del(void)
 	else
 		kill_cad_pid(SIGINT, 1);
 }
-	
+
 /*
  * Unprivileged users may change the real gid to the effective gid
  * or vice versa.  (BSD-style)
@@ -506,7 +507,7 @@ void ctrl_alt_del(void)
  *
  * The general idea is that a program which uses just setregid() will be
  * 100% compatible with BSD.  A program which uses just setgid() will be
- * 100% compatible with POSIX with saved IDs. 
+ * 100% compatible with POSIX with saved IDs.
  *
  * SMP: There are not races, the GIDs are checked only by filesystem
  *      operations (as far as semantic preservation is concerned).
@@ -554,7 +555,7 @@ error:
 }
 
 /*
- * setgid() is implemented like SysV w/ SAVED_IDS 
+ * setgid() is implemented like SysV w/ SAVED_IDS
  *
  * SMP: Same implicit races as above.
  */
@@ -619,7 +620,7 @@ static int set_user(struct cred *new)
  *
  * The general idea is that a program which uses just setreuid() will be
  * 100% compatible with BSD.  A program which uses just setuid() will be
- * 100% compatible with POSIX with saved IDs. 
+ * 100% compatible with POSIX with saved IDs.
  */
 SYSCALL_DEFINE2(setreuid, uid_t, ruid, uid_t, euid)
 {
@@ -670,17 +671,17 @@ error:
 	abort_creds(new);
 	return retval;
 }
-		
+
 /*
- * setuid() is implemented like SysV with SAVED_IDS 
- * 
+ * setuid() is implemented like SysV with SAVED_IDS
+ *
  * Note that SAVED_ID's is deficient in that a setuid root program
- * like sendmail, for example, cannot set its uid to be a normal 
+ * like sendmail, for example, cannot set its uid to be a normal
  * user and then switch back, because if you're root, setuid() sets
  * the saved uid too.  If you don't like this, blame the bright people
  * in the POSIX committee and/or USG.  Note that the BSD-style setreuid()
  * will allow a root program to temporarily drop privileges and be able to
- * regain them by swapping the real and effective uid.  
+ * regain them by swapping the real and effective uid.
  */
 SYSCALL_DEFINE1(setuid, uid_t, uid)
 {
@@ -1322,7 +1323,7 @@ SYSCALL_DEFINE2(getrlimit, unsigned int, resource, struct rlimit __user *, rlim)
 /*
  *	Back compatibility for getrlimit. Needed for some apps.
  */
- 
+
 SYSCALL_DEFINE2(old_getrlimit, unsigned int, resource,
 		struct rlimit __user *, rlim)
 {
@@ -1776,6 +1777,7 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 		unsigned long, arg4, unsigned long, arg5)
 {
 	struct task_struct *me = current;
+	struct task_struct *tsk;
 	unsigned char comm[sizeof(me->comm)];
 	long error;
 
@@ -1930,6 +1932,23 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
 		case PR_GET_CHILD_SUBREAPER:
 			error = put_user(me->signal->is_child_subreaper,
 					 (int __user *) arg2);
+			break;
+		case PR_SET_TIMERSLACK_PID:
+			rcu_read_lock();
+			tsk = find_task_by_pid_ns((pid_t)arg3, &init_pid_ns);
+			if (tsk == NULL) {
+				rcu_read_unlock();
+				return -EINVAL;
+			}
+			get_task_struct(tsk);
+			rcu_read_unlock();
+			if (arg2 <= 0)
+				tsk->timer_slack_ns =
+					tsk->default_timer_slack_ns;
+			else
+				tsk->timer_slack_ns = arg2;
+			put_task_struct(tsk);
+			error = 0;
 			break;
 		default:
 			error = -EINVAL;
