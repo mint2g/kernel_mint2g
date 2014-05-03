@@ -204,9 +204,10 @@ void __iomem * __arm_ioremap_pfn_caller(unsigned long pfn,
 #if !(defined(CONFIG_ANDROID_PMEM)||defined(CONFIG_ION))
 	/*
 	 * Don't allow RAM to be mapped - this causes problems with ARMv6+
-	 */
+
 	if (WARN_ON(pfn_valid(pfn)))
 		return NULL;
+	*/
 #endif
 
 	type = get_mem_type(mtype);
