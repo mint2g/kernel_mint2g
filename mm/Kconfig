@@ -372,7 +372,7 @@ config CLEANCACHE
 	  If unsure, say Y to enable cleancache
 
 config ZSMALLOC
-	bool "Memory allocator for compressed pages"
+	tristate "Memory allocator for compressed pages"
 	depends on MMU
 	default n
 	help
