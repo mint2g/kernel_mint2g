@@ -35,35 +35,44 @@
 #include "zram_drv.h"
 
 #if defined(CONFIG_ZRAM_LZO)
+
 #include <linux/lzo.h>
+
 #define WMSIZE		LZO1X_MEM_COMPRESS
+
 #define COMPRESS(s, sl, d, dl, wm)	\
 	lzo1x_1_compress(s, sl, d, dl, wm)
 #define DECOMPRESS(s, sl, d, dl)	\
 	lzo1x_decompress_safe(s, sl, d, dl)
+
+#elif defined(CONFIG_ZRAM_LZ4)
+
+#include <linux/lz4.h>
+
+#define WMSIZE		LZ4_MEM_COMPRESS
+
+#define COMPRESS(s, sl, d, dl, wm) \
+	lz4_compress(s, sl, d, dl, wm)
+#define DECOMPRESS(s, sl, d, dl) \
+	lz4_decompress_unknownoutputsize(s, sl, d, dl)
+
 #elif defined(CONFIG_ZRAM_SNAPPY)
+
 #include "../snappy/csnappy.h" /* if built in drivers/staging */
+
 #define WMSIZE_ORDER	((PAGE_SHIFT > 14) ? (15) : (PAGE_SHIFT+1))
 #define WMSIZE		(1 << WMSIZE_ORDER)
-static int
-snappy_compress_(
-	const unsigned char *src,
-	size_t src_len,
-	unsigned char *dst,
-	size_t *dst_len,
-	void *workmem)
+
+static int snappy_compress_(const unsigned char *src, size_t src_len,
+	unsigned char *dst, size_t *dst_len, void *workmem)
 {
-	const unsigned char *end = csnappy_compress_fragment(
-		src, (uint32_t)src_len, dst, workmem, WMSIZE_ORDER);
+	const unsigned char *end = csnappy_compress_fragment(src, (uint32_t)src_len,
+		dst, workmem, WMSIZE_ORDER);
 	*dst_len = end - dst;
 	return 0;
 }
-static int
-snappy_decompress_(
-	const unsigned char *src,
-	size_t src_len,
-	unsigned char *dst,
-	size_t *dst_len)
+static int snappy_decompress_(const unsigned char *src, size_t src_len,
+	unsigned char *dst, size_t *dst_len)
 {
 	uint32_t dst_len_ = (uint32_t)*dst_len;
 	int ret = csnappy_decompress_noheader(src, src_len, dst, &dst_len_);
@@ -75,7 +84,13 @@ snappy_decompress_(
 #define DECOMPRESS(s, sl, d, dl)	\
 	snappy_decompress_(s, sl, d, dl)
 #else
-#error either CONFIG_ZRAM_LZO or CONFIG_ZRAM_SNAPPY must be defined
+
+#error either \
+	CONFIG_ZRAM_LZO or \
+	CONFIG_ZRAM_LZ4 or \
+	CONFIG_ZRAM_SNAPPY \
+	must be defined
+
 #endif
 
 /* Globals */
@@ -362,10 +377,17 @@ static void zram_write(struct zram *zram, struct bio *bio)
 			continue;
 		}
 
-		COMPRESS(user_mem, PAGE_SIZE, src, &clen,
+		ret = COMPRESS(user_mem, PAGE_SIZE, src, &clen,
 				zram->compress_workmem);
 
 		kunmap_atomic(user_mem, KM_USER0);
+
+		if (unlikely(ret)) {
+			mutex_unlock(&zram->lock);
+			pr_err("Compression failed! err=%d\n", ret);
+			zram_stat64_inc(zram, &zram->stats.failed_writes);
+			goto out;
+		}
 
 		/*
 		 * Page is incompressible. Store it as-is (uncompressed)
