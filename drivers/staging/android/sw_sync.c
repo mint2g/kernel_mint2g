@@ -20,9 +20,10 @@
 #include <linux/fs.h>
 #include <linux/miscdevice.h>
 #include <linux/module.h>
-#include <linux/sw_sync.h>
 #include <linux/syscalls.h>
 #include <linux/uaccess.h>
+
+#include "sw_sync.h"
 
 static int sw_sync_cmp(u32 a, u32 b)
 {
@@ -99,7 +100,7 @@ static void sw_sync_pt_value_str(struct sync_pt *sync_pt,
 	snprintf(str, size, "%d", pt->value);
 }
 
-struct sync_timeline_ops sw_sync_timeline_ops = {
+static struct sync_timeline_ops sw_sync_timeline_ops = {
 	.driver_name = "sw_sync",
 	.dup = sw_sync_pt_dup,
 	.has_signaled = sw_sync_pt_has_signaled,
@@ -136,7 +137,7 @@ EXPORT_SYMBOL(sw_sync_timeline_inc);
  */
 
 /* opening sw_sync create a new sync obj */
-int sw_sync_open(struct inode *inode, struct file *file)
+static int sw_sync_open(struct inode *inode, struct file *file)
 {
 	struct sw_sync_timeline *obj;
 	char task_comm[TASK_COMM_LEN];
@@ -152,16 +153,17 @@ int sw_sync_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
-int sw_sync_release(struct inode *inode, struct file *file)
+static int sw_sync_release(struct inode *inode, struct file *file)
 {
 	struct sw_sync_timeline *obj = file->private_data;
 	sync_timeline_destroy(&obj->obj);
 	return 0;
 }
 
-long sw_sync_ioctl_create_fence(struct sw_sync_timeline *obj, unsigned long arg)
+static long sw_sync_ioctl_create_fence(struct sw_sync_timeline *obj,
+				       unsigned long arg)
 {
-	int fd = get_unused_fd();
+	int fd = get_unused_fd_flags(O_CLOEXEC);
 	int err;
 	struct sync_pt *pt;
 	struct sync_fence *fence;
@@ -205,7 +207,7 @@ err:
 	return err;
 }
 
-long sw_sync_ioctl_inc(struct sw_sync_timeline *obj, unsigned long arg)
+static long sw_sync_ioctl_inc(struct sw_sync_timeline *obj, unsigned long arg)
 {
 	u32 value;
 
@@ -217,7 +219,8 @@ long sw_sync_ioctl_inc(struct sw_sync_timeline *obj, unsigned long arg)
 	return 0;
 }
 
-long sw_sync_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+static long sw_sync_ioctl(struct file *file, unsigned int cmd,
+			  unsigned long arg)
 {
 	struct sw_sync_timeline *obj = file->private_data;
 
@@ -238,6 +241,7 @@ static const struct file_operations sw_sync_fops = {
 	.open = sw_sync_open,
 	.release = sw_sync_release,
 	.unlocked_ioctl = sw_sync_ioctl,
+	.compat_ioctl = sw_sync_ioctl,
 };
 
 static struct miscdevice sw_sync_dev = {
@@ -246,12 +250,12 @@ static struct miscdevice sw_sync_dev = {
 	.fops	= &sw_sync_fops,
 };
 
-int __init sw_sync_device_init(void)
+static int __init sw_sync_device_init(void)
 {
 	return misc_register(&sw_sync_dev);
 }
 
-void __exit sw_sync_device_remove(void)
+static void __exit sw_sync_device_remove(void)
 {
 	misc_deregister(&sw_sync_dev);
 }
