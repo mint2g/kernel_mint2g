@@ -263,21 +263,6 @@ build_up:
 	return(v);
 }
 
-/*
- * @id and @pa are from a successful allocation from idr_get_empty_slot().
- * Install the user pointer @ptr and mark the slot full.
- */
-static void idr_fill_slot(struct idr *idr, void *ptr, int id,
-			  struct idr_layer **pa)
-{
-	/* update hint used for lookup, cleared from free_layer() */
-	rcu_assign_pointer(idr->hint, pa[0]);
-
-	rcu_assign_pointer(pa[0]->ary[id & IDR_MASK], (struct idr_layer *)ptr);
-	pa[0]->count++;
-	idr_mark_full(pa, id);
-}
-
 static int idr_get_new_above_int(struct idr *idp, void *ptr, int starting_id)
 {
 	struct idr_layer *pa[MAX_LEVEL];
@@ -361,52 +346,6 @@ int idr_get_new(struct idr *idp, void *ptr, int *id)
 	return 0;
 }
 EXPORT_SYMBOL(idr_get_new);
-
-/**
- * idr_alloc - allocate new idr entry
- * @idr: the (initialized) idr
- * @ptr: pointer to be associated with the new id
- * @start: the minimum id (inclusive)
- * @end: the maximum id (exclusive, <= 0 for max)
- * @gfp_mask: memory allocation flags
- *
- * Allocate an id in [start, end) and associate it with @ptr.  If no ID is
- * available in the specified range, returns -ENOSPC.  On memory allocation
- * failure, returns -ENOMEM.
- *
- * Note that @end is treated as max when <= 0.  This is to always allow
- * using @start + N as @end as long as N is inside integer range.
- *
- * The user is responsible for exclusively synchronizing all operations
- * which may modify @idr.  However, read-only accesses such as idr_find()
- * or iteration can be performed under RCU read lock provided the user
- * destroys @ptr in RCU-safe way after removal from idr.
- */
-int idr_alloc(struct idr *idr, void *ptr, int start, int end, gfp_t gfp_mask)
-{
-	int max = end > 0 ? end - 1 : INT_MAX;	/* inclusive upper limit */
-	struct idr_layer *pa[MAX_LEVEL + 1];
-	int id;
-
-	might_sleep_if(gfp_mask & __GFP_WAIT);
-
-	/* sanity checks */
-	if (WARN_ON_ONCE(start < 0))
-		return -EINVAL;
-	if (unlikely(max < start))
-		return -ENOSPC;
-
-	/* allocate id */
-	id = idr_get_empty_slot(idr, start, pa);
-	if (unlikely(id < 0))
-		return id;
-	if (unlikely(id > max))
-		return -ENOSPC;
-
-	idr_fill_slot(idr, ptr, id, pa);
-	return id;
-}
-EXPORT_SYMBOL_GPL(idr_alloc);
 
 static void idr_remove_warning(int id)
 {
