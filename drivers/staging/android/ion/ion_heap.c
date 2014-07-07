@@ -113,49 +113,38 @@ static int ion_heap_clear_pages(struct page **pages, int num, pgprot_t pgprot)
 	return 0;
 }
 
-static int ion_heap_sglist_zero(struct scatterlist *sgl, unsigned int nents,
-						pgprot_t pgprot)
-{
-	int p = 0;
-	int ret = 0;
-	struct sg_page_iter piter;
-	struct page *pages[32];
-
-	for_each_sg_page(sgl, &piter, nents, 0) {
-		pages[p++] = sg_page_iter_page(&piter);
-		if (p == ARRAY_SIZE(pages)) {
-			ret = ion_heap_clear_pages(pages, p, pgprot);
-			if (ret)
-				return ret;
-			p = 0;
-		}
-	}
-	if (p)
-		ret = ion_heap_clear_pages(pages, p, pgprot);
-
-	return ret;
-}
-
 int ion_heap_buffer_zero(struct ion_buffer *buffer)
 {
 	struct sg_table *table = buffer->sg_table;
 	pgprot_t pgprot;
+	struct scatterlist *sg;
+	int i, j, ret = 0;
+	struct page *pages[32];
+	int k = 0;
 
 	if (buffer->flags & ION_FLAG_CACHED)
 		pgprot = PAGE_KERNEL;
 	else
 		pgprot = pgprot_writecombine(PAGE_KERNEL);
 
-	return ion_heap_sglist_zero(table->sgl, table->nents, pgprot);
-}
+	for_each_sg(table->sgl, sg, table->nents, i) {
+		struct page *page = sg_page(sg);
+		unsigned long len = sg->length;
 
-int ion_heap_pages_zero(struct page *page, size_t size, pgprot_t pgprot)
-{
-	struct scatterlist sg;
-
-	sg_init_table(&sg, 1);
-	sg_set_page(&sg, page, size, 0);
-	return ion_heap_sglist_zero(&sg, 1, pgprot);
+		for (j = 0; j < len / PAGE_SIZE; j++) {
+			pages[k++] = page + j;
+			if (k == ARRAY_SIZE(pages)) {
+				ret = ion_heap_clear_pages(pages, k, pgprot);
+				if (ret)
+					goto end;
+				k = 0;
+			}
+		}
+		if (k)
+			ret = ion_heap_clear_pages(pages, k, pgprot);
+	}
+end:
+	return ret;
 }
 
 void ion_heap_freelist_add(struct ion_heap *heap, struct ion_buffer *buffer)
@@ -178,7 +167,8 @@ size_t ion_heap_freelist_size(struct ion_heap *heap)
 	return size;
 }
 
-size_t ion_heap_freelist_drain(struct ion_heap *heap, size_t size)
+static size_t _ion_heap_freelist_drain(struct ion_heap *heap, size_t size,
+				bool skip_pools)
 {
 	struct ion_buffer *buffer;
 	size_t total_drained = 0;
@@ -197,6 +187,8 @@ size_t ion_heap_freelist_drain(struct ion_heap *heap, size_t size)
 					  list);
 		list_del(&buffer->list);
 		heap->free_list_size -= buffer->size;
+		if (skip_pools)
+			buffer->private_flags |= ION_PRIV_FLAG_SHRINKER_FREE;
 		total_drained += buffer->size;
 		spin_unlock(&heap->free_lock);
 		ion_buffer_destroy(buffer);
@@ -205,6 +197,16 @@ size_t ion_heap_freelist_drain(struct ion_heap *heap, size_t size)
 	spin_unlock(&heap->free_lock);
 
 	return total_drained;
+}
+
+size_t ion_heap_freelist_drain(struct ion_heap *heap, size_t size)
+{
+	return _ion_heap_freelist_drain(heap, size, false);
+}
+
+size_t ion_heap_freelist_shrink(struct ion_heap *heap, size_t size)
+{
+	return _ion_heap_freelist_drain(heap, size, true);
 }
 
 static int ion_heap_deferred_free(void *data)
@@ -246,10 +248,48 @@ int ion_heap_init_deferred_free(struct ion_heap *heap)
 	if (IS_ERR(heap->task)) {
 		pr_err("%s: creating thread for deferred free failed\n",
 		       __func__);
-		return PTR_RET(heap->task);
+		return PTR_ERR_OR_ZERO(heap->task);
 	}
 	sched_setscheduler(heap->task, SCHED_IDLE, &param);
 	return 0;
+}
+
+static int ion_heap_shrink(struct shrinker *shrinker, struct shrink_control *sc)
+{
+	struct ion_heap *heap = container_of(shrinker, struct ion_heap,
+					     shrinker);
+	int total = 0;
+	int freed = 0;
+	int to_scan = sc->nr_to_scan;
+
+	if (to_scan == 0)
+		goto out;
+
+	/*
+	 * shrink the free list first, no point in zeroing the memory if we're
+	 * just going to reclaim it. Also, skip any possible page pooling.
+	 */
+	if (heap->flags & ION_HEAP_FLAG_DEFER_FREE)
+		freed = ion_heap_freelist_shrink(heap, to_scan * PAGE_SIZE) /
+				PAGE_SIZE;
+
+	to_scan -= freed;
+	if (to_scan < 0)
+		to_scan = 0;
+
+out:
+	total = ion_heap_freelist_size(heap) / PAGE_SIZE;
+	if (heap->ops->shrink)
+		total += heap->ops->shrink(heap, sc->gfp_mask, to_scan);
+	return total;
+}
+
+void ion_heap_init_shrinker(struct ion_heap *heap)
+{
+	heap->shrinker.shrink = ion_heap_shrink;
+	heap->shrinker.seeks = DEFAULT_SEEKS;
+	heap->shrinker.batch = 0;
+	register_shrinker(&heap->shrinker);
 }
 
 struct ion_heap *ion_heap_create(struct ion_platform_heap *heap_data)

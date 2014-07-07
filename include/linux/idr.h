@@ -57,7 +57,6 @@ struct idr_layer {
 };
 
 struct idr {
-	struct idr_layer __rcu	*hint;	/* the last layer allocated from */
 	struct idr_layer __rcu *top;
 	struct idr_layer *id_free;
 	int		  layers; /* only valid without concurrent changes */
@@ -104,7 +103,6 @@ struct idr {
 
 void *idr_find(struct idr *idp, int id);
 int idr_pre_get(struct idr *idp, gfp_t gfp_mask);
-int idr_alloc(struct idr *idp, void *ptr, int start, int end, gfp_t gfp_mask);
 int idr_get_new(struct idr *idp, void *ptr, int *id);
 int idr_get_new_above(struct idr *idp, void *ptr, int starting_id, int *id);
 int idr_for_each(struct idr *idp,
