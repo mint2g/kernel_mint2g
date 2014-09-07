@@ -132,6 +132,8 @@ source "drivers/hwspinlock/Kconfig"
 
 source "drivers/clocksource/Kconfig"
 
+source "drivers/backoff/Kconfig"
+
 source "drivers/sipc/Kconfig"
 
 source "drivers/gpu/mali/mali/Kconfig"

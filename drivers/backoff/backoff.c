@@ -1,0 +1,79 @@
+/*
+ * drivers/backoff/backoff.c
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
+#include <linux/module.h>
+#include <linux/suspend.h>
+#include <linux/time.h>
+#include <linux/wakelock.h>
+
+#define SUSPEND_BACKOFF_THRESHOLD	10
+#define SUSPEND_BACKOFF_INTERVAL	10000
+
+static struct wake_lock suspend_backoff_lock;
+
+static int backoff_pm_notify(struct notifier_block *b,
+				unsigned long event, void *p)
+{
+	static struct timespec ts_entry, ts_exit;
+	static unsigned suspend_short_count = 0;
+	switch (event) {
+		case PM_SUSPEND_PREPARE:
+			getnstimeofday(&ts_entry);
+			break;
+		case PM_POST_SUSPEND:
+			getnstimeofday(&ts_exit);
+			if (ts_exit.tv_sec - ts_entry.tv_sec <= 1) {
+				++suspend_short_count;
+				if (suspend_short_count == SUSPEND_BACKOFF_THRESHOLD) {
+					printk("%s: suspend backing off\n",__func__);
+					wake_lock_timeout(&suspend_backoff_lock,
+						msecs_to_jiffies(SUSPEND_BACKOFF_INTERVAL));
+					suspend_short_count = 0;
+				}
+			} else {
+				suspend_short_count = 0;
+			}
+			break;
+	}
+	return NOTIFY_DONE;
+}
+
+static struct notifier_block backoff_pm_notifier = {
+	.notifier_call = backoff_pm_notify,
+};
+
+static int __init suspend_backoff_init(void)
+{
+	int ret = 0;
+
+	wake_lock_init(&suspend_backoff_lock,
+		WAKE_LOCK_SUSPEND, "suspend_backoff");
+
+	printk("%s: initialized wakelock\n",__func__);
+
+	ret = register_pm_notifier(&backoff_pm_notifier);
+	if (ret)
+		printk(KERN_ERR "%s: PM notifier register failed\n",__func__);
+	else
+		printk("%s: PM notifier registered\n",__func__);
+
+	return ret;
+}
+device_initcall(suspend_backoff_init);
+
+static void __exit suspend_backoff_exit(void)
+{
+	unregister_pm_notifier(&backoff_pm_notifier);
+	printk("%s: PM notifier unregistered\n",__func__);
+	wake_lock_destroy(&suspend_backoff_lock);
+}
+module_exit(suspend_backoff_exit);
+
+MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("Wakelock if too much suspend spam");
