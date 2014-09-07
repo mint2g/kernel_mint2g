@@ -127,5 +127,7 @@ obj-y				+= clk/
 obj-$(CONFIG_NEW_SENSORS)	+= sensors/
 
 obj-$(CONFIG_HWSPINLOCK)	+= hwspinlock/
+obj-$(CONFIG_SUSPEND_BACKOFF)	+= backoff/
 
 obj-$(CONFIG_SIPC)		+= sipc/
+
