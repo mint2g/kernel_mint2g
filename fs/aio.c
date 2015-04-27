@@ -1682,8 +1682,11 @@ long do_io_submit(aio_context_t ctx_id, long nr,
 	struct kioctx *ctx;
 	long ret = 0;
 	int i = 0;
-	struct blk_plug plug;
 	struct kiocb_batch batch;
+
+#ifndef CONFIG_AIO_SSD_ONLY
+	struct blk_plug plug;
+#endif
 
 	if (unlikely(nr < 0))
 		return -EINVAL;
@@ -1702,7 +1705,9 @@ long do_io_submit(aio_context_t ctx_id, long nr,
 
 	kiocb_batch_init(&batch, nr);
 
+#ifndef CONFIG_AIO_SSD_ONLY
 	blk_start_plug(&plug);
+#endif
 
 	/*
 	 * AKPM: should this return a partial result if some of the IOs were
@@ -1726,7 +1731,10 @@ long do_io_submit(aio_context_t ctx_id, long nr,
 		if (ret)
 			break;
 	}
+
+#ifndef CONFIG_AIO_SSD_ONLY
 	blk_finish_plug(&plug);
+#endif
 
 	kiocb_batch_free(ctx, &batch);
 	put_ioctx(ctx);
