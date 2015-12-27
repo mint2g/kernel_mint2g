@@ -1,0 +1,109 @@
+#
+#***************************************************************
+#
+#  Component: VLX Linux Kernel Source Component.
+#
+#  Copyright (C) 2011, Red Bend Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2
+#  as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  You should have received a copy of the GNU General Public License Version 2
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+#  Contributor(s):
+#    Sebastien Laborie (sebastien.laborie@redbend.com)
+#    Guennadi Maslov (guennadi.maslov@redbend.com)
+#
+#***************************************************************
+#
+
+LINUXKERNEL_MERGE		+= -s $(LINUXKERNEL)
+LINUXKERNEL_MERGE_PROFILE	+= $(LINUXKERNEL_PROFILE)
+
+all:: LINUXKERNEL.all
+
+LINUXKERNEL.all:: DEVTOOLS.all
+LINUXKERNEL.all:: $(LINUXKERNEL_DIR)/DONE
+
+$(LINUXKERNEL_DIR)/profile: $(DEVTOOLS_DIR)/host/bin/mkmerge
+	rm -rf $(LINUXKERNEL_DIR)
+	$(DEVTOOLS_DIR)/host/bin/mkmerge $(LINUXKERNEL_MERGE) -t $(LINUXKERNEL_DIR)
+
+$(LINUXKERNEL_DIR)/GNUmakefile.defs: $(LINUXKERNEL_DIR)/profile
+	cp -f $(BUILD_DIR)/Paths $@
+	echo "LINUXKERNEL_MERGE_PROFILE=$(LINUXKERNEL_MERGE_PROFILE)" >> $@
+
+$(LINUXKERNEL_DIR)/.config: $(LINUXKERNEL_DIR)/GNUmakefile.defs
+	cd $(LINUXKERNEL_DIR); $(make) .config; yes '' | $(make) oldconfig
+
+$(LINUXKERNEL_DIR)/include/config/auto.conf: $(LINUXKERNEL_DIR)/.config
+	cd $(LINUXKERNEL_DIR); $(make) silentoldconfig
+
+$(LINUXKERNEL_DIR)/VMLINUX.conf: $(LINUXKERNEL_DIR)/include/config/auto.conf
+	cd $(LINUXKERNEL_DIR); $(make) VMLINUX.conf
+
+$(LINUXKERNEL_DIR)/vmlinux: $(LINUXKERNEL_DIR)/VMLINUX.conf
+	cd $(LINUXKERNEL_DIR); $(make) all
+	touch $@
+
+$(LINUXKERNEL_DIR)/.modules: $(LINUXKERNEL_DIR)/VMLINUX.conf
+	cd $(LINUXKERNEL_DIR); . ./.config; if [ ! -z "$$CONFIG_MODULES" ]; then $(make) modules; fi
+	touch $@
+
+$(LINUXKERNEL_DIR)/DONE: $(LINUXKERNEL_DIR)/vmlinux $(LINUXKERNEL_DIR)/.modules
+	touch $@
+
+$(LINUXKERNEL_DIR)/.extern_deps: $(LINUXKERNEL_DIR)/VMLINUX.conf
+	touch $@
+
+linux.%: $(LINUXKERNEL_DIR)/.extern_deps
+	cd $(LINUXKERNEL_DIR); $(make) $*
+
+ROOTDIR = $(BUILD_DIR)/linux-root
+linux.modules_install: LINUXKERNEL.all
+	mkdir -p $(ROOTDIR); cd $(ROOTDIR); INST_PATH=`pwd`; \
+	. $(LINUXKERNEL_DIR)/VMLINUX.conf; \
+	for DIR in $(LINUXMODULES_EXTRA); do \
+		cd $$DIR; \
+		find . -follow -type f -name "*.ko" | \
+		cpio -pdvmuL $(ROOTDIR)/lib/modules/$$LINUX_VER; \
+	done; \
+	cd $(LINUXKERNEL_DIR); \
+	$(make) modules_install INSTALL_MOD_PATH=$$INST_PATH \
+				depmod_opts='-c $$(CROSS_COMPILE) \
+		                             -b $$(INSTALL_MOD_PATH)' \
+	                        DEPMOD=$(DEVTOOLS_DIR)/cross-linux/depmod.pl; \
+	rm -f $$INST_PATH/lib/modules/*/build
+
+LINUXKERNEL_DIST = $(BUILD_DIR)/dist-LINUXKERNEL
+LINUXKERNEL.dist: LINUXKERNEL.all
+	rm -rf $(LINUXKERNEL_DIST)
+	mkdir -p $(LINUXKERNEL_DIST)
+	cd $(LINUXKERNEL_DIR) ; \
+	ASM_DIRS="" ; \
+	while true; do \
+		_ASM_DIRS=`find include/asm $$ASM_DIRS -follow -exec \
+			   grep '#.*include.*asm-.*/*.h' {} \; | \
+			   grep -v "asm-generic/" | \
+			   sed -e 's,.*\(asm-[^/]*\)/.*,include/\1,g' | \
+			   sort -u` ; \
+		[ "$$ASM_DIRS" = "$$_ASM_DIRS" ] && break ; \
+		ASM_DIRS="$$_ASM_DIRS" ; \
+	done ; \
+	find Documentation \
+	     Makefile.bin \
+	     VMLINUX.conf \
+	     .config \
+	     vmlinux \
+	     System.map \
+	     `ls -1d include/* | grep -v "/asm-"` \
+	     include/asm-generic \
+	     $$ASM_DIRS \
+	     -follow -name SCCS -prune -o -print | \
+	  cpio -pdvmL $(LINUXKERNEL_DIST)

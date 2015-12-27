@@ -1,0 +1,63 @@
+config FB_SC8810
+	boolean "SC8810 frame buffer support "
+	depends on FB && ARCH_SC8810
+	select FB_CFB_FILLRECT
+	select FB_CFB_COPYAREA
+	select FB_CFB_IMAGEBLIT
+	help
+          Frame buffer driver for SC8810 based boards.
+
+config FB_LCD_NOFMARK
+	boolean "not support fmark"
+	depends on FB_SC8810
+
+config FB_LCD_HX8369
+	boolean "support HX8369 panel"
+	depends on FB_SC8810
+
+config FB_LCD_HX8369_HVGA_TEST
+	boolean "support HX8369 panel"
+	depends on FB_LCD_HX8369
+
+config FB_LCD_ILI9486
+	boolean "support ILI9486 panel"
+	depends on FB_SC8810
+
+
+config FB_LCD_ILI9341_BOE
+        boolean "support ILI9486 panel"
+        depends on FB_SC8810
+
+config FB_LCD_ILI9341_BOE_MINT
+        boolean "support ILI9486 panel"
+        depends on FB_SC8810
+
+config FB_LCD_HX8357
+	boolean "support HX8357 panel"
+	depends on FB_SC8810
+
+config FB_LCD_RM6158_TRULY
+	boolean "support rm6158 truly panel"
+	depends on FB_SC8810
+
+config FB_LCD_HX8357_OPENPHONE
+	boolean "support HX8357OPENPHONE panel"
+	depends on FB_SC8810
+
+config FB_LCD_NT35516
+	boolean "support NT35516 panel"
+	depends on FB_SC8810
+
+config FB_LCD_OVERLAY_SUPPORT
+	boolean "support lcd overlay"
+	depends on FB_SC8810
+	default n
+
+config FB_LCD_NT35510
+	boolean "support nt35510 panel"
+	depends on FB_SC8810
+
+config FB_LCD_S6D04H0
+	boolean "support s6d04h0 panel"
+	depends on FB_SC8810
+

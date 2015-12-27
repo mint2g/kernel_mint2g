@@ -1,0 +1,572 @@
+#
+#  Copyright (C) 2011, Red Bend Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2
+#  as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  You should have received a copy of the GNU General Public License Version 2
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+#
+# Input device configuration
+#
+
+if NKERNEL_DDI
+
+menu "VLX virtual device support"
+
+if INPUT_EVDEV
+
+config INPUT_VEVDEV_BE
+        tristate "Vevent backend interface"
+        default n 
+        help
+          Say Y here if this OS provides the real input events
+
+          To compile this driver as a module, choose M here: the
+          module will be called vevdev-be.
+
+config INPUT_VEVDEV_BE_FOCUS
+        bool "Focus switch support in the vevent backend driver"
+        depends on INPUT_VEVDEV_BE
+        default n 
+        help
+	  Say Y here if the vevent backend driver manages the focus
+	  switch and/or VM restart hot keys.
+
+config INPUT_VEVDEV_FE
+        tristate "Vevent frontend interface"
+        default n 
+        help
+          Say Y here if this OS consumes the input events
+
+endif
+
+if FB
+
+config FB_VLCD_BACKEND
+        tristate "Virtual LCD backend driver for VLX based Linux"
+        depends on ARM
+	default n
+        select FB_CFB_FILLRECT
+        select FB_CFB_COPYAREA
+        select FB_CFB_IMAGEBLIT
+        help
+         LCD backend driver for Linux running on top of VLX
+
+config FB_VLCD_FRONTEND
+        tristate "Virtual LCD frontend driver for VLX based Linux"
+        depends on ARM
+	default n
+        select FB_CFB_FILLRECT
+        select FB_CFB_COPYAREA
+        select FB_CFB_IMAGEBLIT
+        help
+         LCD frontend driver for Linux running on top of VLX
+
+endif
+
+if !FB_VLCD_BACKEND && !FB_VLCD_FRONTEND
+
+if !VDISPLAY_BACKEND
+config VDISPLAY_FRONTEND
+	tristate "Virtual Display frontend infrastructure"
+	default n
+	select VLINK_LIB
+	select VOGL_FE
+	help
+         vDisplay frontend driver for Linux running on top of VLX.
+endif
+
+config VDISPLAY_BACKEND
+	tristate "Virtual Display backend infrastructure"
+	default n
+	select VLINK_LIB
+	select VOGL_BE
+	help
+         vDisplay backend driver for Linux running on top of VLX.
+
+endif
+
+config SND_VAUDIO_BE
+        tristate "Virtual Audio backend driver for VLX based Linux"
+        default n 
+        help
+          Say Y here if this OS manages sound hardware
+
+          To compile this driver as a module, choose M here: the
+          module will be called vaudio-be.
+
+choice
+	prompt "Virtual Audio backend device interface"
+	default SND_VAUDIO_BE_USER
+
+config SND_VAUDIO_BE_NATIVE
+        bool "Native audio driver"
+        depends on SND_VAUDIO_BE
+        help
+          Say Y here to use the native audio driver interface
+
+config SND_VAUDIO_BE_BRIDGE
+        bool "Bridge to vAudio local frontend"
+        depends on SND_VAUDIO_BE
+        help
+          Say Y here to use a bridge to a local frontend
+
+config SND_VAUDIO_BE_USER
+        bool "User interface to vAudio backend"
+        depends on SND_VAUDIO_BE
+        help
+          Say Y here to access to the backend user interface
+
+endchoice
+
+if SND
+
+config SND_VAUDIO_FE
+        tristate "Virtual Audio frontend driver for VLX based Linux"
+        default n 
+	select SND_PCM
+        help
+          Say Y here if this OS exports virtual audio interface
+
+          To compile this driver as a module, choose M here: the
+          module will be called vaudio-fe.
+
+endif
+
+if WATCHDOG
+
+config VWDT_FRONTEND
+        tristate "Virtual watchdog frontend driver for VLX based Linux"
+        depends on ARM
+        default n 
+        help
+         Watchdog frontend driver for Linux running on top of VLX
+
+config VWDT_BACKEND
+        tristate "Virtual watchdog backend driver for VLX based Linux"
+        depends on ARM
+        default n 
+        help
+         Watchdog backend driver for Linux running on top of VLX
+
+endif
+
+config NKERNEL_VETH
+        tristate "VLX Virtual Ethernet driver"
+        depends on NETDEVICES
+        default n 
+        help
+          VLX virtual Ethernet driver.
+          This driver emulates Ethernet communication with a back-end driver
+          running in another partition.
+
+          To compile this driver as a module, choose M here: the
+          module will be called veth.
+
+config NKERNEL_VETH_RING_SIZE
+	int "Number of frame buffers in communication rings"
+	default "64"
+	depends on NKERNEL_VETH
+	help
+	  The default number of Ethernet frame buffers in shared memory is
+	  64 per direction, resulting in around 200 KB of memory usage per
+	  veth link. The same value of this setting must be used by both
+	  peer veth drivers. The value must be a power of 2. Note that
+	  some versions of the veth driver (which is currently part of
+	  the Linux component, rather than of the vdrivers component)
+	  might not take this setting into account.
+
+config NKERNEL_VETH_IFNAME
+	string "Interface name for virtual ethernet driver"
+	default "veth"
+	depends on NKERNEL_VETH
+	help
+	  The default name of virtual Ethernet driver.
+
+if BLOCK
+config VBD_BE
+        tristate "Virtual block device backend interface"
+        default n
+        help
+          Virtual Block Device backend
+          
+          To compile this driver as a module, choose M here: the
+          module will be called vlx-vbd-be.
+
+config VBD2_BE
+        tristate "Virtual block device v.2 backend interface"
+        default n
+	select VMQ
+        help
+          Virtual Block Device v.2 backend
+
+          To compile this driver as a module, choose M here: the
+          module will be called vlx-vbd2-be.
+
+config VBD_FE
+        tristate "Virtual block device frontend interface"
+        default n
+        help
+          Virtual Block Device frontend
+          
+          To compile this driver as a module, choose M here: the
+          module will be called vlx-vbd-fe.
+
+config VBD2_FE
+        tristate "Virtual block device v.2 frontend interface"
+        default n
+	select VMQ
+        help
+          Virtual Block Device v.2 frontend
+
+          To compile this driver as a module, choose M here: the
+          module will be called vlx-vbd2-fe.
+endif
+
+if 0
+config VUART_FRONTEND
+        tristate "Virtual UART frontend driver for VLX based Linux"
+        depends on ARM
+        default n
+        help
+         UART frontend driver for Linux running on top of VLX
+endif
+
+config VPIPE
+        tristate "Virtual pipe for inter OS communication"
+        default n 
+        help
+          Virtual unidirectional pipe for inter OS communication.
+
+          To compile this driver as a module, choose M here: the
+          module will be called vpipe.
+
+config VUPIPE
+        tristate "Virtual user land pipe for inter OS communication"
+        default n 
+        help
+          Virtual unidirectional pipe for inter OS communication.
+	  An application uses mmap to see the pipe buffer from
+	  the user land, so this is zero-copy communication device.
+
+          To compile this driver as a module, choose M here: the
+          module will be called vupipe.
+
+config VBPIPE
+        tristate "Virtual bidirectional pipe for inter OS communication"
+        default n 
+        help
+          Virtual bidirectional pipe for inter OS communication.
+
+          To compile this driver as a module, choose M here: the
+          module will be called vbpipe.
+
+config VMQ
+	tristate "Virtual Messages Queues inter-guest communication module"
+	default n
+
+config VMQ_TESTS
+	tristate "Virtual Messages Queue tests"
+	depends on VMQ
+	default n
+
+if MTD
+
+config VMTD_BE
+        tristate "Virtual Memory Technology Device backend interface"
+        default m
+	select VMQ
+        help
+          Virtual Memory Technology Device backend
+          
+          To compile this driver as a module, choose M here: the
+          module will be called vmtd-be.
+
+config VMTD_FE
+        tristate "Virtual Memory Technology Device frontend interface"
+        default m
+	select VMQ
+        help
+          Virtual Memory Technology Device frontend
+          
+          To compile this driver as a module, choose M here: the
+          module will be called vmtd-fe.
+
+endif
+
+config VLX_VRPC
+	tristate "Virtual RPC inter-guest communication module"
+	default n
+
+config VBATTERY_FRONTEND
+        tristate "Virtual battery frontend interface"
+        depends on POWER_SUPPLY
+        default n
+        select VLX_VRPC
+        help
+          Virtual battery frontend interface
+
+config VBATTERY_BACKEND
+        tristate "Virtual battery backend interface"
+        depends on POWER_SUPPLY
+        default n
+        select VLX_VRPC
+        help
+          Virtual battery backend interface
+
+config VPMEM_FRONTEND
+        bool "Virtual Android Physical Memory frontend interface"
+        default n
+        select ANDROID_PMEM
+        help
+          Virtual bit Android Physical Memory frontend interface
+
+config VPMEM_BACKEND
+        bool "Virtual Android Physical Memory backend interface"
+        default n
+        help
+          Virtual bit Android Physical Memory backend interface
+
+config VBLITTER_FRONTEND
+        bool "Virtual blitter frontend interface"
+        default n
+        select VLX_VRPC
+        help
+          Virtual bit blitter frontend interface
+
+config VBLITTER_BACKEND
+        bool "Virtual blitter backend interface"
+        default n
+        depends on VPMEM_BACKEND
+        select VLX_VRPC
+        help
+          Virtual bit blitter backend interface
+
+if NKERNEL
+config VLX_MONITORING
+        tristate "VLX Monitoring Interface"
+        default n
+        help
+          VLX monitoring interface
+
+          To compile this driver as a module, choose M here: the
+          module will be called perfmonitor.
+
+endif
+
+config VVIDEO_BE
+        tristate "Virtual video backend interface"
+        default n 
+        help
+          Say Y here if this OS manages video hardware
+
+          To compile this driver as a module, choose M here: the
+          module will be called vvideo-be.
+
+config VVIDEO_BE_HW
+        tristate "Virtual video overlay interface"
+        depends on VVIDEO_BE
+        default n
+        help
+          Say Y here if this OS does not feature a hardware
+	  video overlay device.
+
+          To compile this driver as a module, choose M here: the
+          module will be called vvideo-be-hw.
+
+config VVIDEO_FE
+        tristate "Virtual video frontend interface"
+        default n 
+        help
+          Say Y here if this OS exports virtual video interface
+
+          To compile this driver as a module, choose M here: the
+          module will be called vvideo-fe.
+
+config VRTC_FE
+	tristate "Virtual Real Time Clock frontend interface"
+	select RTC_CLASS
+	select VLX_VRPC
+	default n
+	help
+	  To compile this driver as a module, choose M here: the
+	  module will be called vrtc-fe.
+
+config VRTC_BE
+	tristate "Virtual Real Time Clock backend interface"
+	select RTC_CLASS
+	select VLX_VRPC
+	default n
+	help
+	  To compile this driver as a module, choose M here: the
+	  module will be called vrtc-be.
+
+config VSHM
+        tristate "Virtual shared memory interface"
+        default n 
+        help
+          Say Y here if this OS exports virtual shared interface
+
+          To compile this driver as a module, choose M here: the
+          module will be called vshm.
+
+if !FB_VLCD_BACKEND && !FB_VLCD_FRONTEND
+
+if VDISPLAY_FRONTEND
+config VOGL_FE
+	tristate "Virtual OpenGL ES frontend infrastructure"
+	default n
+	select VRPQ_FE
+	select VUMEM_FE
+	help
+	  Kernel-level support for the VLX virtual OpenGL ES frontend
+          infrastructure. Choose this option if you want to enable the
+	  VRPQ and the VUMEM frontend drivers.
+	  VRPQ (Virtual Remote Procedure Queue) is the VOpenGL ES transport
+          layer. It enables user-land components to execute remote procedures
+          on a virtualized platform.
+          VUMEM (Virtual User MEMory Buffers) enables user applications
+	  to use graphics memory on a virtualized platform.
+endif
+
+if VDISPLAY_BACKEND
+config VOGL_BE
+	tristate "Virtual OpenGL ES backend infrastructure"
+	default n
+	select VRPQ_BE
+	select VUMEM_BE
+	help
+	  Kernel-level support for the VLX virtual OpenGL ES backend
+          infrastructure. Choose this option if you want to enable the
+	  VRPQ and the VUMEM backend drivers.
+	  VRPQ (Virtual Remote Procedure Queue) is the VOpenGL ES transport
+          layer. It enables user-land components to execute remote procedures
+          on a virtualized platform.
+          VUMEM (Virtual User MEMory Buffers) enables user applications
+	  to use graphics memory on a virtualized platform.
+endif
+
+endif
+
+config VLINK_LIB
+	tristate
+
+config VRPQ_FE
+	tristate
+	select VLINK_LIB
+
+config VRPQ_BE
+	tristate
+	select VLINK_LIB
+
+config VRPQ_PROFILE
+        bool "VRPQ (Virtual Remote Procedure Queue) profiling support"
+        default n
+	depends on VRPQ_FE || VRPQ_BE
+        help
+          Enable statistics collect in the VRPQ (Virtual Remote Procedure
+          Queue) layer.
+
+config VUMEM_FE
+	tristate
+	select VLINK_LIB
+
+config VUMEM_BE
+	tristate
+	select VLINK_LIB
+
+config VUMEM_PROFILE
+        bool "VUMEM (Virtual User MEMory Buffers) profiling support"
+        default n
+	depends on VUMEM_FE || VUMEM_BE
+        help
+          Enable statistics collect in the VUMEM (Virtual User MEMory Buffers)
+          layer.
+
+config XIRQ_BENCH
+	tristate "Virtual driver used to benchmark INTER-OS communication"
+	default n
+	help
+	  Benchmark cross-interrupt
+
+config VINFO
+        tristate "VLX internal information driver"
+        default y
+        help
+          VLX information driver creates information files in
+	  /proc/nk to show internal system information.
+
+          To compile this driver as a module, choose M here: the
+          module will be called vinfo.
+
+config VLX_UMP
+        tristate "User Mode virtual driver Proxy driver"
+        default n
+        help
+	  Driver providing support for backend drivers in user mode,
+	  that is running as processes.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called vlx-ump.
+
+config VLX_HISTORY
+        tristate "VLX console history driver"
+        default y
+        help
+	  Driver allowing to read the console history in real time,
+	  through the /dev/vlx-history device. Supersedes the older
+	  /dev/ttyNK1 driver.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called vlx-history.
+
+config VLX_BALLOON
+        tristate "VLX memory balloon driver"
+        default n
+        help
+	  The balloon driver allows the VLX guest to request more memory from
+	  the system to expand the VM's memory allocation, or alternatively
+	  return unneeded memory to the system.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called vlx-balloon.
+
+config VLX_BALLOON_SCRUB_PAGES
+        tristate "Scrub reclaimed balloon memory"
+        default n
+	depends on VLX_BALLOON 
+        help
+	  Say Y here if you want to scrub pages reclaimed by
+          the balloon driver.
+
+config VLX_BALLOON_FOCUS
+        tristate "VLX memory balloon focus driver"
+        default n
+        help
+	  The balloon focus driver implements a memory ballooning policy
+	  by migrating the balloon (dynamic) memory toward the focus VM.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called vlx-balloon-focus.
+endmenu
+
+endif
+
+config UEVENT_DUMP
+        tristate "uevent dumping driver"
+        default n
+        help
+	  Driver allowing to read the uevents from the netlink socket
+	  and to dump them to the system console in real time.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called uevent-dump.
+

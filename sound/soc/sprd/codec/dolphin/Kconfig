@@ -1,0 +1,4 @@
+config SND_SOC_DOLPHIN
+	tristate # "Dolphin"
+	help
+	 "use dolphin for the audio codec"

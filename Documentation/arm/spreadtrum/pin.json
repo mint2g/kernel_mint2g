@@ -1,0 +1,379 @@
+{"ctrl" : {"name" : "pin",
+    "regs" : [
+        {"name" : "ana_int",            "offset" : "0x0004", "default" : "0x100"},
+        {"name" : "ext_rst_b",          "offset" : "0x0008", "default" : "0x100"},
+        {"name" : "chip_sleep",         "offset" : "0x000c", "default" : "0x100"},
+
+        {"name" : "xtl_buf_en",         "offset" : "0x0010", "default" : "0x100"},
+        {"name" : "vbda_d",             "offset" : "0x0014", "default" : "0x101"},
+        {"name" : "vbda_lr",            "offset" : "0x0018", "default" : "0x100"},
+        {"name" : "vbda_sclk",          "offset" : "0x001c", "default" : "0x100"},
+
+        {"name" : "vbad_d",             "offset" : "0x0020", "default" : "0x100"},
+        {"name" : "vbad_lr",            "offset" : "0x0024", "default" : "0x100"},
+        {"name" : "vbad_sclk",          "offset" : "0x0028", "default" : "0x100"},
+        {"name" : "td_txpd",            "offset" : "0x002c", "default" : "0x100"},
+
+        {"name" : "td_rxpd",            "offset" : "0x0030", "default" : "0x100"},
+        {"name" : "gsm_txpd",           "offset" : "0x0034", "default" : "0x100"},
+        {"name" : "gsm_rxpd",           "offset" : "0x0038", "default" : "0x100"},
+        {"name" : "td_rx_clk",          "offset" : "0x003c", "default" : "0x100"},
+
+        {"name" : "clk_32k",            "offset" : "0x0040", "default" : "0x100"},
+        {"name" : "clk_26m",            "offset" : "0x0044", "default" : "0x100"},
+        {"name" : "adi_d",              "offset" : "0x0048", "default" : "0x100"},
+        {"name" : "adi_sync",           "offset" : "0x004c", "default" : "0x101"},
+
+        {"name" : "adi_sclk",           "offset" : "0x0050", "default" : "0x101"},
+        {"name" : "if_spr",             "offset" : "0x0054", "default" : "0x100"},
+        {"name" : "com_tx_apcd",        "offset" : "0x0058", "default" : "0x100"},
+        {"name" : "com_tx_dq1",         "offset" : "0x005c", "default" : "0x100"},
+
+        {"name" : "com_tx_dq0",         "offset" : "0x0060", "default" : "0x100"},
+        {"name" : "com_tx_di1",         "offset" : "0x0064", "default" : "0x100"},
+        {"name" : "com_tx_di0",         "offset" : "0x0068", "default" : "0x100"},
+        {"name" : "com_tx_sync",        "offset" : "0x006c", "default" : "0x100"},
+
+        {"name" : "com_tx_sclk",        "offset" : "0x0070", "default" : "0x100"},
+        {"name" : "com_rx_dq1",         "offset" : "0x0074", "default" : "0x100"},
+        {"name" : "com_rx_dq0",         "offset" : "0x0078", "default" : "0x100"},
+        {"name" : "com_rx_di1",         "offset" : "0x007c", "default" : "0x100"},
+
+        {"name" : "com_rx_di0",         "offset" : "0x0080", "default" : "0x100"},
+        {"name" : "com_rx_sync",        "offset" : "0x0084", "default" : "0x100"},
+        {"name" : "com_rx_sclk",        "offset" : "0x0088", "default" : "0x100"},
+
+        {"name" : "simclk0",            "offset" : "0x008c", "default" : "0x100"},
+        {"name" : "simda0",             "offset" : "0x0090", "default" : "0x180"},
+        {"name" : "simrst0",            "offset" : "0x0094", "default" : "0x100"},
+        {"name" : "simclk1",            "offset" : "0x0098", "default" : "0x100"},
+        {"name" : "simda1",             "offset" : "0x009c", "default" : "0x180"},
+
+        {"name" : "simrst1",            "offset" : "0x00a0", "default" : "0x100"},
+        {"name" : "sd0_clk",            "offset" : "0x00a4", "default" : "0x100"},
+        {"name" : "sd_cmd",             "offset" : "0x00a8", "default" : "0x180"},
+        {"name" : "sd_d0",              "offset" : "0x00ac", "default" : "0x180"},
+
+        {"name" : "sd_d1",              "offset" : "0x00b0", "default" : "0x180"},
+        {"name" : "sd_d2",              "offset" : "0x00b4", "default" : "0x180"},
+        {"name" : "sd_d3",              "offset" : "0x00b8", "default" : "0x180"},
+        {"name" : "sd1_clk",            "offset" : "0x00bc", "default" : "0x100"},
+
+        {"name" : "keyout0",            "offset" : "0x00c0", "default" : "0x100"},
+        {"name" : "keyout1",            "offset" : "0x00c4", "default" : "0x100"},
+        {"name" : "keyout2",            "offset" : "0x00c8", "default" : "0x100"},
+        {"name" : "keyout3",            "offset" : "0x00cc", "default" : "0x100"},
+
+        {"name" : "keyout4",            "offset" : "0x00d0", "default" : "0x100"},
+        {"name" : "keyout5",            "offset" : "0x00d4", "default" : "0x100"},
+        {"name" : "keyout6",            "offset" : "0x00d8", "default" : "0x100"},
+        {"name" : "keyout7",            "offset" : "0x00dc", "default" : "0x100"},
+
+        {"name" : "keyin0",             "offset" : "0x00e0", "default" : "0x180"},
+        {"name" : "keyin1",             "offset" : "0x00e4", "default" : "0x180"},
+        {"name" : "keyin2",             "offset" : "0x00e8", "default" : "0x180"},
+        {"name" : "keyin3",             "offset" : "0x00ec", "default" : "0x180"},
+
+        {"name" : "keyin4",             "offset" : "0x00f0", "default" : "0x180"},
+        {"name" : "keyin5",             "offset" : "0x00f4", "default" : "0x180"},
+        {"name" : "keyin6",             "offset" : "0x00f8", "default" : "0x180"},
+        {"name" : "keyin7",             "offset" : "0x00fc", "default" : "0x180"},
+
+        {"name" : "spi_di",             "offset" : "0x0100", "default" : "0x18a"},
+        {"name" : "spi_clk",            "offset" : "0x0104", "default" : "0x106"},
+        {"name" : "spi_do",             "offset" : "0x0108", "default" : "0x10a"},
+        {"name" : "spi_csn0",           "offset" : "0x010c", "default" : "0x10a"},
+
+        {"name" : "spi_csn1",           "offset" : "0x0110", "default" : "0x106"},
+        {"name" : "mtdo",               "offset" : "0x0114", "default" : "0x101"},
+        {"name" : "mtdi",               "offset" : "0x0118", "default" : "0x18a"},
+        {"name" : "mtck",               "offset" : "0x011c", "default" : "0x146"},
+
+        {"name" : "mtms",               "offset" : "0x0120", "default" : "0x18a"},
+        {"name" : "mtrst_n",            "offset" : "0x0124", "default" : "0x18a"},
+        {"name" : "u0txd",              "offset" : "0x0128", "default" : "0x100"},
+        {"name" : "u0rxd",              "offset" : "0x012c", "default" : "0x180"},
+
+        {"name" : "u0cts",              "offset" : "0x0130", "default" : "0x180"},
+        {"name" : "u0rts",              "offset" : "0x0134", "default" : "0x100"},
+        {"name" : "u1txd",              "offset" : "0x0138", "default" : "0x100"},
+        {"name" : "u1rxd",              "offset" : "0x013c", "default" : "0x180"},
+
+        {"name" : "nfwpn",              "offset" : "0x0140", "default" : "0x100"},
+        {"name" : "nfrb",               "offset" : "0x0144", "default" : "0x180"},
+        {"name" : "nfcle",              "offset" : "0x0148", "default" : "0x100"},
+        {"name" : "nfale",              "offset" : "0x014c", "default" : "0x100"},
+
+        {"name" : "nfcen0",             "offset" : "0x0150", "default" : "0x100"},
+        {"name" : "nfwen",              "offset" : "0x0154", "default" : "0x100"},
+        {"name" : "nfren",              "offset" : "0x0158", "default" : "0x100"},
+        {"name" : "nfd0",               "offset" : "0x015c", "default" : "0x100"},
+
+        {"name" : "nfd1",               "offset" : "0x0160", "default" : "0x100"},
+        {"name" : "nfd2",               "offset" : "0x0164", "default" : "0x100"},
+        {"name" : "nfd3",               "offset" : "0x0168", "default" : "0x100"},
+        {"name" : "nfd4",               "offset" : "0x016c", "default" : "0x100"},
+
+        {"name" : "nfd5",               "offset" : "0x0170", "default" : "0x100"},
+        {"name" : "nfd6",               "offset" : "0x0174", "default" : "0x100"},
+        {"name" : "nfd7",               "offset" : "0x0178", "default" : "0x100"},
+        {"name" : "nfd8",               "offset" : "0x017c", "default" : "0x100"},
+
+        {"name" : "nfd9",               "offset" : "0x0180", "default" : "0x100"},
+        {"name" : "nfd10",              "offset" : "0x0184", "default" : "0x100"},
+        {"name" : "nfd11",              "offset" : "0x0188", "default" : "0x100"},
+        {"name" : "nfd12",              "offset" : "0x018c", "default" : "0x100"},
+
+        {"name" : "nfd13",              "offset" : "0x0190", "default" : "0x100"},
+        {"name" : "nfd14",              "offset" : "0x0194", "default" : "0x100"},
+        {"name" : "nfd15",              "offset" : "0x0198", "default" : "0x100"},
+        {"name" : "emrst_n",            "offset" : "0x019c", "default" : "0x100"},
+
+        {"name" : "ema0",               "offset" : "0x01a0", "default" : "0x100"},
+        {"name" : "ema1",               "offset" : "0x01a4", "default" : "0x100"},
+        {"name" : "ema2",               "offset" : "0x01a8", "default" : "0x100"},
+        {"name" : "ema3",               "offset" : "0x01ac", "default" : "0x100"},
+
+        {"name" : "ema4",               "offset" : "0x01b0", "default" : "0x100"},
+        {"name" : "ema5",               "offset" : "0x01b4", "default" : "0x100"},
+        {"name" : "ema6",               "offset" : "0x01b8", "default" : "0x100"},
+        {"name" : "ema7",               "offset" : "0x01bc", "default" : "0x100"},
+
+        {"name" : "ema8",               "offset" : "0x01c0", "default" : "0x100"},
+        {"name" : "ema9",               "offset" : "0x01c4", "default" : "0x100"},
+        {"name" : "ema10",              "offset" : "0x01c8", "default" : "0x100"},
+        {"name" : "ema11",              "offset" : "0x01cc", "default" : "0x100"},
+
+        {"name" : "ema12",              "offset" : "0x01d0", "default" : "0x100"},
+        {"name" : "ema13",              "offset" : "0x01d4", "default" : "0x100"},
+        {"name" : "emcke1",             "offset" : "0x01d8", "default" : "0x100"},
+        {"name" : "emd0",               "offset" : "0x01dc", "default" : "0x100"},
+
+        {"name" : "emd1",               "offset" : "0x01e0", "default" : "0x100"},
+        {"name" : "emd2",               "offset" : "0x01e4", "default" : "0x100"},
+        {"name" : "emd3",               "offset" : "0x01e8", "default" : "0x100"},
+        {"name" : "emd4",               "offset" : "0x01ec", "default" : "0x100"},
+
+        {"name" : "emd5",               "offset" : "0x01f0", "default" : "0x100"},
+        {"name" : "emd6",               "offset" : "0x01f4", "default" : "0x100"},
+        {"name" : "emd7",               "offset" : "0x01f8", "default" : "0x100"},
+        {"name" : "emdqm0",             "offset" : "0x01fc", "default" : "0x100"},
+
+        {"name" : "emdqs0",             "offset" : "0x0200", "default" : "0x100"},
+        {"name" : "emd8",               "offset" : "0x0204", "default" : "0x100"},
+        {"name" : "emd9",               "offset" : "0x0208", "default" : "0x100"},
+        {"name" : "emd10",              "offset" : "0x020c", "default" : "0x100"},
+
+        {"name" : "emd11",              "offset" : "0x0210", "default" : "0x100"},
+        {"name" : "emd12",              "offset" : "0x0214", "default" : "0x100"},
+        {"name" : "emd13",              "offset" : "0x0218", "default" : "0x100"},
+        {"name" : "emd14",              "offset" : "0x021c", "default" : "0x100"},
+
+        {"name" : "emd15",              "offset" : "0x0220", "default" : "0x100"},
+        {"name" : "emdqm1",             "offset" : "0x0224", "default" : "0x100"},
+        {"name" : "emdqs1",             "offset" : "0x0228", "default" : "0x100"},
+        {"name" : "emd16",              "offset" : "0x022c", "default" : "0x100"},
+
+        {"name" : "emd17",              "offset" : "0x0230", "default" : "0x100"},
+        {"name" : "emd18",              "offset" : "0x0234", "default" : "0x100"},
+        {"name" : "emd19",              "offset" : "0x0238", "default" : "0x100"},
+        {"name" : "emd20",              "offset" : "0x023c", "default" : "0x100"},
+
+        {"name" : "emd21",              "offset" : "0x0240", "default" : "0x100"},
+        {"name" : "emd22",              "offset" : "0x0244", "default" : "0x100"},
+        {"name" : "emd23",              "offset" : "0x0248", "default" : "0x100"},
+        {"name" : "emdqm2",             "offset" : "0x024c", "default" : "0x100"},
+
+        {"name" : "emdqs2",             "offset" : "0x0250", "default" : "0x100"},
+        {"name" : "emd24",              "offset" : "0x0254", "default" : "0x100"},
+        {"name" : "emd25",              "offset" : "0x0258", "default" : "0x100"},
+        {"name" : "emd26",              "offset" : "0x025c", "default" : "0x100"},
+
+        {"name" : "emd27",              "offset" : "0x0260", "default" : "0x100"},
+        {"name" : "emd28",              "offset" : "0x0264", "default" : "0x100"},
+        {"name" : "emd29",              "offset" : "0x0268", "default" : "0x100"},
+        {"name" : "emd30",              "offset" : "0x026c", "default" : "0x100"},
+
+        {"name" : "emd31",              "offset" : "0x0270", "default" : "0x100"},
+        {"name" : "emdqm3",             "offset" : "0x0274", "default" : "0x100"},
+        {"name" : "emdqs3",             "offset" : "0x0278", "default" : "0x100"},
+        {"name" : "clkdpmem",           "offset" : "0x027c", "default" : "0x100"},
+
+        {"name" : "clkdmmem",           "offset" : "0x0280", "default" : "0x100"},
+        {"name" : "emras_n",            "offset" : "0x0284", "default" : "0x100"},
+        {"name" : "emcas_n",            "offset" : "0x0288", "default" : "0x100"},
+        {"name" : "emwe_n",             "offset" : "0x028c", "default" : "0x100"},
+
+        {"name" : "emcs_n0",            "offset" : "0x0290", "default" : "0x100"},
+        {"name" : "emcs_n1",            "offset" : "0x0294", "default" : "0x100"},
+        {"name" : "emgpre_loop",        "offset" : "0x0298", "default" : "0x100"},
+        {"name" : "emgpst_loop",        "offset" : "0x029c", "default" : "0x100"},
+
+        {"name" : "emba0",              "offset" : "0x02a0", "default" : "0x100"},
+        {"name" : "emba1",              "offset" : "0x02a4", "default" : "0x100"},
+        {"name" : "emcke0",             "offset" : "0x02a8", "default" : "0x100"},
+        {"name" : "lcd_csn1",           "offset" : "0x02ac", "default" : "0x100"},
+
+        {"name" : "lcd_rstn",           "offset" : "0x02b0", "default" : "0x100"},
+        {"name" : "lcd_cd",             "offset" : "0x02b4", "default" : "0x100"},
+        {"name" : "lcd_d0",             "offset" : "0x02b8", "default" : "0x100"},
+        {"name" : "lcd_d1",             "offset" : "0x02bc", "default" : "0x100"},
+
+        {"name" : "lcd_d2",             "offset" : "0x02c0", "default" : "0x100"},
+        {"name" : "lcd_d3",             "offset" : "0x02c4", "default" : "0x100"},
+        {"name" : "lcd_d4",             "offset" : "0x02c8", "default" : "0x100"},
+        {"name" : "lcd_d5",             "offset" : "0x02cc", "default" : "0x100"},
+
+        {"name" : "lcd_d6",             "offset" : "0x02d0", "default" : "0x100"},
+        {"name" : "lcd_d7",             "offset" : "0x02d4", "default" : "0x100"},
+        {"name" : "lcd_d8",             "offset" : "0x02d8", "default" : "0x100"},
+        {"name" : "lcd_wrn",            "offset" : "0x02dc", "default" : "0x100"},
+
+        {"name" : "lcd_rdn",            "offset" : "0x02e0", "default" : "0x100"},
+        {"name" : "lcd_csn0",           "offset" : "0x02e4", "default" : "0x100"},
+        {"name" : "lcd_d9",             "offset" : "0x02e8", "default" : "0x100"},
+        {"name" : "lcd_d10",            "offset" : "0x02ec", "default" : "0x100"},
+
+        {"name" : "lcd_d11",            "offset" : "0x02f0", "default" : "0x100"},
+        {"name" : "lcd_d12",            "offset" : "0x02f4", "default" : "0x100"},
+        {"name" : "lcd_d13",            "offset" : "0x02f8", "default" : "0x100"},
+        {"name" : "lcd_d14",            "offset" : "0x02fc", "default" : "0x100"},
+
+        {"name" : "lcd_d15",            "offset" : "0x0300", "default" : "0x100"},
+        {"name" : "lcd_d16",            "offset" : "0x0304", "default" : "0x100"},
+        {"name" : "lcd_d17",            "offset" : "0x0308", "default" : "0x100"},
+        {"name" : "lcd_fmark",          "offset" : "0x030c", "default" : "0x100"},
+
+        {"name" : "ccirmclk",           "offset" : "0x0310", "default" : "0x100"},
+        {"name" : "ccirck",             "offset" : "0x0314", "default" : "0x100"},
+        {"name" : "ccirhs",             "offset" : "0x0318", "default" : "0x100"},
+        {"name" : "ccirvs",             "offset" : "0x031c", "default" : "0x100"},
+
+        {"name" : "ccird0",             "offset" : "0x0320", "default" : "0x100"},
+        {"name" : "ccird1",             "offset" : "0x0324", "default" : "0x100"},
+        {"name" : "ccird2",             "offset" : "0x0328", "default" : "0x100"},
+        {"name" : "ccird3",             "offset" : "0x032c", "default" : "0x100"},
+
+        {"name" : "ccird4",             "offset" : "0x0330", "default" : "0x100"},
+        {"name" : "ccird5",             "offset" : "0x0334", "default" : "0x100"},
+        {"name" : "ccird6",             "offset" : "0x0338", "default" : "0x100"},
+        {"name" : "ccird7",             "offset" : "0x033c", "default" : "0x100"},
+
+        {"name" : "ccirrst",            "offset" : "0x0340", "default" : "0x100"},
+        {"name" : "ccirpd1",            "offset" : "0x0344", "default" : "0x100"},
+        {"name" : "ccirpd0",            "offset" : "0x0348", "default" : "0x100"},
+        {"name" : "scl",                "offset" : "0x034c", "default" : "0x180"},
+
+        {"name" : "sda",                "offset" : "0x0350", "default" : "0x180"},
+        {"name" : "clk_aux0",           "offset" : "0x0354", "default" : "0x106"},
+        {"name" : "iisdi",              "offset" : "0x0358", "default" : "0x146"},
+        {"name" : "iisdo",              "offset" : "0x035c", "default" : "0x10a"},
+
+        {"name" : "iisclk",             "offset" : "0x0360", "default" : "0x14a"},
+        {"name" : "iislrck",            "offset" : "0x0364", "default" : "0x14a"},
+        {"name" : "iismck",             "offset" : "0x0368", "default" : "0x146"},
+        {"name" : "rfsda0",             "offset" : "0x036c", "default" : "0x140"},
+
+        {"name" : "rfsck0",             "offset" : "0x0370", "default" : "0x140"},
+        {"name" : "rfsen0",             "offset" : "0x0374", "default" : "0x180"},
+        {"name" : "rfctl0",             "offset" : "0x0378", "default" : "0x100"},
+        {"name" : "rfctl1",             "offset" : "0x037c", "default" : "0x100"},
+
+        {"name" : "rfctl2",             "offset" : "0x0380", "default" : "0x100"},
+        {"name" : "rfctl3",             "offset" : "0x0384", "default" : "0x100"},
+        {"name" : "rfctl4",             "offset" : "0x0388", "default" : "0x100"},
+        {"name" : "rfctl5",             "offset" : "0x038c", "default" : "0x100"},
+
+        {"name" : "rfctl6",             "offset" : "0x0390", "default" : "0x100"},
+        {"name" : "rfctl7",             "offset" : "0x0394", "default" : "0x100"},
+        {"name" : "rfctl8",             "offset" : "0x0398", "default" : "0x100"},
+        {"name" : "rfctl9",             "offset" : "0x039c", "default" : "0x100"},
+
+        {"name" : "rfctl10",            "offset" : "0x03a0", "default" : "0x100"},
+        {"name" : "rfctl11",            "offset" : "0x03a4", "default" : "0x100"},
+        {"name" : "rfctl12",            "offset" : "0x03a8", "default" : "0x100"},
+        {"name" : "rfctl13",            "offset" : "0x03ac", "default" : "0x100"},
+
+        {"name" : "rfctl14",            "offset" : "0x03b0", "default" : "0x100"},
+        {"name" : "rfctl15",            "offset" : "0x03b4", "default" : "0x100"},
+        {"name" : "xtl_en",             "offset" : "0x03b8", "default" : "0x101"},
+        {"name" : "ptest",              "offset" : "0x03bc", "default" : "0x101"},
+
+        {"name" : "gpio135",            "offset" : "0x03c0", "default" : "0x100"},
+        {"name" : "gpio136",            "offset" : "0x03c4", "default" : "0x100"},
+        {"name" : "gpio137",            "offset" : "0x03c8", "default" : "0x100"},
+        {"name" : "gpio138",            "offset" : "0x03cc", "default" : "0x100"},
+
+        {"name" : "gpio139",            "offset" : "0x03d0", "default" : "0x100"},
+        {"name" : "gpio140",            "offset" : "0x03d4", "default" : "0x100"},
+        {"name" : "gpio141",            "offset" : "0x03d8", "default" : "0x100"},
+        {"name" : "gpio142",            "offset" : "0x03dc", "default" : "0x100"},
+
+        {"name" : "gpio143",            "offset" : "0x03e0", "default" : "0x100"},
+        {"name" : "gpio144",            "offset" : "0x03e4", "default" : "0x100"},
+        {"name" : "sd2_clk",            "offset" : "0x03e8", "default" : "0x100"},
+        {"name" : "sd2_cmd",            "offset" : "0x03ec", "default" : "0x180"},
+
+        {"name" : "sd2_d0",             "offset" : "0x03f0", "default" : "0x180"},
+        {"name" : "sd2_d1",             "offset" : "0x03f4", "default" : "0x180"},
+        {"name" : "sd2_d2",             "offset" : "0x03f8", "default" : "0x180"},
+        {"name" : "sd2_d3",             "offset" : "0x03fc", "default" : "0x180"},
+
+        {"name" : "u2txd",              "offset" : "0x0400", "default" : "0x100"},
+        {"name" : "u2rxd",              "offset" : "0x0404", "default" : "0x180"},
+        {"name" : "nfcen1",             "offset" : "0x0408", "default" : "0x100"},
+        {"name" : "scl0",               "offset" : "0x040c", "default" : "0x180"},
+
+        {"name" : "sda0",               "offset" : "0x0410", "default" : "0x180"},
+        {"name" : "scl2",               "offset" : "0x0414", "default" : "0x180"},
+        {"name" : "sda2",               "offset" : "0x0418", "default" : "0x180"},
+        {"name" : "scl3",               "offset" : "0x041c", "default" : "0x180"},
+
+        {"name" : "sda3",               "offset" : "0x0420", "default" : "0x180"},
+        {"name" : "lcd_d18",            "offset" : "0x0424", "default" : "0x100"},
+        {"name" : "lcd_d19",            "offset" : "0x0428", "default" : "0x100"},
+        {"name" : "lcd_d20",            "offset" : "0x042c", "default" : "0x100"},
+
+        {"name" : "lcd_d21",            "offset" : "0x0430", "default" : "0x100"},
+        {"name" : "lcd_d22",            "offset" : "0x0434", "default" : "0x100"},
+        {"name" : "lcd_d23",            "offset" : "0x0438", "default" : "0x100"},
+        {"name" : "traceclk",           "offset" : "0x043c", "default" : "0x10a"},
+
+        {"name" : "tracectrl",          "offset" : "0x0440", "default" : "0x106"},
+        {"name" : "tracedat0",          "offset" : "0x0444", "default" : "0x10a"},
+        {"name" : "tracedat1",          "offset" : "0x0448", "default" : "0x100"},
+        {"name" : "tracedat2",          "offset" : "0x044c", "default" : "0x100"},
+
+        {"name" : "tracedat3",          "offset" : "0x0450", "default" : "0x106"},
+        {"name" : "tracedat4",          "offset" : "0x0454", "default" : "0x100"},
+        {"name" : "tracedat5",          "offset" : "0x0458", "default" : "0x106"},
+        {"name" : "tracedat6",          "offset" : "0x045c", "default" : "0x106"},
+
+        {"name" : "tracedat7",          "offset" : "0x0460", "default" : "0x106"},
+        {"name" : "simclk2",            "offset" : "0x0464", "default" : "0x100"},
+        {"name" : "simda2",             "offset" : "0x0468", "default" : "0x180"},
+        {"name" : "simrst2",            "offset" : "0x046c", "default" : "0x100"},
+
+        {"name" : "simclk3",            "offset" : "0x0470", "default" : "0x100"},
+        {"name" : "simda3",             "offset" : "0x0474", "default" : "0x180"},
+        {"name" : "simrst3",            "offset" : "0x0478", "default" : "0x100"},
+
+        {"name" : "xxx",                "offset" : "0x0000", "default" : "0x100", "bits" : [
+            {"name" : "pin_ds",     "offset" : "9:8"},
+            {"name" : "pin_wpu",    "offset" : "7"},
+            {"name" : "pin_wpd",    "offset" : "6"},
+            {"name" : "pin_af",     "offset" : "5:4"},
+            {"name" : "pin_slp_wpu","offset" : "3"},
+            {"name" : "pin_slp_wpd","offset" : "2"},
+            {"name" : "pin_slp_ie", "offset" : "1"},
+            {"name" : "pin_slp_oe", "offset" : "0"}
+        ]}
+    ],
+
+    "vars" : [
+            {"name" : "bit_pin_nul",  		"value" : "0"},
+            {"name" : "bit_pin_slp_nul",	"value" : "0"},
+            {"name" : "bit_pin_slp_z",  	"value" : "00"}
+    ]
+}}
+

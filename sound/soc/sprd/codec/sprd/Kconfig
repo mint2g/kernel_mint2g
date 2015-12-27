@@ -1,0 +1,12 @@
+config SND_SOC_SPRD_CODEC
+	tristate # "Sprd-codec-r0p0"
+	help
+	 this is sprd codec likely the Tiger project.
+
+config SPRD_CODEC_EAR_WITH_IN_SPK
+	bool "ear with in speaker"
+	default n
+	help
+	 Say Y if your device is use ear&spk in one,
+	  and ear have TDD noise when call mode.
+	  this feature will open the PA_SW_EN when using ear path.

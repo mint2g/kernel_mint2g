@@ -1,0 +1,9 @@
+
+config SPRD_CPROC
+	tristate "SPRD Communication Processor Driver"
+	default n
+
+config SPRD_CPROC_NKIF
+	bool "Simulate VLX NK Interface"
+	depends on SPRD_CPROC
+	default n

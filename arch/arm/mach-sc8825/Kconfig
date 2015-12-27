@@ -1,0 +1,78 @@
+if ARCH_SC8825
+
+comment "SC8825 Board Type"
+
+choice
+	prompt "SC8825 Board"
+
+config MACH_SP8825_FPGA
+	bool "SP8825 FPGA"
+	help
+	  SP8825 FPGA board based on SC8825.
+config MACH_SP8825_OPENPHONE
+	bool "SP8825 OPENPHONE"
+	help
+	  SP8825 OPENPHONE board based on SC8825.
+config MACH_SP8825GA_OPENPHONE
+	bool "SP8825GA OPENPHONE (NAND)"
+	help
+	  SP8825 OPENPHONE board based on SC8825.
+config MACH_SP8825EA
+	bool "SP8825EA"
+	help
+	  SP8825 EA based on SC8825.
+config MACH_SP8825EB
+	bool "SP8825EB"
+	help
+	  SP8825 EB based on SC8825.
+config MACH_SP6825GA
+	bool "SP6825GA"
+	help
+	  SP6825 GA based on SC8825.
+config MACH_GARDA
+	bool "GARDA"
+	help
+	  GARDA based on SC8825.
+endchoice
+
+config SPRD_PMEM_SIZE
+        int "size for /dev/pmem"
+        range 1 16
+        default 8
+	depends on ANDROID_PMEM
+config SPRD_PMEM_ADSP_SIZE
+        int "size for /dev/pmem_adsp"
+        range 1 64
+        default 22
+	depends on ANDROID_PMEM
+
+config SPRD_ION_SIZE
+        int "size for ion"
+        range 1 64
+        default 1
+	depends on ION
+config SPRD_ION_OVERLAY_SIZE
+        int "size for ion overlay"
+        range 1 64
+        default 1
+	depends on ION
+
+config SC8825_VIBRATOR
+        depends on ARCH_SC8825
+        select ANDROID_TIMED_OUTPUT
+        default n
+        bool "vibrator for SC8825"
+
+config SPRD_MEM_POOL
+	depends on ARCH_SC8825
+	default y
+        bool "Using a memory pool to alloc thread stack and pgd table"
+	help
+          This option enables memmory pool for allocating thread stack and pgd table.
+
+config SPRD_DCDC_DEBUG
+	default y
+	tristate "Enable dcdc debug module"
+	help
+		This option select dcdc debug module.
+endif

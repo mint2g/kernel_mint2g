@@ -1,0 +1,5 @@
+#
+# ATV device configuration..
+#
+
+source "drivers/media/atv/nmi601/Kconfig"

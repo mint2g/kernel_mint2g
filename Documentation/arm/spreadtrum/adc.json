@@ -1,0 +1,39 @@
+{"ctrl" : {"name" : "adc", "die" : 2,
+	"regs" : [
+		{"name" : "ctrl", 	"offset" : "0x0000", "bits" : [
+			{"name" : "adc_status", 	"offset" : "4"},
+			{"name" : "hw_int_en", 		"offset" : "3"},
+			{"name" : "tpc_ch_on", 		"offset" : "2"},
+			{"name" : "sw_ch_on", 		"offset" : "1"},
+			{"name" : "adc_en", 		"offset" : "0"}
+		]},
+		{"name" : "cs",		"offset" : "0x0004", "bits" : [
+			{"name" : "adc_slow", 		"offset" : "5"},
+			{"name" : "adc_scale", 		"offset" : "4"},
+			{"name" : "adc_cs", 		"offset" : "3:0", "misc" : "1"}
+		]},
+		{"name" : "tpc_ch_ctrl", "offset" : "0x0008", "bits" : [
+			{"name" : "tpc_ch_delay", 	"offset" : "15:8"},
+			{"name" : "tpc_y_ch", 		"offset" : "7:4"},
+			{"name" : "tpc_x_ch", 		"offset" : "3:0"}
+		]},
+		{"name" : "dat", 	"offset" : "0x000c", "bits" : [
+			{"name" : "adc_dat", 		"offset" : "9:0", "misc" : "1"}
+		]},
+		{"name" : "ie", 	"offset" : "0x0010", "bits" : [
+			{"name" : "adc_ie",			"offset" : "0"}
+		]},
+		{"name" : "ic", 	"offset" : "0x0014", "bits" : [
+			{"name" : "adc_ic",			"offset" : "0"}
+		]},
+		{"name" : "ists", 	"offset" : "0x0018", "bits" : [
+			{"name" : "adc_mis",		"offset" : "0"}
+		]},
+		{"name" : "isrc", 	"offset" : "0x001c", "bits" : [
+			{"name" : "adc_ris",		"offset" : "0"}
+		]}
+	],
+
+	"vars" : [
+	]
+}}

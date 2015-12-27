@@ -1,0 +1,39 @@
+{"ctrl" : {"name" : "adi",
+	"regs" : [
+		{"name" : "ctrl0", "offset" : "0x0004", "bits" : [
+			{"name" : "arm_sclk_en", "offset" : "1"}
+		]},
+
+		{"name" : "chnl_pri", "offset" : "0x0008", "bits" : [
+			{"name" : "pd_wr_pri", 	"offset" : "15:14"},
+			{"name" : "rft_wr_pri", "offset" : "13:12"},
+			{"name" : "dsp_rd_pri", "offset" : "11:10"},
+			{"name" : "dsp_wr_pri", "offset" : "9:8"},
+			{"name" : "arm_rd_pri", "offset" : "7:6"},
+			{"name" : "arm_wr_pri", "offset" : "5:4"},
+			{"name" : "stc_wr_pri", "offset" : "3:2"},
+			{"name" : "int_steal_pri", "offset" : "1:0"}
+		]},
+
+		{"name" : "rd_cmd", "offset" : "0x0024", "bits" : [
+			{"name" : "rd_cmd_busy", "offset" : "31"}
+		]},
+
+		{"name" : "rd_data", "offset" : "0x0028", "bits" : [
+			{"name" : "rd_addr", "offset" : "26:16", "misc" : "1"},
+			{"name" : "rd_valu", "offset" : "15:0", "misc" : "1"}
+		]},
+
+		{"name" : "fifo_sts", "offset" : "0x002c", "bits" : [
+			{"name" : "fifo_full", 	"offset" : "11"},
+			{"name" : "fifo_empty", "offset" : "10"}
+		]}
+	],
+
+	"vars" : [
+		{"name" : "adi_chnl_pri_lowest", "value" : 0},
+		{"name" : "adi_chnl_pri_lower",  "value" : 1},
+		{"name" : "adi_chnl_pri_higher", "value" : 2},
+		{"name" : "adi_chnl_pri_highest","value" : 3}
+	]
+}}

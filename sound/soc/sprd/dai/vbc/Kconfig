@@ -1,0 +1,16 @@
+config SND_SPRD_SOC_VBC
+	tristate # "VBC"
+	help
+	 use this for vbc likely sc8810
+
+config SPRD_VBC_INTERLEAVED
+	bool "VBC Support Interleaved"
+	default y
+	help
+	 say Y then the VBC will support interleaved use the DMA.
+
+config SPRD_VBC_LR_INVERT
+	bool "VBC Support buffer0 and buffer1 invert"
+	default n
+	help
+	 say Y then the VBC will support invert the LR channel.

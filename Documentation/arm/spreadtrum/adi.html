@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ADI驱动接口文档</title>
+<style type="text/css">
+<!--
+	span {
+		color: #008;
+	}
+	.internal {
+		color: #666666;font-style: italic
+	}
+	div {
+		color:#800;width: 800px;/*float:left;*/
+		border:#A3BFE7;border:solid;border-width:1px;
+		border-top:#000000;border-top-style:dotted;border-top-width:1px;
+	}
+-->
+</style>
+</head>
+<body>
+<br>ADI驱动接口主要描述如何从D-Die，通过ADI控制器访问A-Die侧的寄存器空间。
+<br>使用前需要确保adi控制器可用，第一次初始化使能adi控制器时，最好做一次控制器复位。除非系统休眠，一般情况下保持可用。
+<br><span>int sci_adi_enable(...);</span>
+<br><span>int sci_adi_disable(...);</span>
+<br><span class="internal">int sci_adi_internal_reset();内部函数，用于复位控制器，复位后需要等2拍再访问。</span>
+<br><span class="internal">int sci_adi_chan_priority(...);内部函数，用于配置各通道优先级，共分四级。一般开机后在系统初始化阶段固定下来</span>
+<br>
+<br>在读写之前后，需要锁来保护，或开关中断，来确保没有多任务访问冲突。（以后考虑改进支持不管中断的实现方式，重点考虑irq的adi访问管理）
+<br><span>int sci_adi_lock();</span>
+<br><span>int sci_adi_unlock();</span>
+<br>
+<br>A-Die寄存器有效位长是16位，这里提供裸读写函数，以及软件实现一个安全的带掩码的写入函数。
+<br><span>int sci_adi_read(regs, val);</span>
+<br><span>int sci_adi_raw_write(regs, val);</span>
+<br><span>int sci_adi_write(regs, val, mask);</span>
+<br><div> 示例sci_adi_write(0x82000610, 2, 0x30);表示把bit4和bit5值改为2。 </div>
+<br>除了常规的寄存器读写接口，还有常用的置位清位操作函数，支持多个比特位。
+<br><span>int sci_adi_set(regs, bits);</span>
+<br><span>int sci_adi_clear(regs, bits);</span>
+<br><div>示例sci_adi_clear(0x82000600, 1<<4|1<<5|1<<9);表示把bit4和bit5和bit9位无条件清零。</div>
+<br>改进工作：
+<br>添加adi访问冲突评估、效率评估。
+<br>一些power相关寄存器的SET/RST位异或，添加专用接口支持。
+</body>
+</html>

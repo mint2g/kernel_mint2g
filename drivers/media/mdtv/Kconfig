@@ -1,0 +1,5 @@
+#
+# MDTV device configuration, siano, innofidei ..
+#
+
+source "drivers/media/mdtv/maxscend/Kconfig"

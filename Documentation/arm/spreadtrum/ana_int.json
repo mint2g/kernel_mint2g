@@ -1,0 +1,20 @@
+{"ctrl" : {"name" : "int", "die" : 2,
+	"regs" : [
+		{"name" : "mask_status", 		"offset" : "0x0000", "bits" : [
+			{"name" : "ana_chgrwdg_int","offset" : "6"},
+			{"name" : "ana_eic_int", 	"offset" : "5"},
+			{"name" : "ana_tpc_int", 	"offset" : "4"},
+			{"name" : "ana_wdg_int", 	"offset" : "3"},
+			{"name" : "ana_rtc_int", 	"offset" : "2"},
+			{"name" : "ana_gpio_int", 	"offset" : "1"},
+			{"name" : "ana_adc_int", 	"offset" : "0"}
+		]},
+		{"name" : "raw_status", 		"offset" : "0x0004"},
+		{"name" : "en", 				"offset" : "0x0008"},
+		{"name" : "mask_status_sync", 	"offset" : "0x000c"}
+	],
+
+	"vars" : [
+		{"name" : "mask_ana_int",		"value" : "BIT(0)|BIT(1)|BIT(2)|BIT(3)|BIT(4)|BIT(5)|BIT(6)"}
+	]
+}}

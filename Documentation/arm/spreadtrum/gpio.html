@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>GPIO驱动接口文档</title>
+<style type="text/css">
+<!--
+	span {
+		color: #008;
+	}
+	.internal {
+		color: #666666;font-style: italic
+	}
+	div {
+		color:#800;width: 800px;/*float:left;*/
+		border:#A3BFE7;border:solid;border-width:1px;
+		border-top:#000000;border-top-style:dotted;border-top-width:1px;
+	}
+-->
+</style>
+</head>
+<body>
+<br>GPIO驱动接口满足LINUX GPIO驱动框架设计，主要描述如何配置GPIO/EIC/SIC，包括D-Die和A-Die的GPIO/EIC/SIC两侧的控制器配置。
+<br>EIC支持Debounce硬件检测功能，SIC为保留的输入跳变触发控制。
+<br>GPIO用途广泛，接口统一编号说明如下
+<br>
+<table border="1">
+  <tr><th>编号</th><th>个数</th><th>控制器</th></tr>
+  <tr><td>0~15</td><td>16</td><td>EIC</td></tr>
+  <tr><td>16~159</td><td>144</td><td>GPIO</td></tr>
+  <tr><td>160~175</td><td>16</td><td>ANA EIC</td></tr>
+  <tr><td>176~207</td><td>32</td><td>ANA GPIO</td></tr>
+  <tr><td>??</td><td>??</td><td>SIC</td></tr>
+</table>
+<br>GPIO编号与中断编号采用静态绑定，即一一对应。对于EIC只能定义为输入配置；
+<br><img src="img/gpio.jpg" height="400" width="400"/>
+</body>
+</html>

@@ -1,0 +1,296 @@
+if VIDEO_DCAM_SPRD
+choice
+	prompt "Camera resolution"
+	default CAMERA_5M
+
+config CAMERA_2M
+	bool "2M pixels"
+
+config CAMERA_3M
+	bool "3M pixels"
+
+config CAMERA_5M
+	bool "5M pixels"
+
+config CAMERA_8M
+	bool "8M pixels"
+
+
+endchoice
+
+choice
+	prompt "Camera rotation"
+	default CAMERA_NO_ROTATION
+
+config CAMERA_ROTATION
+	bool "sensor rotation"
+
+config CAMERA_NO_ROTATION
+	bool "sensor don't rotate"
+
+endchoice
+
+choice
+	prompt "Sensor Output"
+	default SENSOR_OUTPUT_YUV
+
+config SENSOR_OUTPUT_RAW
+	bool "sensor outputs raw"
+
+config SENSOR_OUTPUT_YUV
+	bool "sensor outputs yuv"
+
+endchoice
+
+config DCAM_SENSOR_OV5640
+	tristate "Add sensor driver of OV5640"
+
+config DCAM_SENSOR_POS_OV5640
+	int "Sensor position of OV5640"
+	depends on DCAM_SENSOR_OV5640
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV2640
+	tristate "Add sensor driver of OV2640"
+
+config DCAM_SENSOR_POS_OV2640
+	int "Sensor position of 2640"
+	depends on DCAM_SENSOR_OV2640
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV2655
+	tristate "Add sensor driver of OV2655"
+
+config DCAM_SENSOR_POS_OV2655
+	int "Sensor position of OV2655"
+	depends on DCAM_SENSOR_OV2655
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV2659
+	tristate "Add sensor driver of OV2659"
+
+config DCAM_SENSOR_POS_OV2659
+	int "Sensor position of OV2659"
+	depends on DCAM_SENSOR_OV2659
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV3640
+	tristate "Add sensor driver of OV3640"
+
+config DCAM_SENSOR_POS_OV3640
+	int "Sensor position of OV3640"
+	depends on DCAM_SENSOR_OV3640
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV7660
+	tristate "Add sensor driver of OV7660"
+
+config DCAM_SENSOR_POS_OV7660
+	int "Sensor position of OV7660"
+	depends on DCAM_SENSOR_OV7660
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV7670
+	tristate "Add sensor driver of OV7670"
+
+config DCAM_SENSOR_POS_OV7670
+	int "Sensor position of OV7670"
+	depends on DCAM_SENSOR_OV7670
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV7675
+	tristate "Add sensor driver of OV7675"
+
+config DCAM_SENSOR_POS_OV7675
+	int "Sensor position of OV7675"
+	depends on DCAM_SENSOR_OV7675
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV7690
+	tristate "Add sensor driver of OV7690"
+
+config DCAM_SENSOR_POS_OV7690
+	int "Sensor position of OV7690"
+	depends on DCAM_SENSOR_OV7690
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV9655
+	tristate "Add sensor driver of OV9655"
+
+config DCAM_SENSOR_POS_OV9655
+	int "Sensor position of OV9655"
+	depends on DCAM_SENSOR_OV9655
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_OV9660
+	tristate "Add sensor driver of OV9660"
+
+config DCAM_SENSOR_POS_OV9660
+	int "Sensor position of OV9660"
+	depends on DCAM_SENSOR_OV9660
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_GC0309
+	tristate "Add sensor driver of GC0309"
+
+config DCAM_SENSOR_POS_GC0309
+	int "Sensor position of GC0309"
+	depends on DCAM_SENSOR_GC0309
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_GC0306
+	tristate "Add sensor driver of GC0306"
+
+config DCAM_SENSOR_POS_GC0306
+	int "Sensor position of GC0306"
+	depends on DCAM_SENSOR_GC0306
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_GC0307
+	tristate "Add sensor driver of GC0307"
+
+config DCAM_SENSOR_POS_GC0307
+	int "Sensor position of GC0307"
+	depends on DCAM_SENSOR_GC0307
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_GT2005
+	tristate "Add sensor driver of GT2005"
+
+config DCAM_SENSOR_POS_GT2005
+	int "Sensor position of GT2005"
+	depends on DCAM_SENSOR_GT2005
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_HI253
+	tristate "Add sensor driver of HI253"
+
+config DCAM_SENSOR_POS_HI253
+	int "Sensor position of HI253"
+	depends on DCAM_SENSOR_HI253
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_HI351
+	tristate "Add sensor driver of HI351"
+
+config DCAM_SENSOR_POS_HI351
+	int "Sensor position of HI351"
+	depends on DCAM_SENSOR_HI351
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+
+config DCAM_SENSOR_BG0323
+	tristate "Add sensor driver of BG0323"
+
+config DCAM_SENSOR_POS_BG0323
+	int "Sensor position of BG0323"
+	depends on DCAM_SENSOR_BG0323
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_S5K5CAGX
+	tristate "Add sensor driver of S5K5CAGX"
+
+config DCAM_SENSOR_POS_S5K5CAGX
+	int "Sensor position of S5K5CAGX"
+	depends on DCAM_SENSOR_S5K5CAGX
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_S5KA3DFX
+	tristate "Add sensor driver of S5KA3DFX"
+
+config DCAM_SENSOR_POS_S5KA3DFX
+	int "Sensor position of S5KA3DFX"
+	depends on DCAM_SENSOR_S5KA3DFX
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_SR200PC10
+	tristate "Add sensor driver of SR200PC10"
+
+config DCAM_SENSOR_POS_SR200PC10
+	int "Sensor position of SR200PC10"
+	depends on DCAM_SENSOR_SR200PC10
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config DCAM_SENSOR_S5KCCGX
+	tristate "Add sensor driver of SRS5KCCGX"
+
+config DCAM_SENSOR_POS_S5KCCGX
+	int "Sensor position of S5KCCGX"
+	depends on DCAM_SENSOR_S5KCCGX
+	range 1 3
+	default 1
+	help
+	  Sensor position: 1 - back, 2 - front, 3 - both.
+
+config NMI601_ATV
+	tristate "Add atv driver of NMI601"
+	depends on VIDEO_DCAM_SPRD
+	help
+	  nmi601 sensor device.
+
+endif
+
+

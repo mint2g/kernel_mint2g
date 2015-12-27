@@ -1,0 +1,63 @@
+config FB_SC8825
+	boolean "SC8825 frame buffer support "
+	depends on FB && ARCH_SC8825
+	select FB_CFB_FILLRECT
+	select FB_CFB_COPYAREA
+	select FB_CFB_IMAGEBLIT
+	help
+          Frame buffer driver for sc8825 based boards.
+
+config FB_LCD_HX8362_RGB_SPI
+	boolean "support HX8362 rgb (spi) panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_HX8369
+	boolean "support HX8369 panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_S6D0139
+	boolean "support S6D0139 panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_NT35516_MIPI
+	boolean "support NT35516 mipi panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_NT35516_RGB_I2C
+	boolean "support NT35516 rgb (i2c) panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_NT35516_RGB_SPI
+	boolean "support NT35516 rgb (spi) panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_NT35516_MCU
+	boolean "support NT35516 mcu panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_NT35510_MIPI
+	boolean "support NT35510 mipi panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_NT35512_MIPI
+	boolean "support NT35512 mipi panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_OTM8018B_MIPI
+	boolean "support otm 8018b mipi panel"
+	depends on FB_SC8825
+	default n
+
+config FB_LCD_OVERLAY_SUPPORT
+	boolean "support lcd overlay"
+	depends on FB_SC8825
+	default n

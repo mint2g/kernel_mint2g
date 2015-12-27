@@ -1,0 +1,16 @@
+#
+# NMI ATV device configuration
+#
+
+config NMI601_ATV
+	default n
+	---help---
+	Choose Y or M here if you have ATV receiver with a NMI chipset.
+
+	To compile this driver as a module, choose M here
+	(The modules will be called nmiatv).
+
+	Note: All dependents, if selected, will be part of this module.
+
+	Further documentation on this driver can be found on the WWW at http://www.newportmediainc.com/
+

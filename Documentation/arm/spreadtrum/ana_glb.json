@@ -1,0 +1,47 @@
+{"ctrl" : {"name" : "glb", "die" : 2,
+	"regs" : [
+		{"name" : "apb_clk_en", 		"offset" : "0x0000"},
+		{"name" : "apb_arm_rst", 		"offset" : "0x0004"},
+		{"name" : "ldo_pd_set", 		"offset" : "0x0008", "bits" : [
+			{"name" : "chgrwdg_eb", 	"offset" : "15"},
+			{"name" : "clk_auxad_en", 	"offset" : "14"},
+			{"name" : "clk_auxadc_en", 	"offset" : "13"},
+			{"name" : "rtc_tpc_eb", 	"offset" : "12"},
+			{"name" : "rtc_eic_eb", 	"offset" : "11"},
+			{"name" : "rtc_wdg_eb", 	"offset" : "10"},
+			{"name" : "rtc_rtc_eb", 	"offset" : "9"},
+			{"name" : "rtc_arch_eb", 	"offset" : "8"},
+			{"name" : "pinreg_eb", 		"offset" : "7"},
+			{"name" : "gpio_eb", 		"offset" : "6"},
+			{"name" : "adc_eb", 		"offset" : "5"},
+			{"name" : "tpc_eb", 		"offset" : "4"},
+			{"name" : "eic_eb", 		"offset" : "3"},
+			{"name" : "wdg_eb", 		"offset" : "2"},
+			{"name" : "rtc_eb", 		"offset" : "1"},
+			{"name" : "apb_arch_eb", 	"offset" : "0"}
+		]},
+		{"name" : "ldo_pd_rst", 		"offset" : "0x000c"},
+		{"name" : "ldo_pd_ctrl0", 		"offset" : "0x0010"},
+		{"name" : "ldo_pd_ctrl1", 		"offset" : "0x0014"},
+		{"name" : "ldo_vctrl0", 		"offset" : "0x0018"},
+		{"name" : "ldo_vctrl1", 		"offset" : "0x001c"},
+		{"name" : "ldo_vctrl2", 		"offset" : "0x0020"},
+		{"name" : "ldo_vctrl3", 		"offset" : "0x0024"},
+		{"name" : "ldo_vctrl4", 		"offset" : "0x0028"},
+		{"name" : "ldo_slp_ctrl0", 		"offset" : "0x002c"},
+		{"name" : "ldo_slp_ctrl1", 		"offset" : "0x0030"},
+		{"name" : "ldo_slp_ctrl2", 		"offset" : "0x0034"},
+		{"name" : "dcdc_ctrl", 			"offset" : "0x0038"},
+		{"name" : "dcdc_ctrl_ds", 		"offset" : "0x003c"},
+		{"name" : "dcdc_ctrl_cal",		"offset" : "0x0040"},
+		{"name" : "dcdcarm_ctrl", 		"offset" : "0x0044"},
+		{"name" : "dcdcarm_ctrl_cal", 	"offset" : "0x0048"},
+		{"name" : "pll_ctrl", 			"offset" : "0x004c"},
+		{"name" : "apllmn", 			"offset" : "0x0050"},
+		{"name" : "apllwait", 			"offset" : "0x0054"},
+		{"name" : "rtc_ctrl", 			"offset" : "0x0058"}
+	],
+
+	"vars" : [
+	]
+}}

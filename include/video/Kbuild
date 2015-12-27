@@ -1,0 +1,12 @@
+header-y += edid.h
+header-y += sisfb.h
+header-y += uvesafb.h
+
+header-y += sprd_vsp.h
+header-y += sprd_scale.h
+header-y += sprd_rotation.h
+
+header-y += sprd_fb.h
+header-y += ion_sprd.h
+header-y += isp_drv_kernel.h
+header-y += sprd_rot_k.h

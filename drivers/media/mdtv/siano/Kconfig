@@ -1,0 +1,17 @@
+#
+# Siano Mobile Silicon Digital TV device configuration
+#
+
+config SMS_SIANO_MDTV
+	tristate "Siano SMS1xxx based MDTV receiver"
+	default n
+	---help---
+	Choose Y or M here if you have MDTV receiver with a Siano chipset.
+
+	To compile this driver as a module, choose M here
+	(The modules will be called smsmdtv).
+
+	Note: All dependents, if selected, will be part of this module.
+
+	Further documentation on this driver can be found on the WWW at http://www.siano-ms.com/
+

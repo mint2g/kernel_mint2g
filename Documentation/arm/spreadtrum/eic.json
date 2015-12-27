@@ -1,0 +1,30 @@
+{"ctrl" : {"name" : "eic", "die" : 3,
+    "regs" : [
+        {"name" : "data",		"offset" : "0x0000"},
+        {"name" : "dmsk",      	"offset" : "0x0004"},
+        {"name" : "iev",        "offset" : "0x0014"},
+        {"name" : "ie",        	"offset" : "0x0018"},
+        {"name" : "ris",        "offset" : "0x001c"},
+        {"name" : "mis",        "offset" : "0x0020"},
+        {"name" : "ic",        	"offset" : "0x0024"},
+        {"name" : "trig",       "offset" : "0x0028"},
+        {"name" : "0ctrl",      "offset" : "0x0040"},
+        {"name" : "1ctrl",      "offset" : "0x0044"},
+        {"name" : "2ctrl",      "offset" : "0x0048"},
+        {"name" : "3ctrl",      "offset" : "0x004c"},
+        {"name" : "4ctrl",      "offset" : "0x0050"},
+        {"name" : "5ctrl",      "offset" : "0x0054"},
+        {"name" : "6ctrl",      "offset" : "0x0058"},
+        {"name" : "7ctrl",      "offset" : "0x005c"},
+
+        {"name" : "dummyctrl",      		"offset" : "0x0000", "bits" : [
+			{"name" : "force_clk_dbnc", 	"offset" : "15"},
+			{"name" : "eic_dbnc_en", 		"offset" : "14"},
+			{"name" : "eic_dbnc_cnt", 		"offset" : "11:0", "default" : "0x32", "misc" : "1"}
+		]}
+    ],
+
+    "vars" : [
+		{"name" : "bits_eic_mask", 	"value" : "0xff"}
+    ]
+}}

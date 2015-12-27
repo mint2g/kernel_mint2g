@@ -1,0 +1,5 @@
+config SND_SPRD_SOC_VAUDIO
+	tristate "Vaudio"
+	default y
+	help
+	 use this for DSP

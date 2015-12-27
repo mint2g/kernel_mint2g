@@ -1,0 +1,61 @@
+#
+#  Copyright (C) 2011, Red Bend Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2
+#  as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  You should have received a copy of the GNU General Public License Version 2
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+comment "Generic ARM OSware Machine Options"
+	depends on ARCH_ARM_OSWARE
+
+config MACH_ARM_OSWARE
+	bool
+	depends on ARCH_ARM_OSWARE
+	default y
+
+config BOARD_NAME
+	string "Board name"
+	depends on MACH_ARM_OSWARE
+	default ""
+	help
+	  The name of the target board
+
+config MACH_ARM_64_BYTES_L1_CACHE_LINE
+	bool "CPU uses 64 bytes L1 cache lines"
+	depends on MACH_ARM_OSWARE && CPU_V7
+	default y
+	select ARM_L1_CACHE_SHIFT_6 if MACH_ARM_64_BYTES_L1_CACHE_LINE
+
+config ARCH_SUPPORTS_BIG_ENDIAN
+	bool
+        depends on MACH_ARM_OSWARE && (CPU_V6 || CPU_V7)
+	default y
+
+config RAM_PHYS
+        hex "Physical RAM base address"
+	depends on MACH_ARM_OSWARE
+        default "0"
+        help
+          The physical start address of the RAM area.
+
+config ONE_SHOT_TIMER
+	bool "Use new one shot virtual timer"
+	depends on MACH_ARM_OSWARE
+	default y
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+
+config HZ
+        int "Tick frequency"
+	depends on MACH_ARM_OSWARE && !ONE_SHOT_TIMER
+        default "100"
+        help
+          The frequency of the system tick.

@@ -1,0 +1,15 @@
+#
+# Maxscend Mobile Silicon Digital TV device configuration
+#
+
+config MXD_MDTV
+	tristate "Maxscend based MDTV receiver"
+	default n
+	---help---
+	Choose Y or M here if you have MDTV receiver with a maxscend chipset.
+
+	To compile this driver as a module, choose M here
+	(The modules will be called smsmdtv).
+
+	Note: All dependents, if selected, will be part of this module.
+

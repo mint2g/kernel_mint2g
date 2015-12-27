@@ -1,0 +1,104 @@
+menu "SoC Audio for the SPREADTRUM"
+config SND_SPRD_SOC_SC881X
+	tristate "SC881X phone"
+	select SND_ARM
+	select SND_SPRD_SOC_VBC
+	select SND_SOC_DOLPHIN
+	help
+	  Say Y if you want to built in to kernel, Say M for ko module.
+	  SoC Audio for the SPREADTRUM SC881X chips with intergrated Dolphin codec
+	  use VBC and  Dolphin for the audio system.
+
+config SND_SPRD_SOC_KYLEW
+	tristate "KYLEW phone"
+	depends on !SND_SC88XX_SOC_SPRDPHONE
+	select SND_ARM
+	select SND_SPRD_SOC_VBC
+	select SND_SOC_DOLPHIN
+	help
+	  Say Y if you want to built in to kernel, Say M for ko module.
+	  SoC Audio for the SPREADTRUM SC881X chips with intergrated Dolphin codec
+	  use VBC and  Dolphin for the audio system.
+	  config for samsung kylew project.
+
+config SND_SPRD_SOC_MINT
+	tristate "MINT phone"
+	depends on !SND_SC88XX_SOC_SPRDPHONE
+	select SND_ARM
+	select SND_SPRD_SOC_VBC
+	select SND_SOC_DOLPHIN
+	help
+	  Say Y if you want to built in to kernel, Say M for ko module.
+	  SoC Audio for the SPREADTRUM SC881X chips with intergrated Dolphin codec
+	  use VBC and  Dolphin for the audio system.
+	  config for samsung MINT project.
+
+config SND_SPRD_SOC_SC882X
+	tristate "SC882X phone"
+	select SND_ARM
+	select SND_SPRD_SOC_VBC
+	select SND_SOC_SPRD_CODEC
+	help
+	  Say Y if you want to built in to kernel, Say M for ko module.
+	  SoC Audio for the SPREADTRUM SC882X chips with intergrated sprd codec
+	  use VBC and  SPRD CODEC for the audio system.
+
+config SND_SPEAKER_PA
+	tristate "speaker-pa"
+	default y
+
+config SPRD_AUDIO_DEBUG
+	bool "sprd audio debug"
+	default y
+	help
+          Say Y if defined this will print debug information for detail.
+
+source "sound/soc/sprd/dai/vbc/Kconfig"
+source "sound/soc/sprd/dai/vaudio/Kconfig"
+source "sound/soc/sprd/dai/i2s/Kconfig"
+source "sound/soc/sprd/codec/dolphin/Kconfig"
+source "sound/soc/sprd/codec/sprd/Kconfig"
+
+config SPRD_CODEC_USE_INT
+	depends on SND_SOC_SPRD_CODEC
+	bool "sprd codec use INT"
+	default y
+	help
+          Say Y if defined this will cause sprd codec audio driver use INT
+           for hp pop ramp up and ramp down,
+           or dac mute wait and dac unmute wait if define CODEC_DAC_MUTE_WAIT.
+
+config CODEC_DAC_MUTE_WAIT
+	bool "codec dac mute wait"
+	default n
+	help
+	 Say Y if you want the CODEC dac mute really mute stream data.
+         maybe casue dac mute wait sometime until it goto valid.
+
+config CODEC_NO_HP_POP
+	bool "codec no hp pop"
+	default n
+	help
+	 Say Y if you want *NOT* the CODEC do hp pop ramp up/down process.
+	  some customer use the external hp amplifier will need this feature,
+	  or will cause hp pop noise serious.
+
+config HP_POP_DELAY_TIME
+	int "hp switch delay time(0-1000) unit(MS)"
+	depends on CODEC_NO_HP_POP
+	range 0 1000
+	default 350
+	help
+	  if defined CODEC_NO_HP_POP , maybe need this delay
+	  for reduce external hp amp noise.
+	  this delay time value, unit is MS.
+
+config SPRD_AUDIO_BUFFER_USE_IRAM
+	bool "use IRAM when sound playback"
+	default n
+	help
+	  Say Y if you want use IRAM replacment RAM when playback.
+	   sometimes, use IRAM maybe reduce power consumption.
+           but, it will cause system more busy, becuase the buffer smaller.
+
+endmenu

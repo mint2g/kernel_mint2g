@@ -1,0 +1,54 @@
+{"ctrl" : {"name" : "efuse",
+    "regs" : [
+        {"name" : "data_rd",        "offset" : "0x0000"},
+        {"name" : "data_wr",        "offset" : "0x0004"},
+        {"name" : "block_index",    "offset" : "0x0008", "bits" : [
+            {"name" : "read_index", "offset" : "2:0", "misc" : "1"},
+            {"name" : "pgm_index",  "offset" : "18:16", "misc" : "1"}
+        ]},
+        {"name" : "mode_ctrl",      "offset" : "0x000c", "bits" : [
+            {"name" : "pg_start",   "offset" : "0"},
+            {"name" : "rd_start",   "offset" : "1"},
+            {"name" : "standby_start",  "offset" : "2"}
+        ]},
+        {"name" : "pgm_para",           "offset" : "0x0010", "bits" : [
+            {"name" : "tpgm_time_cnt",  "offset" : "8:0"},
+            {"name" : "clk_efs_en",     "offset" : "28"},
+            {"name" : "efuse_vdd_on",   "offset" : "29"},
+            {"name" : "pclk_div_en",    "offset" : "30"},
+            {"name" : "pgm_en",         "offset" : "31"}
+        ]},
+        {"name" : "status",         "offset" : "0x0014", "bits" : [
+            {"name" : "pgm_busy",   "offset" : "0"},
+            {"name" : "read_busy",  "offset" : "1"},
+            {"name" : "standby_busy",   "offset" : "2"}
+        ]},
+        {"name" : "blk_flags",      "offset" : "0x0018", "bits" : [
+            {"name" : "blk0_prot_flag",     "offset" : "0"},
+            {"name" : "blk1_prot_flag",     "offset" : "1"},
+            {"name" : "blk2_prot_flag",     "offset" : "2"},
+            {"name" : "blk3_prot_flag",     "offset" : "3"},
+            {"name" : "blk4_prot_flag",     "offset" : "4"},
+            {"name" : "blk5_prot_flag",     "offset" : "5"},
+            {"name" : "blk6_prot_flag",     "offset" : "6"},
+            {"name" : "blk7_prot_flag",     "offset" : "7"}
+        ]},
+        {"name" : "blk_clr",        "offset" : "0x001c", "bits" : [
+            {"name" : "blk0_prot_flag_clr",     "offset" : "0"},
+            {"name" : "blk1_prot_flag_clr",     "offset" : "1"},
+            {"name" : "blk2_prot_flag_clr",     "offset" : "2"},
+            {"name" : "blk3_prot_flag_clr",     "offset" : "3"},
+            {"name" : "blk4_prot_flag_clr",     "offset" : "4"},
+            {"name" : "blk5_prot_flag_clr",     "offset" : "5"},
+            {"name" : "blk6_prot_flag_clr",     "offset" : "6"},
+            {"name" : "blk7_prot_flag_clr",     "offset" : "7"}
+        ]},
+        {"name" : "magic_number",   "offset" : "0x0020", "bits" : [
+            {"name" : "magic_number",   "offset" : "15:0"}
+        ]}
+    ],
+
+    "vars" : [
+        {"name" : "prot_lock",       "value" : "BIT_31"}
+    ]
+}}
