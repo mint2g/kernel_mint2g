@@ -21,7 +21,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: wl_cfg80211.c 394921 2013-04-04 06:53:21Z $
+ * $Id: wl_cfg80211.c 395759 2013-04-09 16:18:32Z $
  */
 
 #include <typedefs.h>
@@ -1302,7 +1302,7 @@ wl_cfg80211_del_virtual_iface(struct wiphy *wiphy, struct net_device *dev)
 			}
 
 			wl_cfgp2p_clear_management_ie(wl, wl_cfgp2p_find_idx(wl, dev));
-			
+
 			if (wl_get_mode_by_netdev(wl, dev) != WL_MODE_AP)
 				wldev_iovar_setint(dev, "buf_key_b4_m4", 0);
 
@@ -5589,8 +5589,8 @@ wl_cfg80211_parse_ap_ies(
 	struct parsed_ies prb_ies;
 	struct wl_priv *wl = wlcfg_drv_priv;
 	dhd_pub_t *dhd = (dhd_pub_t *)(wl->pub);
-	u8 *vndr;
-	u32 vndr_ie_len;
+	u8 *vndr = NULL;
+	u32 vndr_ie_len = 0;
 	s32 err = BCME_OK;
 
 	/* Parse Beacon IEs */
@@ -5605,9 +5605,11 @@ wl_cfg80211_parse_ap_ies(
 		/* SoftAP mode */
 		struct ieee80211_mgmt *mgmt;
 		mgmt = (struct ieee80211_mgmt *)info->probe_resp;
-		vndr = (u8 *)&mgmt->u.probe_resp.variable;
-		vndr_ie_len = info->probe_resp_len -
-			offsetof(struct ieee80211_mgmt, u.probe_resp.variable);
+		if (mgmt != NULL) {
+			vndr = (u8 *)&mgmt->u.probe_resp.variable;
+			vndr_ie_len = info->probe_resp_len -
+				offsetof(struct ieee80211_mgmt, u.probe_resp.variable);
+		}
 	} else {
 		/* Other mode */
 		vndr = (u8 *)info->proberesp_ies;
@@ -5633,8 +5635,8 @@ wl_cfg80211_set_ies(
 {
 	struct wl_priv *wl = wlcfg_drv_priv;
 	dhd_pub_t *dhd = (dhd_pub_t *)(wl->pub);
-	u8 *vndr;
-	u32 vndr_ie_len;
+	u8 *vndr = NULL;
+	u32 vndr_ie_len = 0;
 	s32 err = BCME_OK;
 
 	/* Set Beacon IEs to FW */
@@ -5650,9 +5652,11 @@ wl_cfg80211_set_ies(
 		/* SoftAP mode */
 		struct ieee80211_mgmt *mgmt;
 		mgmt = (struct ieee80211_mgmt *)info->probe_resp;
-		vndr = (u8 *)&mgmt->u.probe_resp.variable;
-		vndr_ie_len = info->probe_resp_len -
-			offsetof(struct ieee80211_mgmt, u.probe_resp.variable);
+		if (mgmt != NULL) {
+			vndr = (u8 *)&mgmt->u.probe_resp.variable;
+			vndr_ie_len = info->probe_resp_len -
+				offsetof(struct ieee80211_mgmt, u.probe_resp.variable);
+		}
 	} else {
 		/* Other mode */
 		vndr = (u8 *)info->proberesp_ies;

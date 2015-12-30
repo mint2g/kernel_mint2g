@@ -136,13 +136,14 @@ static struct stc311x_platform_data stc3115_data = {
 	.Vmode = 0,		/*REG_MODE, BIT_VMODE 1=Voltage mode, 0=mixed mode */
 	.Alm_SOC = 15,		/* SOC alm level % */
 	.Alm_Vbat = 3400,	/* Vbat alm level mV */
-	.CC_cnf = 241,      /* nominal CC_cnf, coming from battery characterisation*/
-  	.VM_cnf = 295,      /* nominal VM cnf , coming from battery characterisation*/
+	.CC_cnf = 235,      /* nominal CC_cnf, coming from battery characterisation*/
+  	.VM_cnf = 250,      /* nominal VM cnf , coming from battery characterisation*/
 	.Cnom = 1200,       /* nominal capacity in mAh, coming from battery characterisation*/
 	.Rsense = 10,		/* sense resistor mOhms */
 	.RelaxCurrent = 100, /* current for relaxation in mA (< C/20) */
 	.Adaptive = 1,		/* 1=Adaptive mode enabled, 0=Adaptive mode disabled */
 
+        /* Elentec Co Ltd Battery pack - 80 means 8% */
 	.CapDerating[6] = 277,   /* capacity derating in 0.1%, for temp = -20°C */
 	.CapDerating[5] = 82,   /* capacity derating in 0.1%, for temp = -10°C */
 	.CapDerating[4] = 23,   /* capacity derating in 0.1%, for temp = 0°C */
@@ -151,39 +152,39 @@ static struct stc311x_platform_data stc3115_data = {
 	.CapDerating[1] = 0,   /* capacity derating in 0.1%, for temp = 40°C */
 	.CapDerating[0] = 0,   /* capacity derating in 0.1%, for temp = 60°C */
 
-	.OCVOffset[15] = -22,    /* OCV curve adjustment */
-	.OCVOffset[14] = -9,   /* OCV curve adjustment */
-	.OCVOffset[13] = -15,    /* OCV curve adjustment */
-	.OCVOffset[12] = -2,    /* OCV curve adjustment */
-	.OCVOffset[11] = 0,	/* OCV curve adjustment */
-	.OCVOffset[10] = -2,    /* OCV curve adjustment */
-	.OCVOffset[9] = -26,     /* OCV curve adjustment */
-	.OCVOffset[8] = -6,      /* OCV curve adjustment */
-	.OCVOffset[7] = -7,      /* OCV curve adjustment */
-	.OCVOffset[6] = -14,    /* OCV curve adjustment */
-	.OCVOffset[5] = -23,    /* OCV curve adjustment */
-	.OCVOffset[4] = -46,     /* OCV curve adjustment */
-	.OCVOffset[3] = -27,    /* OCV curve adjustment */
-	.OCVOffset[2] = -34,     /* OCV curve adjustment */
-	.OCVOffset[1] = -125,    /* OCV curve adjustment */
-	.OCVOffset[0] = -68,     /* OCV curve adjustment */
+	.OCVOffset[15] = -2,              /* OCV curve adjustment */
+	.OCVOffset[14] = -4,              /* OCV curve adjustment */
+	.OCVOffset[13] = 1,               /* OCV curve adjustment */
+	.OCVOffset[12] = -4,              /* OCV curve adjustment */
+	.OCVOffset[11] = 1,               /* OCV curve adjustment */
+	.OCVOffset[10] = 14,              /* OCV curve adjustment */
+	.OCVOffset[9] = -6,               /* OCV curve adjustment */
+	.OCVOffset[8] = 0,                /* OCV curve adjustment */
+	.OCVOffset[7] = 9,                /* OCV curve adjustment */
+	.OCVOffset[6] = 14,               /* OCV curve adjustment */
+	.OCVOffset[5] = 27,               /* OCV curve adjustment */
+	.OCVOffset[4] = 11,               /* OCV curve adjustment */
+	.OCVOffset[3] = 19,               /* OCV curve adjustment */
+	.OCVOffset[2] = 79,               /* OCV curve adjustment */
+	.OCVOffset[1] = 92,               /* OCV curve adjustment */
+	.OCVOffset[0] = 0,                /* OCV curve adjustment */
 		
-	.OCVOffset2[15] = -58,    /* OCV curve adjustment */
-	.OCVOffset2[14] = -37,   /* OCV curve adjustment */
-	.OCVOffset2[13] = -21,    /* OCV curve adjustment */
-	.OCVOffset2[12] = -14,    /* OCV curve adjustment */
-	.OCVOffset2[11] = -6,    /* OCV curve adjustment */
-	.OCVOffset2[10] = -16,    /* OCV curve adjustment */
-	.OCVOffset2[9] = -6,     /* OCV curve adjustment */
-	.OCVOffset2[8] = 4,      /* OCV curve adjustment */
-	.OCVOffset2[7] = 9,      /* OCV curve adjustment */
-	.OCVOffset2[6] = 11,    /* OCV curve adjustment */
-	.OCVOffset2[5] = 24,    /* OCV curve adjustment */
-	.OCVOffset2[4] = 7,     /* OCV curve adjustment */
-	.OCVOffset2[3] = 28,    /* OCV curve adjustment */
-	.OCVOffset2[2] = 89,     /* OCV curve adjustment */
-	.OCVOffset2[1] = 94,    /* OCV curve adjustment */
-	.OCVOffset2[0] = 0,     /* OCV curve adjustment */
+	.OCVOffset2[15] = -2,             /* OCV curve adjustment */
+	.OCVOffset2[14] = -4,             /* OCV curve adjustment */
+	.OCVOffset2[13] = 1,              /* OCV curve adjustment */
+	.OCVOffset2[12] = -4,             /* OCV curve adjustment */
+	.OCVOffset2[11] = 1,              /* OCV curve adjustment */
+	.OCVOffset2[10] = 14,             /* OCV curve adjustment */
+	.OCVOffset2[9] = -6,              /* OCV curve adjustment */
+	.OCVOffset2[8] = 0,               /* OCV curve adjustment */
+	.OCVOffset2[7] = 9,               /* OCV curve adjustment */
+	.OCVOffset2[6] = 14,              /* OCV curve adjustment */
+	.OCVOffset2[5] = 27,              /* OCV curve adjustment */
+	.OCVOffset2[4] = 11,              /* OCV curve adjustment */
+	.OCVOffset2[3] = 19,              /* OCV curve adjustment */
+	.OCVOffset2[2] = 79,              /* OCV curve adjustment */
+	.OCVOffset2[1] = 92,              /* OCV curve adjustment */
+	.OCVOffset2[0] = 0,               /* OCV curve adjustment */
 
 	/*if the application temperature data is preferred than the STC3115 temperature */
 	.ExternalTemperature = Temperature_fn,	/*External temperature fonction, return C */

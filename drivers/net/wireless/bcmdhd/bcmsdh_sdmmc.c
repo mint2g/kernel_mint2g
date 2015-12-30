@@ -21,7 +21,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: bcmsdh_sdmmc.c 391829 2013-03-19 13:38:00Z $
+ * $Id: bcmsdh_sdmmc.c 396586 2013-04-13 08:54:51Z $
  */
 #include <typedefs.h>
 
@@ -1098,7 +1098,7 @@ sdioh_request_packet(sdioh_info_t *sd, uint fix_inc, uint write, uint func,
 			 */
 			if (write == 0 || pkt_len < 32)
 				pkt_len = (pkt_len + 3) & 0xFFFFFFFC;
-			else if (pkt_len % blk_size)
+			else if ((pkt_len > blk_size) && (pkt_len % blk_size))
 				pkt_len += blk_size - (pkt_len % blk_size);
 
 #if defined(CUSTOMER_HW4) && defined(USE_DYNAMIC_F2_BLKSIZE)

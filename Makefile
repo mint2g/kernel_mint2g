@@ -187,7 +187,8 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 				  -e s/sh[234].*/sh/ )
 
 ARCH		?= arm
-CROSS_COMPILE	?= /opt/toolchains/arm-eabi-4.4.3/bin/arm-eabi-
+#CROSS_COMPILE	?= arm-eabi-
+CROSS_COMPILE ?= /opt/toolchains/arm-eabi-4.4.3/bin/arm-eabi-
 
 # Cross compiling and selecting different set of gcc/bin-utils
 # ---------------------------------------------------------------------------

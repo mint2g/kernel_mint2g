@@ -21,7 +21,7 @@
  * software in any way with any other Broadcom software provided under a license
  * other than the GPL, without Broadcom's express prior written consent.
  *
- * $Id: wl_cfg80211.h 391433 2013-03-18 07:25:17Z $
+ * $Id: wl_cfg80211.h 395759 2013-04-09 16:18:32Z $
  */
 
 #ifndef _wl_cfg80211_h_

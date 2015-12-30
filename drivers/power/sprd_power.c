@@ -49,7 +49,7 @@
 #include <linux/stc3115_battery.h>
 #endif
 
-#define DETECT_CHG_ADC 30
+#define DETECT_CHG_ADC 25
 #define DETECT_BATT_VF_ADC 0x3F0
 
 /* FIXME it should be declare in a head file */

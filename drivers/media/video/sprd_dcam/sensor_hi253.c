@@ -1435,10 +1435,19 @@ struct sensor_drv_cfg sensor_hi253 = {
 // for AT+CMD Begin
 static ssize_t Rear_Cam_Sensor_ID(struct device *dev, struct device_attribute *attr, char *buf)  
 { 
-	SENSOR_TRACE("Rear_Cam_Sensor_ID\n");
-	return  sprintf(buf, "SR200PC20M");
+	char type[] = "SR200PC20M";
+	
+	return  sprintf(buf, "%s\n",type);
 }
 
+static ssize_t Rear_Cam_rear_camtype(struct device *dev,struct device_attribute *attr, char *buf)
+{
+    char type[] = "SR200PC20M_FIMC_IS";
+ 
+    return sprintf(buf, "%s\n", type);
+}
+
+static DEVICE_ATTR(rear_camtype, S_IWUSR|S_IWGRP|S_IROTH,Rear_Cam_rear_camtype, NULL);
 //wf.zhao marked | S_IWOTH | S_IXOTH, other just have read permission
 static DEVICE_ATTR(rear_camfw, S_IRUGO | S_IWUSR/* | S_IWOTH | S_IXOTH*/, Rear_Cam_Sensor_ID, NULL);
 // for AT+CMD End
@@ -1456,6 +1465,8 @@ static int __init sensor_hi253_init(void)
 	}
 	dev_t = device_create(camera_class, NULL, 0, "%s", "rear");
 
+	if (device_create_file(dev_t, &dev_attr_rear_camtype) < 0) 
+		SENSOR_PRINT_ERR("failed to create device file, %s\n",dev_attr_rear_camtype.attr.name);
 	if (device_create_file(dev_t, &dev_attr_rear_camfw) < 0)
 		 SENSOR_PRINT_ERR("Failed to create device file(%s)!\n", dev_attr_rear_camfw.attr.name);
 	// for AT+CMD End

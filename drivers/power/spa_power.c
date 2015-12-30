@@ -1395,6 +1395,8 @@ static void spa_batt_work(struct work_struct *work)
 
 	pr_spa_dbg(LEVEL4,"%s : enter \n", __func__);
 
+	wake_lock(&spa_power_iter->batt_work_wakelock);
+
 	while(1)
 	{
 		if(spa_power_iter->dbg_simul != 1)
@@ -1517,6 +1519,8 @@ static void spa_batt_work(struct work_struct *work)
 
 	schedule_delayed_work(&spa_power_iter->battery_work, 
 			msecs_to_jiffies(spa_power_iter->batt_info.update_interval));
+
+	wake_unlock(&spa_power_iter->batt_work_wakelock);
 	pr_spa_dbg(LEVEL4, "%s : leave \n", __func__);
 }
 
@@ -1873,6 +1877,7 @@ static int spa_power_probe(struct platform_device *pdev)
 	// Initialsing wakelock
 	wake_lock_init(&spa_power_iter->spa_wakelock, WAKE_LOCK_SUSPEND, "spa_charge");
 	wake_lock_init(&spa_power_iter->acc_wakelock, WAKE_LOCK_SUSPEND, "acc_wakelock");
+	wake_lock_init(&spa_power_iter->batt_work_wakelock, WAKE_LOCK_SUSPEND, "spa_batt_work_wakelock");
 
 	// Create workqueue
 	spa_power_iter->spa_workqueue = create_singlethread_workqueue("spa_power_wq");

@@ -26,6 +26,10 @@
 
 extern void lcdc_dithering_enable(void);
 
+#define SPRDFB_CONTRAST (74)
+#define SPRDFB_SATURATION (73)
+#define SPRDFB_BRIGHTNESS (2)
+
 struct sprd_lcd_controller {
 	/* only one device can work one time */
 	struct sprdfb_device  *dev;
@@ -588,9 +592,9 @@ static int overlay_img_configure(struct sprdfb_device *dev, int type, overlay_re
 
 	if(type < SPRD_DATA_TYPE_RGB888) {
 		lcdc_write(1, LCDC_Y2R_CTRL);
-		lcdc_write(64, LCDC_Y2R_CONTRAST);
-		lcdc_write(64, LCDC_Y2R_SATURATION);
-		lcdc_write(0, LCDC_Y2R_BRIGHTNESS);
+		lcdc_write(SPRDFB_CONTRAST, LCDC_Y2R_CONTRAST);
+		lcdc_write(SPRDFB_SATURATION, LCDC_Y2R_SATURATION);
+		lcdc_write(SPRDFB_BRIGHTNESS, LCDC_Y2R_BRIGHTNESS);
 	}
 
 	pr_debug("LCDC_IMG_CTRL: 0x%x\n", lcdc_read(LCDC_IMG_CTRL));
