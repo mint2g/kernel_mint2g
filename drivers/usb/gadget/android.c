@@ -49,7 +49,7 @@
 #include "u_serial.c"
 #include "f_acm.c"
 #include "f_adb.c"
-#include "f_mtp_samsung.c"
+#include "f_mtp.c"
 #include "f_accessory.c"
 
 #define USB_ETH_RNDIS y
