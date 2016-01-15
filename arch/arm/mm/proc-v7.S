@@ -410,9 +410,6 @@ __v7_setup:
 #endif
 
 3:	mov	r10, #0
-#ifdef HARVARD_CACHE
-	mcr	p15, 0, r10, c7, c5, 0		@ I+BTB cache invalidate
-#endif
 	dsb
 #ifdef CONFIG_MMU
 	mcr	p15, 0, r10, c8, c7, 0		@ invalidate I + D TLBs
@@ -428,6 +425,18 @@ __v7_setup:
 	mcr	p15, 0, r6, c10, c2, 1		@ write NMRR
 #endif
 #endif	/* !CONFIG_NKERNEL */
+#ifndef CONFIG_ARM_THUMBEE
+	mrc	p15, 0, r0, c0, c1, 0		@ read ID_PFR0 for ThumbEE
+	and	r0, r0, #(0xf << 12)		@ ThumbEE enabled field
+	teq	r0, #(1 << 12)			@ check if ThumbEE is present
+	bne	1f
+	mov	r5, #0
+	mcr	p14, 6, r5, c1, c0, 0		@ Initialize TEEHBR to 0
+	mrc	p14, 6, r0, c0, c0, 0		@ load TEECR
+	orr	r0, r0, #1			@ set the 1st bit in order to
+	mcr	p14, 6, r0, c0, c0, 0		@ stop userspace TEEHBR access
+1:
+#endif
 	adr	r5, v7_crval
 	ldmia	r5, {r5, r6}
 #ifdef CONFIG_CPU_ENDIAN_BE8
