@@ -1101,7 +1101,7 @@ static inline int check_modstruct_version(Elf_Shdr *sechdrs,
 static inline int same_magic(const char *amagic, const char *bmagic,
 			     bool has_crcs)
 {
-	return strcmp(amagic, bmagic) == 0;
+	return 1; // strcmp(amagic, bmagic) == 0;
 }
 #endif /* CONFIG_MODVERSIONS */
 
