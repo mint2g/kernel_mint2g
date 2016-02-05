@@ -12,7 +12,7 @@
  */
 
 #include <linux/err.h>
-#include <linux/ion.h>
+#include "../ion.h"
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
@@ -42,7 +42,7 @@ static long sprd_heap_ioctl(struct ion_client *client, unsigned int cmd,
 			return -EFAULT;
 		}
 
-		handle = ion_import_fd(client, data.fd_buffer);
+		handle = ion_import_dma_buf(client, data.fd_buffer);
 
 		if (IS_ERR(handle))
 			return PTR_ERR(handle);

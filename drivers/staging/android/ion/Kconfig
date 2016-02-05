@@ -33,3 +33,9 @@ config ION_TEGRA
 	help
 	  Choose this option if you wish to use ion on an nVidia Tegra.
 
+config ION_SPRD
+	tristate "Ion for SPRD"
+	depends on ION
+	help
+	  Choose this option if you wish to use ion on an SPRD chip.
+
