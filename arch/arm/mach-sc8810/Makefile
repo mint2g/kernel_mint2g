@@ -47,8 +47,9 @@ endif
 
 obj-y += ss_musb_info.o
 
+# remove warnings for variables, you got them right spreadtrum -psych.half
 sprdboarddirs := $(patsubst %,arch/arm/mach-sc8810/%,$(sprdboard-y))
-$(warning $(sprdboarddirs))
+#$(warning $(sprdboarddirs))
 KBUILD_CPPFLAGS += $(patsubst %,-I%,$(sprdboarddirs))
-$(warning $(KBUILD_CPPFLAGS))
+#$(warning $(KBUILD_CPPFLAGS))
 

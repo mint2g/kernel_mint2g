@@ -9,76 +9,65 @@ config ARCH_SC7710
 
 choice
 	prompt "SC8810 Board"
+	default MACH_MINT
 
 config MACH_OPENPHONE_SC6820
-       default n
        bool "6820 OpenPhone"
        help
          6820 openphone board based on SC8810.
 
 config MACH_SP8810EA
-	default n
 	bool "SP8810EA Phone"
 	help
 	  SP8810EA phone board based on SC8810.
 
 config MACH_SP8810EB
-	default n
 	bool "SP8810EB Phone"
 	help
 	  SP8810EB phone board based on SC8810.
 
 config MACH_SP8810EC
-	default n
 	bool "SP8810EC Phone"
 	help
 	  SP8810EC phone board based on SC8810.
 
 config MACH_SP8810GA
-	default n
 	bool "SP8810GA Phone"
 	help
 	  SP8810GA phone board based on SC8810.
 
 config MACH_SP8810GB
-	default n
 	bool "SP8810GB Phone"
 	help
 	  SP8810GB phone board based on SC8810.
 
 config MACH_SP6820GA
-	default n
 	bool "SP6820GA Phone"
 	help
 	  SP6820GA phone board based on SC8810.
 
 config MACH_AMAZING
-	default n
 	bool "AMAZING Phone"
 	help
 	  AMAZING phone board based on SC8810.
 
 config MACH_MINT
-	default n
 	bool "MINT Phone"
 	help
 	  MINT phone board based on SC6820.
 
 config MACH_KYLETD
-	default n
 	bool "KYLETD Phone"
 	help
 	  KYLETD phone board based on SC8810.
 
 config MACH_KYLEW
-	default n
 	bool "KYLEW Phone"
 	help
 	  KYLETD phone board based on SC8810.
 
 
 config MACH_Z788
-	default n
 	bool "Z788 Phone"
 	help
 	  Z788 phone board based on SC8810.
@@ -90,7 +79,6 @@ config MACH_SP7710G_OPENPHONE
 	  SP7710G fpga and openphone based on ARCH_SC7710.
 
 config MACH_SP7702
-	default n
 	bool "SP7702 phone"
 	help
 	  SP7702 phone board base on SC8810 with sc7701 modem.
