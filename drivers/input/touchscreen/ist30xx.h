@@ -74,7 +74,7 @@
 
 
 #if IST30XX_DEBUG
-#define DMSG(x ...) printk(x)
+#define DMSG(x ...) (void)0
 #else
 #define DMSG(x ...)
 #endif
