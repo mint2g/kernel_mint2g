@@ -439,16 +439,16 @@ static ssize_t restart_cpc_store(struct kobject *kobj, struct kobj_attribute *at
        ret = sscanf(buf, "%d", &val);
        if (val > 0)
        {
-               if (sec_debug_level())
+#ifdef CONFIG_SEC_DEBUG
+	if (sec_debug_level())
                {
                        cp_abort();
                }
-               else
-               {
+#else
                         arch_reset(0, 0);
                         while(1);
-                }
-        }
+#endif
+       }
 }
 
 power_attr(restart_cpc);
