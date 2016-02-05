@@ -30,15 +30,15 @@ static int debugfs_make_kernel_panic(void *data, u64 val)
 {
 	if (val > 0)         
 	{
-		if (sec_debug_level())
-		{	
-			cp_abort();
-		}
-		else 
-		{
-			arch_reset(0, 0);	
-			while(1);
-		}
+#ifdef CONFIG_SEC_DEBUG
+	if (sec_debug_level())
+               {
+                       cp_abort();
+               }
+#else
+                        arch_reset(0, 0);
+                        while(1);
+#endif
 	}	
 	return 0;
 }
