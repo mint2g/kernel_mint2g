@@ -25,7 +25,7 @@
 #include <linux/power_supply.h>
 #include <linux/sched.h>
 
-#define SPA_DEBUG_FEATURE 1
+#define SPA_DEBUG_FEATURE 0
 //#define SPA_TEMPERATURE_INT 1
 #define BATT_TYPE "SDI_SDI"
 #define CONFIG_SEC_BATT_EXT_ATTRS
@@ -48,20 +48,10 @@
 #define SPA_DBG_LEVEL4 4U // maximum log
 #define SPA_DBG_LEVEL_INTERNAL SPA_DBG_LEVEL3
 #define SPA_DBG_LEVEL_OUT SPA_DBG_LEVEL1
-#define SPA_DBG_LOG_SIZE	4096*100
+#define SPA_DBG_LOG_SIZE	0
 
 // Dual logging.
-#define pr_spa_dbg(lvl, args...) \
-	do { \
-		if ( SPA_DBG_LEVEL_OUT >= SPA_DBG_##lvl ) \
-		{ \
-				pr_info(args); \
-		} \
-		if ( SPA_DBG_LEVEL_INTERNAL >= SPA_DBG_##lvl ) \
-		{ \
-				spa_log_internal(args); \
-		} \
-	} while(0)
+#define pr_spa_dbg(lvl, args...) (void)0
 
 static char spa_log_buffer[SPA_DBG_LOG_SIZE];
 static unsigned int spa_log_offset=0;
