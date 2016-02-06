@@ -8,7 +8,7 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
-#define STC3115_DEBUG
+//define STC3115_DEBUG
 #define STC3115_KERNEL_RESET
 
 #include <linux/module.h>
