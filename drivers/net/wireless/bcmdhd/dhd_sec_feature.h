@@ -69,7 +69,9 @@
 #endif
 
 #if defined(CONFIG_MACH_MINT)
+#ifndef READ_MACADDR
 #define READ_MACADDR
+#endif
 #undef HW_OOB
 #undef USE_CID_CHECK
 #endif
