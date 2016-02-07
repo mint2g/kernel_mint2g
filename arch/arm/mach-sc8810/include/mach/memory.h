@@ -26,5 +26,7 @@
 #define __pfn_to_bus(x) 	__pfn_to_phys(x)
 #define __bus_to_pfn(x)		__phys_to_pfn(x)
 
+#define CONSISTENT_DMA_SIZE	(SZ_4M)
+
 #endif
 
