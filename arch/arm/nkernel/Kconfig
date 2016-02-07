@@ -1,0 +1,80 @@
+#
+#  Copyright (C) 2011, Red Bend Ltd.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License Version 2
+#  as published by the Free Software Foundation.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#  You should have received a copy of the GNU General Public License Version 2
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Copyright (c) 2016 Psych Half, <psych.half@gmail.com>
+# Modified to add a menu, makes menuconfig cleaner
+
+
+menu "VLX virtualizer"
+
+config NKERNEL
+	bool "VLX virtualizer support"
+	default n
+
+if NKERNEL
+
+config NKERNEL_DDI
+	bool "VLX virtual driver support"
+	default y
+
+config NKERNEL_DDI_APICHECK
+	bool "VLX virtual driver API call check"
+	depends on NKERNEL_DDI
+	default n
+
+config RELOCATABLE_KERNEL
+ 	bool "Build relocatable linux kernel"
+ 	default	y  if NKERNEL
+
+config NKERNEL_DYNAMIC_GUEST_LOADING
+	bool "VLX dynamic guest loading support"
+	default n
+
+config NKERNEL_ARCH_PM_MASTER
+	bool "Power Manage by Linux"
+	help
+	  Select this option for a platform to enable NKERNEL_PM_MASTER option.
+
+config NKERNEL_PM_MASTER
+	bool "VLX Power Management Master"
+	depends on NKERNEL && NKERNEL_ARCH_PM_MASTER
+	default y
+	help
+	  Select this option to delegate to this guest OS the global
+	  platform power management. In order to behave correctly,
+	  this guest OS has to be running on all physical cores with
+	  disabled migration. In addition, this guest OS has to be running
+	  on a highest priority and it has to park physical cores.
+
+config NKERNEL_PM_GLOBAL_SUSPEND
+	bool "VLX Global Suspend to RAM"
+	depends on NKERNEL_PM_MASTER
+	default y
+	help
+	  Select this option in order to suspend to RAM the physical
+	  platform only when all VMs are virtually suspended.
+
+config NKERNEL_MUX_IO
+	bool "VLX vonsole IO interface for ts0710mux"
+	default y
+	help
+	  This option is used to support io interface for ts0710mux driver.
+endif
+
+config TEXT_OFFSET
+	hex  "Text offset configuration"
+	default 0x00008000
+
+endmenu
