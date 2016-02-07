@@ -24,10 +24,6 @@
 #include <asm/cacheflush.h>
 #include <asm/hardware/cache-l2x0.h>
 
-#if defined (CONFIG_NKERNEL) && defined (CONFIG_ARCH_SC8825)
-#include <mach/arch_lock.h>
-#endif
-
 #define CACHE_LINE_SIZE		32
 
 static void __iomem *l2x0_base;
@@ -42,14 +38,6 @@ static uint32_t l2x0_size;
 static u32 l2x0_cache_id;
 static unsigned int l2x0_sets;
 static unsigned int l2x0_ways;
-
-#if defined (CONFIG_NKERNEL) && defined (CONFIG_ARCH_SC8825)
-#define arch_hwlock_l2() arch_hwlock_fast(HWLOCK_CACHE)
-#define arch_hwunlock_l2() arch_hwunlock_fast(HWLOCK_CACHE)
-#else
-#define arch_hwlock_l2() NULL
-#define arch_hwunlock_l2() NULL
-#endif
 
 static inline bool is_pl310_rev(int rev)
 {
@@ -148,11 +136,9 @@ static void l2x0_cache_sync(void)
 	spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	cache_sync();
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -172,13 +158,11 @@ static void l2x0_for_each_set_way(void __iomem *reg)
 		spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 		hw_flags = hw_local_irq_save();	/* prevent from OS preempt. */
-		arch_hwlock_l2();
 #endif
 		for (set = 0; set < l2x0_sets; set++)
 			writel_relaxed((way << 28) | (set << 5), reg);
 		cache_sync();
 #ifdef CONFIG_NKERNEL
-		arch_hwunlock_l2();
 		hw_local_irq_restore(hw_flags);
 #endif
 		spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -213,12 +197,10 @@ static void l2x0_flush_all(void)
 	spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	__l2x0_flush_all();
 
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -242,7 +224,6 @@ static void l2x0_clean_all(void)
 	spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	debug_writel(0x03);
 	writel_relaxed(l2x0_way_mask, l2x0_base + L2X0_CLEAN_WAY);
@@ -250,7 +231,6 @@ static void l2x0_clean_all(void)
 	cache_sync();
 	debug_writel(0x00);
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -268,13 +248,11 @@ static void l2x0_inv_all(void)
 	BUG_ON(readl(l2x0_base + L2X0_CTRL) & 1);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	writel_relaxed(l2x0_way_mask, l2x0_base + L2X0_INV_WAY);
 	cache_wait_way(l2x0_base + L2X0_INV_WAY, l2x0_way_mask);
 	cache_sync();
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -290,7 +268,6 @@ static void l2x0_inv_range(unsigned long start, unsigned long end)
 	spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	if (start & (CACHE_LINE_SIZE - 1)) {
 		start &= ~(CACHE_LINE_SIZE - 1);
@@ -317,21 +294,18 @@ static void l2x0_inv_range(unsigned long start, unsigned long end)
 
 		if (blk_end < end) {
 #ifdef CONFIG_NKERNEL
-			arch_hwunlock_l2();
 			hw_local_irq_restore(hw_flags);
 #endif
 			spin_unlock_irqrestore(&l2x0_lock, flags);
 			spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 			hw_flags = hw_local_irq_save();
-			arch_hwlock_l2();
 #endif
 		}
 	}
 	cache_wait(base + L2X0_INV_LINE_PA, 1);
 	cache_sync();
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -353,7 +327,6 @@ static void l2x0_clean_range(unsigned long start, unsigned long end)
 	spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	start &= ~(CACHE_LINE_SIZE - 1);
 	while (start < end) {
@@ -366,21 +339,18 @@ static void l2x0_clean_range(unsigned long start, unsigned long end)
 
 		if (blk_end < end) {
 #ifdef CONFIG_NKERNEL
-			arch_hwunlock_l2();
 			hw_local_irq_restore(hw_flags);
 #endif
 			spin_unlock_irqrestore(&l2x0_lock, flags);
 			spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 			hw_flags = hw_local_irq_save();
-			arch_hwlock_l2();
 #endif
 		}
 	}
 	cache_wait(base + L2X0_CLEAN_LINE_PA, 1);
 	cache_sync();
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -402,7 +372,6 @@ static void l2x0_flush_range(unsigned long start, unsigned long end)
 	spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	start &= ~(CACHE_LINE_SIZE - 1);
 	while (start < end) {
@@ -417,21 +386,18 @@ static void l2x0_flush_range(unsigned long start, unsigned long end)
 
 		if (blk_end < end) {
 #ifdef CONFIG_NKERNEL
-			arch_hwunlock_l2();
 			hw_local_irq_restore(hw_flags);
 #endif
 			spin_unlock_irqrestore(&l2x0_lock, flags);
 			spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 			hw_flags = hw_local_irq_save();
-			arch_hwlock_l2();
 #endif
 		}
 	}
 	cache_wait(base + L2X0_CLEAN_INV_LINE_PA, 1);
 	cache_sync();
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
@@ -446,13 +412,11 @@ static void l2x0_disable(void)
 	spin_lock_irqsave(&l2x0_lock, flags);
 #ifdef CONFIG_NKERNEL
 	hw_flags = hw_local_irq_save();	/* prevent from OS preemption */
-	arch_hwlock_l2();
 #endif
 	__l2x0_flush_all();
 	writel_relaxed(0, l2x0_base + L2X0_CTRL);
 	dsb();
 #ifdef CONFIG_NKERNEL
-	arch_hwunlock_l2();
 	hw_local_irq_restore(hw_flags);
 #endif
 	spin_unlock_irqrestore(&l2x0_lock, flags);
