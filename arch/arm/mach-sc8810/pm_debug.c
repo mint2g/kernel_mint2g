@@ -24,6 +24,13 @@
 #include <mach/pm_debug.h>
 #include <linux/debugfs.h>
 
+#define SC8810_PM_DEBUG  (0)
+#if SC8810_PM_DEBUG
+#define DMSG(x ...) DMSG(x)
+#else
+#define DMSG(x ...) (void)0
+#endif
+
 struct dentry * dentry_debug_root = NULL;
 
 /*print switch*/
@@ -95,7 +102,7 @@ void hard_irq_set(void)
 void print_hard_irq_inloop(int ret)
 {
 	if(irq_status != 0 && is_print_irq_runtime)
-		printk("%c#:%08x\n", ret?'S':'F', irq_status);
+		DMSG("%c#:%08x\n", ret?'S':'F', irq_status);
 }
 
 static void print_hard_irq(void)
@@ -105,7 +112,7 @@ static void print_hard_irq(void)
 		return;
 	do{
 		if(0 != sprd_hard_irq[i])
-			printk("##: sprd_hard_irq[%d] = %d.\n",
+			DMSG("##: sprd_hard_irq[%d] = %d.\n",
                                 i, sprd_hard_irq[i]);
 
 	}while(--i >= 0);
@@ -124,12 +131,12 @@ void inc_irq(int irq)
 {
 	if(is_wakeup){
 		if (irq >= SPRD_IRQ_NUM) {
-			printk("## bad irq number %d.\n", irq);
+			DMSG("## bad irq number %d.\n", irq);
 			return;
 		}
 		sprd_irqs[irq]++;
 		if(is_print_wakeup)
-			printk("\n#####: wakeup irq = %d.\n", irq);
+			DMSG("\n#####: wakeup irq = %d.\n", irq);
 		is_wakeup = 0;
 	}
 }
@@ -147,7 +154,7 @@ static void print_irq(void)
 		return;
 	do{
 		if(0 != sprd_irqs[i])
-			printk("##: sprd_irqs[%d] = %d.\n",
+			DMSG("##: sprd_irqs[%d] = %d.\n",
                                 i, sprd_irqs[i]);
 
 	}while(--i >= 0);
@@ -194,7 +201,7 @@ void print_time(void)
 	if(!is_print_time)
 		return;
 
-	printk("time statisics : sleep_time=%d, core_time=%d, mcu_time=%d, deep_sus=%d, dep_fail=%d\n",
+	DMSG("time statisics : sleep_time=%d, core_time=%d, mcu_time=%d, deep_sus=%d, dep_fail=%d\n",
 		sleep_time, core_time, mcu_time, deep_time_successed, deep_time_failed);
 }
 
@@ -205,16 +212,16 @@ void set_sleep_mode(int sm){
 		return;
 	switch(sm){
 		case SLP_MODE_ARM:
-			printk("\n[ARM]\n");
+			DMSG("\n[ARM]\n");
 			break;
 		case SLP_MODE_MCU:
-			printk("\n[MCU]\n");
+			DMSG("\n[MCU]\n");
 			break;
 		case SLP_MODE_DEP:
-			printk("\n[DEP]\n");
+			DMSG("\n[DEP]\n");
 			break;
 		default:
-			printk("\nNONE\n");
+			DMSG("\nNONE\n");
 	}
 }
 
@@ -229,7 +236,7 @@ void print_statisic(void)
 	print_hard_irq();
 	print_irq();
 	if(is_print_wakeup)	
-		printk("###wake up form %s : %08x\n",  sleep_mode_str[sleep_mode],  irq_status);
+		DMSG("###wake up form %s : %08x\n",  sleep_mode_str[sleep_mode],  irq_status);
 	
 }
 
@@ -241,66 +248,66 @@ static struct wake_lock messages_wakelock;
 static void print_ahb(void)
 {
 	u32 val = sprd_greg_read(REG_TYPE_AHB_GLOBAL, AHB_CTL0);
-	printk("##: AHB_CTL0 = %08x.\n", val);
-	if (val & AHB_CTL0_DCAM_EN) printk("AHB_CTL0_DCAM_EN =1.\n");
-	if (val & AHB_CTL0_CCIR_EN) printk("AHB_CTL0_CCIR_EN =1.\n");
-	if (val & AHB_CTL0_LCDC_EN) printk("AHB_CTL0_LCDC_EN =1.\n");
-	if (val & AHB_CTL0_SDIO0_EN) printk("AHB_CTL0_SDIO0_EN =1.\n");
-	if (val & AHB_CTL0_SDIO1_EN) printk("AHB_CTL0_SDIO1_EN =1.\n");
-	if (val & AHB_CTL0_DMA_EN) printk("AHB_CTL0_DMA_EN =1.\n");
-	if (val & AHB_CTL0_BM0_EN) printk("AHB_CTL0_BM0_EN =1.\n");
-	if (val & AHB_CTL0_NFC_EN) printk("AHB_CTL0_NFC_EN =1.\n");
-	if (val & AHB_CTL0_BM1_EN) printk("AHB_CTL0_BM1_EN =1.\n");
-	if (val & AHB_CTL0_G2D_EN) printk("AHB_CTL0_G2D_EN =1.\n");
-	if (val & AHB_CTL0_G3D_EN) printk("AHB_CTL0_G3D_EN =1.\n");
-	if (val & AHB_CTL0_AXIBUSMON0_EN) printk("AHB_CTL0_AXIBUSMON0_EN =1.\n");
-	if (val & AHB_CTL0_AXIBUSMON1_EN) printk("AHB_CTL0_AXIBUSMON1_EN =1.\n");
-	if (val & AHB_CTL0_VSP_EN) printk("AHB_CTL0_VSP_EN =1.\n");
-	if (val & AHB_CTL0_ROT_EN) printk("AHB_CTL0_ROT_EN =1.\n");
-	if (val & AHB_CTL0_USBD_EN) printk("AHB_CTL0_USBD_EN =1.\n");
+	DMSG("##: AHB_CTL0 = %08x.\n", val);
+	if (val & AHB_CTL0_DCAM_EN) DMSG("AHB_CTL0_DCAM_EN =1.\n");
+	if (val & AHB_CTL0_CCIR_EN) DMSG("AHB_CTL0_CCIR_EN =1.\n");
+	if (val & AHB_CTL0_LCDC_EN) DMSG("AHB_CTL0_LCDC_EN =1.\n");
+	if (val & AHB_CTL0_SDIO0_EN) DMSG("AHB_CTL0_SDIO0_EN =1.\n");
+	if (val & AHB_CTL0_SDIO1_EN) DMSG("AHB_CTL0_SDIO1_EN =1.\n");
+	if (val & AHB_CTL0_DMA_EN) DMSG("AHB_CTL0_DMA_EN =1.\n");
+	if (val & AHB_CTL0_BM0_EN) DMSG("AHB_CTL0_BM0_EN =1.\n");
+	if (val & AHB_CTL0_NFC_EN) DMSG("AHB_CTL0_NFC_EN =1.\n");
+	if (val & AHB_CTL0_BM1_EN) DMSG("AHB_CTL0_BM1_EN =1.\n");
+	if (val & AHB_CTL0_G2D_EN) DMSG("AHB_CTL0_G2D_EN =1.\n");
+	if (val & AHB_CTL0_G3D_EN) DMSG("AHB_CTL0_G3D_EN =1.\n");
+	if (val & AHB_CTL0_AXIBUSMON0_EN) DMSG("AHB_CTL0_AXIBUSMON0_EN =1.\n");
+	if (val & AHB_CTL0_AXIBUSMON1_EN) DMSG("AHB_CTL0_AXIBUSMON1_EN =1.\n");
+	if (val & AHB_CTL0_VSP_EN) DMSG("AHB_CTL0_VSP_EN =1.\n");
+	if (val & AHB_CTL0_ROT_EN) DMSG("AHB_CTL0_ROT_EN =1.\n");
+	if (val & AHB_CTL0_USBD_EN) DMSG("AHB_CTL0_USBD_EN =1.\n");
 }
 
 
 static void print_gr(void)
 {
 	u32 val = sprd_greg_read(REG_TYPE_GLOBAL, GR_GEN0);
-	printk("##: GR_GEN0 = %08x.\n", val);
-	if (val & GEN0_SIM0_EN) printk("GEN0_SIM0_EN =1.\n");
-	if (val & GEN0_I2C_EN) printk("GEN0_I2C_EN =1.\n");
-	if (val & GEN0_GPIO_EN) printk("GEN0_GPIO_EN =1.\n");
-	if (val & GEN0_I2C0_EN) printk("GEN0_I2C0_EN =1.\n");
-	if (val & GEN0_I2C1_EN) printk("GEN0_I2C1_EN =1.\n");
-	if (val & GEN0_I2C2_EN) printk("GEN0_I2C2_EN =1.\n");
-	if (val & GEN0_I2C3_EN) printk("GEN0_I2C3_EN =1.\n");
-	if (val & GEN0_SPI0_EN) printk("GEN0_SPI0_EN =1.\n");
-	if (val & GEN0_SPI1_EN) printk("GEN0_SPI1_EN =1.\n");
-	if (val & GEN0_I2S0_EN) printk("GEN0_I2S0_EN =1.\n");
-	if (val & GEN0_I2S1_EN) printk("GEN0_I2S1_EN =1.\n");
-	if (val & GEN0_EFUSE_EN) printk("GEN0_EFUSE_EN =1.\n");
-	if (val & GEN0_I2S_EN) printk("GEN0_I2S_EN =1.\n");
-	if (val & GEN0_PIN_EN) printk("GEN0_PIN_EN =1.\n");
-	if (val & GEN0_EPT_EN) printk("GEN0_EPT_EN =1.\n");
-	if (val & GEN0_SIM1_EN) printk("GEN0_SIM1_EN =1.\n");
-	if (val & GEN0_SPI_EN) printk("GEN0_SPI_EN =1.\n");
-	if (val & GEN0_UART0_EN) printk("GEN0_UART0_EN =1.\n");
-	if (val & GEN0_UART1_EN) printk("GEN0_UART1_EN =1.\n");
-	if (val & GEN0_UART2_EN) printk("GEN0_UART2_EN =1.\n");
+	DMSG("##: GR_GEN0 = %08x.\n", val);
+	if (val & GEN0_SIM0_EN) DMSG("GEN0_SIM0_EN =1.\n");
+	if (val & GEN0_I2C_EN) DMSG("GEN0_I2C_EN =1.\n");
+	if (val & GEN0_GPIO_EN) DMSG("GEN0_GPIO_EN =1.\n");
+	if (val & GEN0_I2C0_EN) DMSG("GEN0_I2C0_EN =1.\n");
+	if (val & GEN0_I2C1_EN) DMSG("GEN0_I2C1_EN =1.\n");
+	if (val & GEN0_I2C2_EN) DMSG("GEN0_I2C2_EN =1.\n");
+	if (val & GEN0_I2C3_EN) DMSG("GEN0_I2C3_EN =1.\n");
+	if (val & GEN0_SPI0_EN) DMSG("GEN0_SPI0_EN =1.\n");
+	if (val & GEN0_SPI1_EN) DMSG("GEN0_SPI1_EN =1.\n");
+	if (val & GEN0_I2S0_EN) DMSG("GEN0_I2S0_EN =1.\n");
+	if (val & GEN0_I2S1_EN) DMSG("GEN0_I2S1_EN =1.\n");
+	if (val & GEN0_EFUSE_EN) DMSG("GEN0_EFUSE_EN =1.\n");
+	if (val & GEN0_I2S_EN) DMSG("GEN0_I2S_EN =1.\n");
+	if (val & GEN0_PIN_EN) DMSG("GEN0_PIN_EN =1.\n");
+	if (val & GEN0_EPT_EN) DMSG("GEN0_EPT_EN =1.\n");
+	if (val & GEN0_SIM1_EN) DMSG("GEN0_SIM1_EN =1.\n");
+	if (val & GEN0_SPI_EN) DMSG("GEN0_SPI_EN =1.\n");
+	if (val & GEN0_UART0_EN) DMSG("GEN0_UART0_EN =1.\n");
+	if (val & GEN0_UART1_EN) DMSG("GEN0_UART1_EN =1.\n");
+	if (val & GEN0_UART2_EN) DMSG("GEN0_UART2_EN =1.\n");
 
 	val = sprd_greg_read(REG_TYPE_GLOBAL, GR_CLK_EN);
-	printk("##: GR_CLK_EN = %08x.\n", val);
-	if (val & CLK_PWM0_EN) printk("CLK_PWM0_EN =1.\n");
-	if (val & CLK_PWM1_EN) printk("CLK_PWM1_EN = 1.\n");
-	if (val & CLK_PWM2_EN) printk("CLK_PWM2_EN = 1.\n");
-	if (val & CLK_PWM3_EN) printk("CLK_PWM3_EN = 1.\n");
+	DMSG("##: GR_CLK_EN = %08x.\n", val);
+	if (val & CLK_PWM0_EN) DMSG("CLK_PWM0_EN =1.\n");
+	if (val & CLK_PWM1_EN) DMSG("CLK_PWM1_EN = 1.\n");
+	if (val & CLK_PWM2_EN) DMSG("CLK_PWM2_EN = 1.\n");
+	if (val & CLK_PWM3_EN) DMSG("CLK_PWM3_EN = 1.\n");
 
 	val = sprd_greg_read(REG_TYPE_GLOBAL, GR_BUSCLK_ALM);
-	printk("##: GR_BUSCLK_ALM = %08x.\n", val);
-	if (val & ARM_VB_MCLKON) printk("ARM_VB_MCLKON =1.\n");
-	if (val & ARM_VB_DA0ON) printk("ARM_VB_DA0ON = 1.\n");
-	if (val & ARM_VB_DA1ON) printk("ARM_VB_DA1ON = 1.\n");
-	if (val & ARM_VB_ADCON) printk("ARM_VB_ADCON = 1.\n");
-	if (val & ARM_VB_ANAON) printk("ARM_VB_ANAON = 1.\n");
-	if (val & ARM_VB_ACC) printk("ARM_VB_ACC = 1.\n");
+	DMSG("##: GR_BUSCLK_ALM = %08x.\n", val);
+	if (val & ARM_VB_MCLKON) DMSG("ARM_VB_MCLKON =1.\n");
+	if (val & ARM_VB_DA0ON) DMSG("ARM_VB_DA0ON = 1.\n");
+	if (val & ARM_VB_DA1ON) DMSG("ARM_VB_DA1ON = 1.\n");
+	if (val & ARM_VB_ADCON) DMSG("ARM_VB_ADCON = 1.\n");
+	if (val & ARM_VB_ANAON) DMSG("ARM_VB_ANAON = 1.\n");
+	if (val & ARM_VB_ACC) DMSG("ARM_VB_ACC = 1.\n");
 }
 
 /* ANA_LDO_PD_CTL0 */
@@ -339,60 +346,60 @@ static void print_gr(void)
 static void print_ana(void)
 {
 	u32 val = sci_adi_read(ANA_LDO_PD_CTL0);
-	printk("##: ANA_LDO_PD_CTL0 = %04x.\n", val);
-	if ((val & LDO_USB_CTL)) printk("##: LDO_USB_CTL is on.\n");
-	else if(!(val & (LDO_USB_CTL >> 1))) printk("##: LDO_USB_CTL is not off.\n");
+	DMSG("##: ANA_LDO_PD_CTL0 = %04x.\n", val);
+	if ((val & LDO_USB_CTL)) DMSG("##: LDO_USB_CTL is on.\n");
+	else if(!(val & (LDO_USB_CTL >> 1))) DMSG("##: LDO_USB_CTL is not off.\n");
 
-	if ((val & LDO_SDIO0_CTL)) printk("##: LDO_SDIO0_CTL is on.\n");
-	else if(!(val & (LDO_SDIO0_CTL >> 1))) printk("##: LDO_SDIO0_CTL is not off.\n");
+	if ((val & LDO_SDIO0_CTL)) DMSG("##: LDO_SDIO0_CTL is on.\n");
+	else if(!(val & (LDO_SDIO0_CTL >> 1))) DMSG("##: LDO_SDIO0_CTL is not off.\n");
 
-	if ((val & LDO_SIM0_CTL)) printk("##: LDO_SIM0_CTL is on.\n");
-	else if(!(val & (LDO_SIM0_CTL >> 1))) printk("##: LDO_SIM0_CTL is not off.\n");
+	if ((val & LDO_SIM0_CTL)) DMSG("##: LDO_SIM0_CTL is on.\n");
+	else if(!(val & (LDO_SIM0_CTL >> 1))) DMSG("##: LDO_SIM0_CTL is not off.\n");
 
-	if ((val & LDO_SIM1_CTL)) printk("##: LDO_SIM1_CTL is on.\n");
-	else if(!(val & (LDO_SIM1_CTL >> 1))) printk("##: LDO_SIM1_CTL is not off.\n");
+	if ((val & LDO_SIM1_CTL)) DMSG("##: LDO_SIM1_CTL is on.\n");
+	else if(!(val & (LDO_SIM1_CTL >> 1))) DMSG("##: LDO_SIM1_CTL is not off.\n");
 
-	if ((val & LDO_BPCAMD0_CTL)) printk("##: LDO_BPCAMD0_CTL is on.\n");
-	else if(!(val & (LDO_BPCAMD0_CTL >> 1))) printk("##: LDO_BPCAMD0_CTL is not off.\n");
+	if ((val & LDO_BPCAMD0_CTL)) DMSG("##: LDO_BPCAMD0_CTL is on.\n");
+	else if(!(val & (LDO_BPCAMD0_CTL >> 1))) DMSG("##: LDO_BPCAMD0_CTL is not off.\n");
 
-	if ((val & LDO_BPCAMD1_CTL)) printk("##: LDO_BPCAMD1_CTL is on.\n");
-	else if(!(val & (LDO_BPCAMD1_CTL >> 1))) printk("##: LDO_BPCAMD1_CTL is not off.\n");
+	if ((val & LDO_BPCAMD1_CTL)) DMSG("##: LDO_BPCAMD1_CTL is on.\n");
+	else if(!(val & (LDO_BPCAMD1_CTL >> 1))) DMSG("##: LDO_BPCAMD1_CTL is not off.\n");
 
-	if ((val & LDO_BPCAMA_CTL)) printk("##: LDO_BPCAMA_CTL is on.\n");
-	else if(!(val & (LDO_BPCAMA_CTL >> 1))) printk("##: LDO_BPCAMA_CTL is not off.\n");
+	if ((val & LDO_BPCAMA_CTL)) DMSG("##: LDO_BPCAMA_CTL is on.\n");
+	else if(!(val & (LDO_BPCAMA_CTL >> 1))) DMSG("##: LDO_BPCAMA_CTL is not off.\n");
 
-	if ((val & LDO_BPVB_CTL)) printk("##: LDO_BPVB_CTL is on.\n");
-	else if(!(val & (LDO_BPVB_CTL >> 1))) printk("##: LDO_BPVB_CTL is not off.\n");
+	if ((val & LDO_BPVB_CTL)) DMSG("##: LDO_BPVB_CTL is on.\n");
+	else if(!(val & (LDO_BPVB_CTL >> 1))) DMSG("##: LDO_BPVB_CTL is not off.\n");
 
 	val = sci_adi_read(ANA_LDO_PD_CTL1);
-	printk("##: ANA_LDO_PD_CTL1 = %04x.\n", val);
-	if ((val & LDO_SDIO1_CTL)) printk("##: LDO_SDIO1_CTL is on.\n");
-	else if(!(val & (LDO_SDIO1_CTL >> 1))) printk("##: LDO_SDIO1_CTL is not off.\n");
+	DMSG("##: ANA_LDO_PD_CTL1 = %04x.\n", val);
+	if ((val & LDO_SDIO1_CTL)) DMSG("##: LDO_SDIO1_CTL is on.\n");
+	else if(!(val & (LDO_SDIO1_CTL >> 1))) DMSG("##: LDO_SDIO1_CTL is not off.\n");
 
-	if ((val & LDO_BPWIF0_CTL)) printk("##: LDO_BPWIF0_CTL is on.\n");
-	else if(!(val & (LDO_BPWIF0_CTL >> 1))) printk("##: LDO_BPWIF0_CTL is not off.\n");
+	if ((val & LDO_BPWIF0_CTL)) DMSG("##: LDO_BPWIF0_CTL is on.\n");
+	else if(!(val & (LDO_BPWIF0_CTL >> 1))) DMSG("##: LDO_BPWIF0_CTL is not off.\n");
 
-	if ((val & LDO_BPWIF1_CTL)) printk("##: LDO_BPWIF1_CTL is on.\n");
-	else if(!(val & (LDO_BPWIF1_CTL >> 1))) printk("##: LDO_BPWIF1_CTL is not off.\n");
+	if ((val & LDO_BPWIF1_CTL)) DMSG("##: LDO_BPWIF1_CTL is on.\n");
+	else if(!(val & (LDO_BPWIF1_CTL >> 1))) DMSG("##: LDO_BPWIF1_CTL is not off.\n");
 
-	if ((val & LDO_SIM2_CTL)) printk("##: LDO_SIM2_CTL is on.\n");
-	else if(!(val & (LDO_SIM2_CTL >> 1))) printk("##: LDO_SIM2_CTL is not off.\n");
+	if ((val & LDO_SIM2_CTL)) DMSG("##: LDO_SIM2_CTL is on.\n");
+	else if(!(val & (LDO_SIM2_CTL >> 1))) DMSG("##: LDO_SIM2_CTL is not off.\n");
 
-	if ((val & LDO_SIM3_CTL)) printk("##: LDO_SIM3_CTL is on.\n");
-	else if(!(val & (LDO_SIM3_CTL >> 1))) printk("##: LDO_SIM3_CTL is not off.\n");
+	if ((val & LDO_SIM3_CTL)) DMSG("##: LDO_SIM3_CTL is on.\n");
+	else if(!(val & (LDO_SIM3_CTL >> 1))) DMSG("##: LDO_SIM3_CTL is not off.\n");
 
 
-	printk("\n===========================\n");
+	DMSG("\n===========================\n");
 	val = sci_adi_read(ANA_AUDIO_PA_CTRL0);
-	printk("##: ANA_AUDIO_PA_CTRL0 = %04x.\n", val);
-	if (val & AUDIO_PA_ENABLE)	 printk("##: Audo PA is enabled.\n");	
-	else if (!(val & AUDIO_PA_ENABLE_RST)) printk("##: Audo PA is not stopped.\n");
+	DMSG("##: ANA_AUDIO_PA_CTRL0 = %04x.\n", val);
+	if (val & AUDIO_PA_ENABLE)	 DMSG("##: Audo PA is enabled.\n");	
+	else if (!(val & AUDIO_PA_ENABLE_RST)) DMSG("##: Audo PA is not stopped.\n");
 
 	val = sci_adi_read(ANA_AUDIO_PA_CTRL1);
-	printk("##: ANA_AUDIO_PA_CTRL1 = %04x.\n", val);
-	if (val & AUDIO_PA_LDO_ENABLE)	 printk("##: Audo PA_LDO is enabled.\n");	
-	else if (!(val & AUDIO_PA_LDO_ENABLE_RST)) printk("##: Audo PA_LDO is not stopped.\n");
-	printk("\n===========================\n");
+	DMSG("##: ANA_AUDIO_PA_CTRL1 = %04x.\n", val);
+	if (val & AUDIO_PA_LDO_ENABLE)	 DMSG("##: Audo PA_LDO is enabled.\n");	
+	else if (!(val & AUDIO_PA_LDO_ENABLE_RST)) DMSG("##: Audo PA_LDO is not stopped.\n");
+	DMSG("\n===========================\n");
 }
 
 /*is dsp sleep :for debug */
@@ -402,9 +409,9 @@ static int is_dsp_sleep(void)
 	val = sprd_greg_read(REG_TYPE_GLOBAL, GR_STC_STATE);
 
 	if (GR_DSP_STOP & val)
-		printk("#####: GR_STC_STATE[DSP_STOP] is set!\n");
+		DMSG("#####: GR_STC_STATE[DSP_STOP] is set!\n");
 	else
-		printk("#####: GR_STC_STATE[DSP_STOP] is NOT set!\n");
+		DMSG("#####: GR_STC_STATE[DSP_STOP] is NOT set!\n");
 	return 0;
 }
 
@@ -430,7 +437,7 @@ static void debugfs_init(void)
 {
 	dentry_debug_root = debugfs_create_dir("power", NULL);
 	if (IS_ERR(dentry_debug_root) || !dentry_debug_root) {
-		printk("!!!powermanager Failed to create debugfs directory\n");
+		DMSG("!!!powermanager Failed to create debugfs directory\n");
 		dentry_debug_root = NULL;
 		return;
 	}
@@ -459,7 +466,7 @@ void pm_debug_init(void)
 			"pm_message_wakelock");
 	task = kthread_create(print_thread, NULL, "pm_print");
 	if (task == 0) {
-		printk("Can't crate power manager print thread!\n");
+		DMSG("Can't crate power manager print thread!\n");
 	}else
 		wake_up_process(task);
 #endif
