@@ -299,7 +299,9 @@ EXPORT_SYMBOL(clk_disable);
 
 static void _clock_dump(struct list_head * lhead, struct seq_file *s)
 {
-	struct clk *p ,*cp;
+	struct clk *p;
+	// child clock is commented out below:
+	//struct clk *cp;
 	list_for_each_entry(p, lhead, sibling){
 		seq_printf(s, "%-16s%-16s%-16ld%2d              %08x        \n",
 			p->name, p->parent?p->parent->name:"NONE", p->rate, p->usecount, p->flags);

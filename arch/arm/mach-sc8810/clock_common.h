@@ -14,6 +14,7 @@
 #define __ARCH_ARM_SC8810_CLOCK_COMMON_H
 
 #include <mach/hardware.h>
+#include <linux/cpufreq.h>
 
 /* clock flags. */
 #define RATE_FIXED		(1 << 1)	/* Fixed clock rate */

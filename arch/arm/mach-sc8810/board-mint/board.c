@@ -77,7 +77,7 @@ static struct platform_device brcm_bluesleep_device;
 static unsigned int sd_detect_gpio = GPIO_SDIO_DETECT;
 
 /* Control ldo for maxscend cmmb chip according to HW design */
-static struct regulator *cmmb_regulator_1v8 = NULL;
+//static struct regulator *cmmb_regulator_1v8 = NULL;
 
 static struct platform_gpsctl_data pdata_gpsctl = {
 	.reset_pin = GPIO_GPS_RESET,
@@ -112,10 +112,10 @@ static struct platform_device Sec_BattMonitor = {
 extern int rt9532_get_charger_online(void);
 #endif
 
-static int null_fn(void)
+/*/static int null_fn(void)
 {
         return 0;                // for discharging status
-}
+}*/
 
 static int Temperature_fn(void)
 {
@@ -770,6 +770,7 @@ struct platform_device audio_pa_amplifier_device = {
 	.id = -1,
 };
 
+#if 0
 static int audio_pa_amplifier_speaker(u32 cmd, void *data)
 {
 	int ret = 0;
@@ -781,6 +782,7 @@ static int audio_pa_amplifier_speaker(u32 cmd, void *data)
 	}
 	return ret;
 }
+#endif
 
 static int audio_pa_amplifier_headset_init(void)
 {
@@ -792,7 +794,7 @@ static int audio_pa_amplifier_headset_init(void)
 	return 0;
 }
 
-static int audio_pa_amplifier_headset(u32 cmd, void *data)
+static int audio_pa_amplifier_headset(int cmd, void *data)
 {
 	gpio_direction_output(HEADSET_PA_CTL_GPIO, cmd);
 	return 0;
@@ -864,6 +866,7 @@ static struct _headset_button headset_button = {
 	.headset_map_code2push_code_board_method = headset_map_code2push_code_board_method,
 };
 
+/*
 static void mxd_cmmb_poweron()
 {
        gpio_direction_output(GPIO_CMMB_EN, 0);
@@ -891,14 +894,12 @@ err_gpio_init:
 	return ret;
 }
 
-
-
 static struct mxd_cmmb_026x_platform_data mxd_plat_data = {
 	.poweron  = mxd_cmmb_poweron,
 	.poweroff = mxd_cmmb_poweroff,
 	.init     = mxd_cmmb_init,
 };
-
+*/ 
 static int spi_cs_gpio_map[][2] = {
     {SPI0_WIFI_CS_GPIO,  0},
     {SPI1_CMMB_CS_GPIO,  0},
@@ -913,6 +914,7 @@ static struct spi_board_info spi_boardinfo[] = {
 		.max_speed_hz = 48 * 1000 * 1000,
 		.mode = SPI_CPOL | SPI_CPHA,
 	},
+	/*
 	{
 		.modalias = "cmmb-dev",
 		.bus_num = 1,
@@ -920,7 +922,7 @@ static struct spi_board_info spi_boardinfo[] = {
 		.max_speed_hz = 10 * 1000 * 1000,
 		.mode = SPI_CPOL | SPI_CPHA,
 		.platform_data = &mxd_plat_data,
-	},
+	}, */
 };
 
 
@@ -960,7 +962,7 @@ static int sc8810_add_misc_devices(void)
 
 static void __init sc8810_init_machine(void)
 {
-	int clk;
+	//int clk;
 	regulator_add_devices();
 	sprd_add_otg_device();
 	platform_device_add_data(&sprd_sdio0_device, &sd_detect_gpio, sizeof(sd_detect_gpio));

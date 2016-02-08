@@ -21,7 +21,9 @@ static uint32_t globalregs[] = {
 	SPRD_AHB_BASE + 0x200,
 };
 
+#ifndef CONFIG_NKERNEL
 static spinlock_t lock = __SPIN_LOCK_UNLOCKED(lock);
+#endif
 
 int32_t sprd_greg_read(uint32_t type, uint32_t reg_offset)
 {

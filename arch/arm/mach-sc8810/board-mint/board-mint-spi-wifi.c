@@ -44,7 +44,7 @@ static int bcm_wifi_power_state;
 static int bcm_wifi_reset_state;
 static void (*wifi_status_cb)(int card_present, void *dev_id);
 static void *wifi_status_cb_devid;
-static struct regulator *wlan_regulator_18 = NULL;
+//static struct regulator *wlan_regulator_18 = NULL;
 
 int bcm_wifi_power(int on);
 int bcm_wifi_reset(int on);
@@ -114,6 +114,8 @@ int __init bcm_init_wifi_mem(void)
 /* Control the BT_VDDIO and WLAN_VDDIO
 Always power on  According to spec
 */
+
+/*
 static int brcm_ldo_enable(void)
 {
 	int err;
@@ -131,7 +133,7 @@ static int brcm_ldo_enable(void)
 	}
 	regulator_enable(wlan_regulator_18);
 }
-
+*/
 int bcm_wifi_power(int on)
 {
 	pr_info("%s:%d \n", __func__, on);
@@ -159,7 +161,7 @@ int bcm_wifi_reset(int on)
 }
 
 
-static int bcm_wifi_status_register(
+/*static int bcm_wifi_status_register(
 		void (*callback)(int card_present, void *dev_id),
 		void *dev_id)
 {
@@ -174,7 +176,7 @@ static unsigned int bcm_wifi_status(struct device *dev)
 {
 	return bcm_wifi_cd;
 }
-
+*/
 int bcm_wifi_set_carddetect(int val)
 {
 	pr_info("%s: %d\n", __func__, val);

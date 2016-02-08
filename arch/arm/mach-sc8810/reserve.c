@@ -92,7 +92,7 @@ int __init sc8810_ramconsole_reserve_memblock(void)
 void __init sc8810_reserve(void)
 {
 	int ret;
-	if (ret = sc8810_pmem_reserve_memblock())
+	if ((ret = sc8810_pmem_reserve_memblock()))
 		pr_err("Fail to reserve mem for pmem. errno=%d\n", ret);
 
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
