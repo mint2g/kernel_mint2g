@@ -44,6 +44,7 @@ static ssize_t clock_action_write(struct file *file, const char __user *buf,
 	}
 	cmd[cmdsize] = 0;
 	str = cmd;
+	name = NULL; action = NULL; para=NULL;
 	do{
 		temp = strsep(&str, " \t\n\r");
 		if(temp == NULL || *temp == 0)

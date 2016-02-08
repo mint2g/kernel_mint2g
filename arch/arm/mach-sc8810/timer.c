@@ -191,6 +191,8 @@ static void sprd_gptimer_clocksource_init(void)
 
 /* ****************************************************************** */
 
+
+#if 0
 static cycle_t sprd_syscnt_read(struct clocksource *cs)
 {
 	unsigned int val1, val2;
@@ -225,6 +227,7 @@ static void sprd_syscnt_clocksource_init(void)
 
 	clocksource_register_hz(&sprd_syscnt, SYSCNT_FREQ);
 }
+#endif 
 
 /* ****************************************************************** */
 

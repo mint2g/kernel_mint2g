@@ -54,7 +54,7 @@ static ssize_t ss_musb_info_attrs_show(struct device *pdev, struct device_attrib
 	return count;
 }
 
-int musb_info_handler(struct notifier_block *nb, unsigned long event, void *para)
+void musb_info_handler(struct notifier_block *nb, unsigned long event, void *para)
 {
 	switch(event)
 	{
@@ -65,9 +65,11 @@ int musb_info_handler(struct notifier_block *nb, unsigned long event, void *para
 }
 EXPORT_SYMBOL(musb_info_handler);
 
+/*
 static ssize_t ss_musb_info_attrs_store(struct device *pdev, struct device_attribute *attr, char *buf, size_t count)
 {
 }
+*/
 
 static int __init ss_musb_info_init(void)
 {

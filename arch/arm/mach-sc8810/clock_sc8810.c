@@ -97,7 +97,7 @@ static void sc8800g2_mpllcore_init(struct clk *clk);
 static unsigned long sc8800g2_mpllcore_recalc(struct clk *clk);
 static int sc8800g2_mpllcore_reprogram(struct clk *clk, unsigned long rate);
 
-static unsigned long sc8800g2_dpllcore_recalc(struct clk *clk);
+//static unsigned long sc8800g2_dpllcore_recalc(struct clk *clk);
 
 
 static int clkll_enable_null(struct clk *clk)
@@ -1765,16 +1765,17 @@ static unsigned long sc8800g2_mpllcore_recalc(struct clk *clk)
 
 }
 
-static unsigned long sc8800g2_dpllcore_recalc(struct clk *clk)
+/*static unsigned long sc8800g2_dpllcore_recalc(struct clk *clk)
 {
 	unsigned long refclk = 4000000;
 	unsigned long v = __raw_readl(GR_DPLL_CTRL);
 	return refclk * (v & 0x7ff);
-}
+}*/
+
 
 static int sc8800g2_mpllcore_reprogram(struct clk *clk, unsigned long rate)
 {
-	u32 mpll_refin, mpll_n, mpll_cfg;
+	u32 mpll_refin, mpll_n, mpll_cfg,gr_gen1;
 	clk->rate = rate;
 	rate /= MHz;
 	mpll_cfg = __raw_readl(GR_MPLL_MN);
@@ -1798,7 +1799,7 @@ static int sc8800g2_mpllcore_reprogram(struct clk *clk, unsigned long rate)
 	mpll_cfg &= ~GR_MPLL_N_MASK;
 	mpll_cfg |= mpll_n;
 
-	u32 gr_gen1 = __raw_readl(GR_GEN1);
+	gr_gen1 = __raw_readl(GR_GEN1);
 	gr_gen1 |= BIT(9);
 	__raw_writel(gr_gen1, GR_GEN1);
 	pr_debug("before, mpll_cfg:0x%x, mpll_n:%u, mpll_refin:%u\n", __raw_readl(GR_MPLL_MN), mpll_n, mpll_refin);
@@ -2307,7 +2308,8 @@ void *alloc_share_memory(unsigned int size, unsigned int res_id)
 int __init sc8810_clock_init(void)
 {
 	struct sc88xx_clk *c;
-	struct clk *p;
+	// unused?
+	//struct clk *p;
 
 	/* modem clock begin*/
 	int ret, index;
