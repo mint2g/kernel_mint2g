@@ -88,7 +88,7 @@
 #define CTL_EFUSE_BASE_PHYS			( 0x89000000 )
 #define CTL_EFUSE_BASE				( ctl_efuse_base )
 
-static spinlock_t lock = __SPIN_LOCK_UNLOCKED(lock);
+//static spinlock_t lock = __SPIN_LOCK_UNLOCKED(lock);
 
 static inline void __raw_bits_and(unsigned int v, unsigned int a)
 {
@@ -187,7 +187,7 @@ int sci_efuse_lock(unsigned blk)
 int sci_efuse_calibration_get(unsigned int* p_cal_data)
 {
 	int data;
-	unsigned int cal_temp;
+	//unsigned int cal_temp;
 	unsigned short adc_temp;
 
 	sci_efuse_poweron();
