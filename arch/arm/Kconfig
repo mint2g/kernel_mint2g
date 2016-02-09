@@ -2016,7 +2016,7 @@ config CPU_FREQ_PXA
 	select CPU_FREQ_DEFAULT_GOV_USERSPACE
 
 config CPU_FREQ_SC8810
-	bool "CPUfreq support for Spreadtrum SC8810 CPUs"
+	tristate "CPUfreq support for Spreadtrum SC8810 CPUs"
 	depends on CPU_FREQ && ARCH_SC8810
 
 config CPU_FREQ_SC8825
