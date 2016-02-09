@@ -395,13 +395,22 @@ struct platform_device sprd_vsp_device = {
 };
 
 #ifdef CONFIG_ION
+
+#ifndef CONFIG_SC8810_CANIHAZ_MOAR_RAM_NOCAM
+#define SPRD_ION_CUSTOM_SIZE SPRD_ION_SIZE
+#define SPRD_ION_OVERLAY_CUSTOM_SIZE SPRD_ION_OVERLAY_SIZE
+#else
+#define SPRD_ION_CUSTOM_SIZE (0)
+#define SPRD_ION_OVERLAY_CUSTOM_SIZE (0)
+#endif
+
 struct ion_platform_heap sprd_ion_heaps[] = {
 		{
 			.id	= ION_HEAP_TYPE_CARVEOUT,
 			.type	= ION_HEAP_TYPE_CARVEOUT,
 			.name	= "ion_carveout_heap",
 			.base   = SPRD_ION_BASE,
-			.size   = SPRD_ION_SIZE,
+			.size   = SPRD_ION_CUSTOM_SIZE ,
 		},
 #if CONFIG_SPRD_ION_OVERLAY_SIZE
 		{
@@ -409,7 +418,7 @@ struct ion_platform_heap sprd_ion_heaps[] = {
 			.type	= ION_HEAP_TYPE_CARVEOUT,
 			.name	= "ion_carveout_heap_overlay",
 			.base   = SPRD_ION_OVERLAY_BASE,
-			.size   = SPRD_ION_OVERLAY_SIZE,
+			.size   = SPRD_ION_OVERLAY_CUSTOM_SIZE ,
 		},
 #endif
 };

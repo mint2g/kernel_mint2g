@@ -141,3 +141,12 @@ config SC8810_DDR_6G
         bool "SC8810 feature to use 6Gb DDR"
 
 endif
+
+config SC8810_CANIHAZ_MOAR_RAM_NOCAM
+	depends on ARCH_SC8810
+	default n
+	bool "can i haz moar RAM? BREAKS CAMERA!!!"
+	help
+	  This option disables memory allocation of camera giving more free memory.
+	  (about 23Mb). Enabling this option wil ofcourse  break camera.
+	  TODO: Add an sysfs control to let users modify this at runtime. Instead of setting here only.
