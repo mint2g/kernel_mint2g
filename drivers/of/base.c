@@ -18,7 +18,7 @@
  *      2 of the License, or (at your option) any later version.
  */
 #include <linux/module.h>
-#include <linux/of.h>
+#include "of_copy.h"
 #include <linux/spinlock.h>
 #include <linux/slab.h>
 #include <linux/proc_fs.h>
