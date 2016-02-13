@@ -1,0 +1,69 @@
+
+
+config CPU_FREQ_GOV_LULZACTIVE2
+	tristate "'lulzactive' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  When workload is greater than or equal to 60%, the governor scales up CPU to next higher step. When workload is less than 60%, governor scales down CPU to next lower step. When screen is off, frequency is locked to global scaling minimum frequency.
+
+config CPU_FREQ_GOV_SMARTASS2
+	tristate "'smartassV2' cpufreq governor"
+	depends on CPU_FREQ
+	help
+SmartassV2 is a governor (controls the frequency of the CPU at each give moment) which like the first smartass is generally based on the implementation of interactive with some major changes and the addition of a built in sleep profile (behaves a bit differently when screen is off vs. on).The smartassV2 improves the very naive scheme which the first smartass had
+
+config CPU_FREQ_GOV_WHEATLEY
+	tristate "'wheatley' cpufreq governor"
+	depends on CPU_FREQ
+     ---help---
+Building on the classic 'ondemand' governor is implemented Wheatley governor. The governor has two additional parameters that control the state.
+
+config CPU_FREQ_GOV_LAGFREE
+        tristate "'lagfree' cpufreq governor"
+        depends on CPU_FREQ
+        ---help---
+Lagfree is similar to ondemand. Main difference is it's optimization to become more battery friendly. Frequency is gracefully decreased and increased, unlike ondemand which jumps to 100% too often. Lagfree does not skip any frequency step while scaling up or down. Remember that if there's a requirement for sudden burst of power, lagfree can not satisfy that since it has to raise cpu through each higher frequency step from current. Some users report that video playback using lagfree stutters a little.
+
+config CPU_FREQ_GOV_ONDEMANDX
+        tristate "'ondemandX' cpufreq policy governor"
+        select CPU_FREQ_TABLE
+        ---help---
+Basically an ondemand with suspend/wake profiles. This governor is supposed to be a battery friendly ondemand. When screen is off, max frequency is capped at 500 mhz. Even though ondemand is the default governor in many kernel and is considered safe/stable, the support for ondemand/ondemandX depends on CPU capability to do fast frequency switching which are very low latency frequency transitions. 
+
+
+config CPU_FREQ_GOV_ONDEMANDPLUS
+   tristate "'ondemandplus' cpufreq policy governor"
+   select CPU_FREQ_TABLE
+   help
+   The governor does a periodic polling and
+   changes frequency based on the CPU utilization.
+   The support for this governor depends on CPU capability to
+   do fast frequency switching (i.e, very low latency frequency
+   transitions).
+  
+  
+config CPU_FREQ_GOV_INTELLIDEMAND
+   tristate "'intellidemand' cpufreq policy governor"
+   select CPU_FREQ_TABLE
+   help
+   An intelligent ondemand that enters browsing mode to limit max frequency when GPU is idling, and (exits browsing mode) behaves like ondemand when GPU is busy; to deliver performance for gaming and such. Intellidemand does not jump to highest frequency when screen is off.
+ 
+
+config CPU_FREQ_GOV_INTELLIACTIVE
+   tristate "'intelliactive' cpufreq policy governor"
+   help 
+Based off Google's Interactive governor with the following enhancements so that the system is more responsive to interactive workloads.
+
+  
+config CPU_FREQ_GOV_LIONHEART
+   tristate "'lionheart' cpufreq policy governor"
+   depends on CPU_FREQ
+   ---help---
+Lionheart is a conservative-based governor which is based on samsung update3 source. The tunables (such as the thresholds and sampling rate) were changed so the governor behaves more like the performance one, at the cost of battery as the scaling is very aggressive.
+
+config CPU_FREQ_GOV_VIRTUOUS
+	tristate "'virtuous' cpufreq policy governor"
+	depends on CPU_FREQ
+	help
+	  Based on smartassv2, sets the max cpu for wake and sleep and changes the governor when your device is awake or asleep. It saves battery by lowering cpu frequencies while the device sleeps, when it awakes it automatically speeds it up again. Or alternately you can set the cpu.
+
