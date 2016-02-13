@@ -34,6 +34,8 @@
 #include <asm/cputime.h>
 #include <linux/input.h>
 
+#include "kcpustat_hackport.h"
+
 static int active_count;
 
 struct cpufreq_interactive_cpuinfo {
@@ -157,12 +159,12 @@ static inline cputime64_t get_cpu_idle_time_jiffy(unsigned int cpu,
 
 	cur_wall_time = jiffies64_to_cputime64(get_jiffies_64());
 
-	busy_time  = kcpustat_cpu(cpu).cpustat[CPUTIME_USER];
-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_SYSTEM];
-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_IRQ];
-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_SOFTIRQ];
-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_STEAL];
-	busy_time += kcpustat_cpu(cpu).cpustat[CPUTIME_NICE];
+	busy_time  = kcpustat_calc(cpu, CPUTIME_USER);
+	busy_time += kcpustat_calc(cpu, CPUTIME_SYSTEM);
+	busy_time += kcpustat_calc(cpu, CPUTIME_IRQ);
+	busy_time += kcpustat_calc(cpu, CPUTIME_SOFTIRQ);
+	busy_time += kcpustat_calc(cpu, CPUTIME_STEAL);
+	busy_time += kcpustat_calc(cpu, CPUTIME_NICE);
 
 	idle_time = cur_wall_time - busy_time;
 	if (wall)
