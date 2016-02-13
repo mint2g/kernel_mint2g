@@ -33,6 +33,8 @@
 #include <linux/powersuspend.h>
 #endif
 
+#include "kcpustat_hackport.h"
+
 #define INTELLIDEMAND_MAJOR_VERSION    5
 #define INTELLIDEMAND_MINOR_VERSION    5
 
@@ -284,12 +286,12 @@ static inline u64 get_cpu_idle_time_jiffy(unsigned int cpu, u64 *wall)
 
 	cur_wall_time = jiffies64_to_cputime64(get_jiffies_64());
 
-	busy_time  = kcpustat_cpu(cpu).cpustat[user];
-	busy_time += kcpustat_cpu(cpu).cpustat[system];
-	busy_time += kcpustat_cpu(cpu).cpustat[irq];
-	busy_time += kcpustat_cpu(cpu).cpustat[softirq];
-	busy_time += kcpustat_cpu(cpu).cpustat[steal];
-	busy_time += kcpustat_cpu(cpu).cpustat[nice];
+	busy_time  = kcpustat_calc(cpu, CPUTIME_USER);
+	busy_time += kcpustat_calc(cpu, CPUTIME_SYSTEM);
+	busy_time += kcpustat_calc(cpu, CPUTIME_IRQ);
+	busy_time += kcpustat_calc(cpu, CPUTIME_SOFTIRQ);
+	busy_time += kcpustat_calc(cpu, CPUTIME_STEAL);
+	busy_time += kcpustat_calc(cpu, CPUTIME_NICE);
 
 	idle_time = cur_wall_time - busy_time;
 	if (wall)
@@ -817,7 +819,7 @@ static ssize_t store_ignore_nice_load(struct kobject *a, struct attribute *b,
 		dbs_info->prev_cpu_idle = get_cpu_idle_time(j,
 						&dbs_info->prev_cpu_wall);
 		if (dbs_tuners_ins.ignore_nice)
-			dbs_info->prev_cpu_nice = kcpustat_cpu(j).cpustat[nice];
+			dbs_info->prev_cpu_nice = kcpustat_calc(j, CPUTIME_NICE);
 
 	}
 	return count;
@@ -1381,7 +1383,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 			u64 cur_nice;
 			unsigned long cur_nice_jiffies;
 
-			cur_nice = kcpustat_cpu(j).cpustat[nice] -
+			cur_nice = kcpustat_calc(j,CPUTIME_NICE) -
 					 j_dbs_info->prev_cpu_nice;
 			/*
 			 * Assumption: nice time between sampling periods will
@@ -1390,7 +1392,7 @@ static void dbs_check_cpu(struct cpu_dbs_info_s *this_dbs_info)
 			cur_nice_jiffies = (unsigned long)
 					cputime64_to_jiffies64(cur_nice);
 
-			j_dbs_info->prev_cpu_nice = kcpustat_cpu(j).cpustat[nice];
+			j_dbs_info->prev_cpu_nice = kcpustat_calc(j, CPUTIME_NICE);
 			idle_time += jiffies_to_usecs(cur_nice_jiffies);
 		}
 
@@ -2165,7 +2167,7 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 			j_dbs_info->prev_load = 100 * tmp;
 			if (dbs_tuners_ins.ignore_nice)
 				j_dbs_info->prev_cpu_nice =
-						kcpustat_cpu(j).cpustat[nice];
+						kcpustat_calc(j,CPUTIME_NICE);
 			set_cpus_allowed(j_dbs_info->sync_thread,
 					 *cpumask_of(j));
 			if (!dbs_tuners_ins.powersave_bias)
