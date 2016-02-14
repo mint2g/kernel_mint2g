@@ -159,6 +159,7 @@ static inline void rcu_nmi_exit(void)
 extern void rcu_nmi_enter(void);
 extern void rcu_nmi_exit(void);
 #endif
+#endif
 
 /*
  * It is safe to do non-atomic ops on ->hardirq_context,
