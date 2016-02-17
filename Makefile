@@ -375,7 +375,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fmodulo-sched -fmodulo-sched-allow-regmoves \
 		   -funswitch-loops -fpredictive-commoning -fgcse-after-reload \
 		   -fno-delete-null-pointer-checks \
-		   -munaligned-access
+		   -munaligned-access -mcpu=cortex-a5 -mtune=cortex-a5
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
