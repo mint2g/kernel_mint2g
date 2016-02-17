@@ -51,7 +51,7 @@ static unsigned int awake_ideal_freq;
  * that practically when sleep_ideal_freq==0 the awake_ideal_freq is used
  * also when suspended).
  */
-#define DEFAULT_SLEEP_IDEAL_FREQ (100*1000)
+#define DEFAULT_SLEEP_IDEAL_FREQ (600*1000)
 static unsigned int sleep_ideal_freq;
 
 /*
@@ -59,7 +59,7 @@ static unsigned int sleep_ideal_freq;
  * Zero disables and causes to always jump straight to max frequency.
  * When below the ideal freqeuncy we always ramp up to the ideal freq.
  */
-#define DEFAULT_RAMP_UP_STEP (200*1000)
+#define DEFAULT_RAMP_UP_STEP (100*1000)
 static unsigned int ramp_up_step;
 
 /*
@@ -74,7 +74,7 @@ static unsigned int ramp_down_step;
 /*
  * CPU freq will be increased if measured load > max_cpu_load;
  */
-#define DEFAULT_MAX_CPU_LOAD 55
+#define DEFAULT_MAX_CPU_LOAD 50
 static unsigned long max_cpu_load;
 
 /*
@@ -168,7 +168,7 @@ static
 struct cpufreq_governor cpufreq_gov_smartass2 = {
 	.name = "smartassV2",
 	.governor = cpufreq_governor_smartass,
-	.max_transition_latency = 9000000,
+	.max_transition_latency = 10000000,
 	.owner = THIS_MODULE,
 };
 

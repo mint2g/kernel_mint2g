@@ -100,7 +100,7 @@ enum {
 /*
  * CPU freq will be increased if measured load > inc_cpu_load;
  */
-#define DEFAULT_INC_CPU_LOAD 60
+#define DEFAULT_INC_CPU_LOAD 50
 static unsigned long inc_cpu_load;
 
 /*
@@ -230,7 +230,7 @@ static
 struct cpufreq_governor cpufreq_gov_lulzactive = {
 	.name = "lulzactive",
 	.governor = cpufreq_governor_lulzactive,
-	.max_transition_latency = 9000000,
+	.max_transition_latency = 10000000,
 	.owner = THIS_MODULE,
 };
 

@@ -122,7 +122,7 @@ static
 struct cpufreq_governor cpufreq_gov_virtuous = {
         .name = "virtuous",
         .governor = cpufreq_governor_virtuous,
-        .max_transition_latency = 9000000,
+        .max_transition_latency = 10000000,
         .owner = THIS_MODULE,
 };
 
