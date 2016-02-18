@@ -1530,7 +1530,7 @@ static void on_task_ready_timer_expired(unsigned long x)
 {
 	struct stc311x_chip *chip = i2c_get_clientdata(sav_client);
 	chip->task_ready = 1;
-	printk("GasGauge ready\n");
+	//printk("GasGauge ready\n");
 }
 #endif
 
@@ -1548,7 +1548,7 @@ int GasGauge_Task(GasGauge_DataTypeDef *GG)
 
 	if(!chip->init_done)
 	{
-		printk("GasGauge is not initialization\n");
+		//printk("GasGauge is not initialization\n");
 		return (-1);
 	}
 
@@ -1588,7 +1588,7 @@ int GasGauge_Task(GasGauge_DataTypeDef *GG)
   res=STC311x_ReadBatteryData(&BattData);  /* read battery data into global variables */
   if (res!=0) return(-1); /* abort in case of I2C failure */
    
-  printk("GasGauge_Task STC_Status [%x]\n", BattData.STC_Status);
+  //printk("GasGauge_Task STC_Status [%x]\n", BattData.STC_Status);
   
   /* check if RAM data is ok (battery has not been changed) */
   STC311x_ReadRamData(GG_Ram.db);
@@ -1761,7 +1761,7 @@ int GasGauge_Task(GasGauge_DataTypeDef *GG)
   STC311x_WriteRamData(GG_Ram.db);
 
 #ifdef STC3115_DEBUG
-  printk("STC3115:%s vol=%d, curr=%d, temp=%d, SOC=%d, ocv=%d, avg_vol=%d, avd_curr=%d, avg_temp=%d, avg_soc=%d, GGsts=%c, STCsts=0x%x, ExtTemp=%d, Count=%d, HRSOC=%d, CC_cnf=0x%x, VM_cnf=0x%x, CC_adj=0x%x, VM_adj=0x%x, Online=%d, BattSts=%d\n", 
+  //printk("STC3115:%s vol=%d, curr=%d, temp=%d, SOC=%d, ocv=%d, avg_vol=%d, avd_curr=%d, avg_temp=%d, avg_soc=%d, GGsts=%c, STCsts=0x%x, ExtTemp=%d, Count=%d, HRSOC=%d, CC_cnf=0x%x, VM_cnf=0x%x, CC_adj=0x%x, VM_adj=0x%x, Online=%d, BattSts=%d\n", 
 		  __func__, GG->Voltage, GG->Current, GG->Temperature, GG->SOC, GG->OCV, GG->AvgVoltage, GG->AvgCurrent, GG->AvgTemperature, GG->AvgSOC, GG_Ram.reg.GG_Status, BattData.STC_Status, GG->ForceExternalTemperature, BattData.ConvCounter, BattData.HRSOC, BattData.CC_cnf, BattData.VM_cnf, BattData.CC_adj, BattData.VM_adj, BattData.BattOnline, BattData.BattState);  
 #endif
 
@@ -2317,19 +2317,19 @@ int read_VF(unsigned int *VF)
 	struct stc311x_chip *chip = i2c_get_clientdata(sav_client);
 	if(!chip->init_done)
 	{
-		printk("GasGauge has not init yet\n");
+		//printk("GasGauge has not init yet\n");
 		*VF = STC311x_VF_BATTERY_ON;
 		return (-1);
 	}
 	
 	if(BattData.BattOnline)
 	{
-		printk("read_VF - Battery ON \n");
+		//printk("read_VF - Battery ON \n");
 		*VF = STC311x_VF_BATTERY_ON;
 	}
 	else
 	{
-		printk("read_VF - Battery OFF \n");
+		//printk("read_VF - Battery OFF \n");
 		*VF = STC311x_VF_BATTERY_OFF;
 	}
 
@@ -2375,7 +2375,7 @@ static void stc311x_init_work(struct work_struct *work)
 #endif
 #ifdef CONFIG_SEC_CHARGING_FEATURE
 	chip->task_ready = 1;
-	printk("GasGauge ready\n");
+	//printk("GasGauge ready\n");
 #endif
 
 #ifdef USE_LOW_BAT_DET
@@ -2495,7 +2495,7 @@ static int stc311x_suspend(struct i2c_client *client,
 
 #ifdef CONFIG_SEC_CHARGING_FEATURE
 	chip->task_ready = 1;
-	printk("GasGauge ready\n");
+	//printk("GasGauge ready\n");
 #endif
 #if 0
 	cancel_delayed_work(&chip->work);
