@@ -22,7 +22,7 @@ DHDCFLAGS += -DSUPPORT_DEEP_SLEEP
 DHDCFLAGS += -DSIMPLE_MAC_PRINT
 
 # Print out kernel panic point of file and line info when assertion happened
-DHDCFLAGS += -DBCMASSERT_LOG
+#DHDCFLAGS += -DBCMASSERT_LOG
 
 # For p2p connection issue
 DHDCFLAGS += -DWL_CFG80211_GON_COLLISION
