@@ -13,13 +13,7 @@
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/cpufreq.h>
-//added by xing wei for mint
-#ifdef CONFIG_CPU_FREQ_SC8810
-extern int global_cpufreq_min_limit;
-extern int global_cpufreq_max_limit;
-extern spinlock_t g_cpufreq_lock;
-//end //added by xing wei
-#endif
+
 
 /*********************************************************************
  *                     FREQUENCY TABLE HELPERS                       *

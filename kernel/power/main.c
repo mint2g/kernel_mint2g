@@ -12,9 +12,6 @@
 #include <linux/string.h>
 #include <linux/resume-trace.h>
 #include <linux/workqueue.h>
-//added by xing wei for mint
-#include <linux/cpufreq.h>
-//end //added by xing wei
 
 #include "power.h"
 #include <mach/system.h>
@@ -316,91 +313,6 @@ power_attr(wake_lock);
 power_attr(wake_unlock);
 #endif
 
-#ifdef CONFIG_CPU_FREQ_SC8810
-//added by xing wei for mint
-spinlock_t  g_cpufreq_lock;
-int global_cpufreq_min_limit;
-static ssize_t cpufreq_min_limit_show(struct kobject *kobj,
-				       struct kobj_attribute *attr,
-				       char *buf)
-{
-	return sprintf(buf, "%d\n", global_cpufreq_min_limit);
-}
-
-static ssize_t
-cpufreq_min_limit_store(struct kobject *kobj, struct kobj_attribute *attr,
-			 const char *buf, size_t n)
-{
-	unsigned int ret = -EINVAL;
-	int tmp;
-	ret = sscanf(buf, "%d", &tmp);
-	if (ret != 1)
-		return -EINVAL;
-
-	spin_lock(&g_cpufreq_lock);
-	global_cpufreq_min_limit = tmp; 
-	spin_unlock(&g_cpufreq_lock);
-	return n;
-}
-
-power_attr(cpufreq_min_limit);
-
-int global_cpufreq_max_limit;
-static ssize_t cpufreq_max_limit_show(struct kobject *kobj,
-				       struct kobj_attribute *attr,
-				       char *buf)
-{
-	return sprintf(buf, "%d\n", global_cpufreq_max_limit);
-}
-
-static ssize_t
-cpufreq_max_limit_store(struct kobject *kobj, struct kobj_attribute *attr,
-			 const char *buf, size_t n)
-{
-	unsigned int ret = -EINVAL;
-	int tmp;
-	ret = sscanf(buf, "%d", &tmp);
-	if (ret != 1)
-		return -EINVAL;
-
-	spin_lock(&g_cpufreq_lock);
-	global_cpufreq_max_limit = tmp; 
-	spin_unlock(&g_cpufreq_lock);
-	return n;
-}
-
-power_attr(cpufreq_max_limit);
-
-extern struct cpufreq_frequency_table sc8810g_freq_table[];
-static ssize_t cpufreq_table_show(struct kobject *kobj,
-				       struct kobj_attribute *attr,
-				       char *buf)
-{
-	unsigned int i = 0;
-	ssize_t count = 0;
-	struct cpufreq_frequency_table *table = sc8810g_freq_table;
-
-	for (i = 0; (table[i].frequency != CPUFREQ_TABLE_END); i++) {
-		if (table[i].frequency == CPUFREQ_ENTRY_INVALID)
-			continue;
-		count += sprintf(&buf[count], "%d ", table[i].frequency);
-	}
-	count += sprintf(&buf[count], "\n");
-
-	return count;
-}
-
-static ssize_t
-cpufreq_table_store(struct kobject *kobj, struct kobj_attribute *attr,
-			 const char *buf, size_t n)
-{
-	return -EINVAL;
-}
-
-power_attr(cpufreq_table);
-
-//end //added by xing wei
-#endif
 #ifdef CONFIG_MACH_MINT
 extern void wakelock_suspend(void);
 static ssize_t release_wakelock_show(struct kobject *kobj, struct kobj_attribute *attr,
@@ -456,11 +368,6 @@ power_attr(restart_cpc);
 
 static struct attribute * g[] = {
 	&state_attr.attr,
-#ifdef CONFIG_CPU_FREQ_SC8810
-	&cpufreq_min_limit_attr.attr,
-	&cpufreq_max_limit_attr.attr,
-	&cpufreq_table_attr.attr,
-#endif
 #ifdef CONFIG_MACH_MINT 
 	&release_wakelock_attr.attr,
 	&restart_cpc_attr.attr,
