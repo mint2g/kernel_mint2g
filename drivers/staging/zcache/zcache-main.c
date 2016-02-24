@@ -34,7 +34,8 @@
 #include <linux/idr.h>
 #include "tmem.h"
 
-#include "../zsmalloc/zsmalloc.h"
+#include <linux/zsmalloc.h>
+#include <linux/zpool.h>
 
 #ifdef CONFIG_CLEANCACHE
 #include <linux/cleancache.h>
@@ -1208,7 +1209,7 @@ static void *zcache_pampd_create(char *data, size_t size, bool raw, int eph,
 		}
 		/* reject if mean compression is too poor */
 		if ((clen > zv_max_mean_zsize) && (curr_pers_pampd_count > 0)) {
-			total_zsize = zs_get_total_size_bytes(cli->zspool);
+			total_zsize = zs_get_total_pages(cli->zspool) * PAGE_SIZE;
 			zv_mean_zsize = div_u64(total_zsize,
 						curr_pers_pampd_count);
 			if (zv_mean_zsize > zv_max_mean_zsize) {
@@ -1804,9 +1805,9 @@ static int zcache_cleancache_init_shared_fs(char *uuid, size_t pagesize)
 static struct cleancache_ops zcache_cleancache_ops = {
 	.put_page = zcache_cleancache_put_page,
 	.get_page = zcache_cleancache_get_page,
-	.invalidate_page = zcache_cleancache_flush_page,
-	.invalidate_inode = zcache_cleancache_flush_inode,
-	.invalidate_fs = zcache_cleancache_flush_fs,
+	.flush_page = zcache_cleancache_flush_page,
+	.flush_inode = zcache_cleancache_flush_inode,
+	.flush_fs = zcache_cleancache_flush_fs,
 	.init_shared_fs = zcache_cleancache_init_shared_fs,
 	.init_fs = zcache_cleancache_init_fs
 };
