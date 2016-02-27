@@ -6,7 +6,12 @@
 #include <mach/system.h>
 //#include <mach/regs-pmu.h>
 #include <mach/gpio.h>
-#include <mach/sec_debug.h>
+
+#define MAGIC_ADDR			(SPRD_IRAM_BASE + 0x00003f24)
+#define SPRD_INFORM0			(MAGIC_ADDR + 0x00000004)
+#define SPRD_INFORM1			(SPRD_INFORM0 + 0x00000004)
+#define SPRD_INFORM2			(SPRD_INFORM1 + 0x00000004)
+#define SPRD_INFORM3			(SPRD_INFORM2 + 0x00000004)
 
 #if 0 /* should be fixed later */
 /* charger cable state */

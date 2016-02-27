@@ -4,7 +4,7 @@ obj-y += io.o irq.o timer.o devices.o arch_asm.o arch_init.o globalregs.o \
          watchdog.o
 
 obj-y += sys_debug.o
-obj-y += sec-common.o
+obj-y += sec-common.o sec-reboot.o
 
 ifeq ($(CONFIG_NKERNEL),y)
 obj-$(CONFIG_PM) += pm_vlx.o
@@ -37,7 +37,7 @@ obj-y += $(sprdboard-y)
 obj-$(CONFIG_SC8810_VIBRATOR) += vibrator.o
 obj-$(CONFIG_ANDROID_RAM_CONSOLE) += ram_console.o
 obj-$(CONFIG_CPU_FREQ_SC8810) += cpufreq-sc8810.o
-obj-$(CONFIG_SEC_DEBUG) += sec_debug.o sec_gaf.o sec_getlog.o sec-reboot.o
+obj-$(CONFIG_SEC_DEBUG) += sec_debug.o sec_gaf.o sec_getlog.o
 obj-$(CONFIG_BCMDHD)  += dhd_adapter.o
 obj-$(CONFIG_BCMDHD89)  += dhd_adapter.o
 obj-$(CONFIG_SPRD_MEM_POOL)    += sprd_mem_pool.o
