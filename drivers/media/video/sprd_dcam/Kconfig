@@ -15,6 +15,8 @@ config CAMERA_5M
 config CAMERA_8M
 	bool "8M pixels"
 
+config CAMERA_NOCAM
+	bool "13M pixzeros"
 
 endchoice
 

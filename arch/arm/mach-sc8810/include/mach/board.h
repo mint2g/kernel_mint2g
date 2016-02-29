@@ -98,6 +98,8 @@
         #else
         #define SPRD_ION_SIZE   (8*1024*1024)
         #endif
+    #elif defined(CONFIG_CAMERA_NOCAM)
+    #define SPRD_ION_SIZE   (1*1024*1024)
     #else
     #define SPRD_ION_SIZE   (19*1024*1024)
     #endif
