@@ -18,7 +18,7 @@
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
-#include <video/ion_sprd.h>
+#include "ion_sprd.h"
 #include "../ion_priv.h"
 
 #include <asm/cacheflush.h>
