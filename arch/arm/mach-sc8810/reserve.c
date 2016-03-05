@@ -71,6 +71,7 @@ static int __init sc8810_6Gb_reserve_memblock(void)
 
 int __init sc8810_pmem_reserve_memblock(void)
 {
+	return -ENOMEM;
 	if (memblock_is_region_reserved(SPRD_PMEM_BASE, SPRD_IO_MEM_SIZE))
 		return -EBUSY;
 	if (memblock_reserve(SPRD_PMEM_BASE, SPRD_IO_MEM_SIZE))
