@@ -69,36 +69,35 @@ static int __init sc8810_6Gb_reserve_memblock(void)
 #endif
 
 
-int __init sc8810_pmem_reserve_memblock(void)
+int __init sc8810_iomem_reserve_memblock(void)
 {
 	if (memblock_is_region_reserved(SPRD_PMEM_BASE, SPRD_IO_MEM_SIZE))
 		return -EBUSY;
 	if (memblock_reserve(SPRD_PMEM_BASE, SPRD_IO_MEM_SIZE))
 		return -ENOMEM;
+    pr_info("sprd_iomem : reserved total of %u  bytes at %u ", SPRD_IO_MEM_SIZE,  SPRD_PMEM_BASE);
+    pr_info("sprd_iomem: devices memory \n"
+          "SPRD_PMEM_SIZE = %u \n"
+          "SPRD_PMEM_ADSP_SIZE = %u \n"
+          "SPRD_ROT_MEM_SIZE = %u \n"
+          "SPRD_SCALE_MEM_SIZE = %u \n"
+          "SPRD_ION_SIZE = %u \n"
+          "SPRD_ION_OVERLAY_SIZE = %u \n",
+          SPRD_PMEM_SIZE,
+          SPRD_PMEM_ADSP_SIZE,
+          SPRD_ROT_MEM_SIZE,
+          SPRD_SCALE_MEM_SIZE,
+          SPRD_ION_SIZE,
+          SPRD_ION_OVERLAY_SIZE);
 	return 0;
 }
 
-#ifdef CONFIG_ANDROID_RAM_CONSOLE
-int __init sc8810_ramconsole_reserve_memblock(void)
-{
-	if (memblock_is_region_reserved(SPRD_RAM_CONSOLE_START, SPRD_RAM_CONSOLE_SIZE))
-		return -EBUSY;
-	if (memblock_reserve(SPRD_RAM_CONSOLE_START, SPRD_RAM_CONSOLE_SIZE))
-		return -ENOMEM;
-	return 0;
-}
-#endif
 
 void __init sc8810_reserve(void)
 {
 	int ret;
-	if (ret = sc8810_pmem_reserve_memblock())
-		pr_err("Fail to reserve mem for pmem. errno=%d\n", ret);
-
-#ifdef CONFIG_ANDROID_RAM_CONSOLE
-	if (ret = sc8810_ramconsole_reserve_memblock())
-		pr_err("Fail to reserve mem for pmem. errno=%d\n", ret);
-#endif
+	if ((ret = sc8810_iomem_reserve_memblock()))
+		pr_err("sprd_iomem: fail to reserve mem for iomem. errno=%d\n", ret);
 
 #ifdef CONFIG_SC8810_DDR_6G
 	if (ret = sc8810_6Gb_reserve_memblock())
