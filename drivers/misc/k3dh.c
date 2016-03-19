@@ -274,7 +274,7 @@ static int k3dh_read_accel_xyz(struct k3dh_acc *acc)
 	return err;
 }
 
-#if defined(CONFIG_SENSORS_HSCDTD006A) || defined(CONFIG_SENSORS_HSCDTD008A) 
+#if defined(CONFIG_SENSORS_HSCD)
 static atomic_t flgEna;
 static atomic_t delay;
 
@@ -1010,7 +1010,7 @@ static struct i2c_driver k3dh_driver = {
 	.driver = {
 		.owner = THIS_MODULE,
 		.name = "k3dh",
-#if !defined(CONFIG_SENSORS_HSCDTD006A)  && !defined(CONFIG_SENSORS_HSCDTD008A)
+#if !defined(CONFIG_SENSORS_HSCD)
                 .pm = &k3dh_pm_ops,
 #endif                
 	},
