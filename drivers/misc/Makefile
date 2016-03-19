@@ -55,9 +55,10 @@ obj-$(CONFIG_APANIC)		+= apanic.o
 obj-$(CONFIG_SENSORS_AK8975)	+= akm8975.o
 obj-$(CONFIG_SENSORS_AK8963)	+= akm8963.o
 obj-$(CONFIG_YAS_532_ENABLE)		+= yas532/
+obj-$(CONFIG_SENSORS_HSCD)	+= hscd_i2c.o alps-input.o
 obj-$(CONFIG_SENSORS_K3DH)	+= k3dh.o
 obj-$(CONFIG_SENSORS_GP2AP002)	+= gp2ap002.o 
-obj-$(CONFIG_SENSORS_HSCD)	+= hscd_i2c.o alps-input.o
+
 obj-y				+= bmc150/
 obj-$(CONFIG_GPS_CTRL)		+= gpsctl.o
 obj-$(CONFIG_GPS_IRQ)		+= brcm_gps_irq.o
