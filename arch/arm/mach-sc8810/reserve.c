@@ -71,22 +71,14 @@ static int __init sc8810_6Gb_reserve_memblock(void)
 
 int __init sc8810_iomem_reserve_memblock(void)
 {
-	if (memblock_is_region_reserved(SPRD_PMEM_BASE, SPRD_IO_MEM_SIZE))
+	if (memblock_is_region_reserved(SPRD_ION_BASE , SPRD_IO_MEM_SIZE))
 		return -EBUSY;
-	if (memblock_reserve(SPRD_PMEM_BASE, SPRD_IO_MEM_SIZE))
+	if (memblock_reserve(SPRD_ION_BASE , SPRD_IO_MEM_SIZE))
 		return -ENOMEM;
-    pr_info("sprd_iomem : reserved total of %u  bytes at %u ", SPRD_IO_MEM_SIZE,  SPRD_PMEM_BASE);
+    pr_info("sprd_iomem : reserved total of %u  bytes at %x ", SPRD_IO_MEM_SIZE, SPRD_ION_BASE );
     pr_info("sprd_iomem: devices memory \n"
-          "SPRD_PMEM_SIZE = %u \n"
-          "SPRD_PMEM_ADSP_SIZE = %u \n"
-          "SPRD_ROT_MEM_SIZE = %u \n"
-          "SPRD_SCALE_MEM_SIZE = %u \n"
           "SPRD_ION_SIZE = %u \n"
           "SPRD_ION_OVERLAY_SIZE = %u \n",
-          SPRD_PMEM_SIZE,
-          SPRD_PMEM_ADSP_SIZE,
-          SPRD_ROT_MEM_SIZE,
-          SPRD_SCALE_MEM_SIZE,
           SPRD_ION_SIZE,
           SPRD_ION_OVERLAY_SIZE);
 	return 0;
