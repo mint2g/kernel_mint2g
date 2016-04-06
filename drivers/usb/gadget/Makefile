@@ -68,5 +68,5 @@ obj-$(CONFIG_USB_G_MULTI)	+= g_multi.o
 obj-$(CONFIG_USB_G_NOKIA)	+= g_nokia.o
 obj-$(CONFIG_USB_G_WEBCAM)	+= g_webcam.o
 obj-$(CONFIG_USB_G_NCM)		+= g_ncm.o
-obj-$(CONFIG_USB_G_ANDROID)	+= g_android.o
-obj-$(CONFIG_USB_G_ANDROID_SAMSUNG_COMPOSITE)	+= multi_config.o
+#obj-$(CONFIG_USB_G_ANDROID)	+= g_android.o
+#obj-$(CONFIG_USB_G_ANDROID_SAMSUNG_COMPOSITE)	+= multi_config.o
