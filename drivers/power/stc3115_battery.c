@@ -2288,8 +2288,8 @@ int read_soc(int *soc)
 			{
 				if(pre_batt_soc < chip->batt_soc)
 				{
-					pr_info("%s abnormal soc SKIP %d\n", __func__, chip->batt_soc);
-					chip->batt_soc = pre_batt_soc;
+					pr_info("%s abnormal soc not SKIPPING anyway %d\n", __func__, chip->batt_soc);
+					//chip->batt_soc = pre_batt_soc;
 				}
 			}
 		}
