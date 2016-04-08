@@ -42,6 +42,11 @@ config CPU_FREQ_STAT_DETAILS
 
 	  If in doubt, say N.
 
+config USERSPACE_VOLTAGE_CONTROL
+    bool "Custom voltage control via uVmV table"
+    help
+        Say Y here if you driver supports get_vdd_uv and get_sdd_uv.
+
 choice
 	prompt "Default CPUFreq governor"
 	default CPU_FREQ_DEFAULT_GOV_USERSPACE if CPU_FREQ_SA1100 || CPU_FREQ_SA1110

@@ -238,6 +238,11 @@ struct cpufreq_driver {
 	int	(*suspend)	(struct cpufreq_policy *policy);
 	int	(*resume)	(struct cpufreq_policy *policy);
 	struct freq_attr	**attr;
+
+#ifdef CONFIG_USERSPACE_VOLTAGE_CONTROL
+    ssize_t (*get_vdd_uv) (char *buf);
+    void (*set_vdd_uv) (const char *buf);
+#endif
 };
 
 /* flags */
