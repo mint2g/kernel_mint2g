@@ -34,7 +34,7 @@ ENTRY(do_vfp)
 	bne	1f
 
 	sub	r2, r2, #4		@ vfp was disabled so
-	str	r2, [ sp, #S_PC ]	@ bounce exception
+	str	r2, [sp, #S_PC]		@ bounce exception
 
 
 	ldr	r3, [r1, #ctx_vfp_get]	@ if we don't have just acquire
