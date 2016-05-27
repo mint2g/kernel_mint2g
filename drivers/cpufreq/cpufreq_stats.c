@@ -28,6 +28,14 @@
 
 static spinlock_t cpufreq_stats_lock;
 
+// i really dk why
+int of_property_read_u32_array(const struct device_node *np,
+				      char *propname,
+				      u32 *out_values,
+				      size_t sz);
+
+struct device_node *of_find_node_by_path(const char *path);
+
 #define CPUFREQ_STATDEVICE_ATTR(_name, _mode, _show) \
 static struct freq_attr _attr_##_name = {\
 	.attr = {.name = __stringify(_name), .mode = _mode, }, \
