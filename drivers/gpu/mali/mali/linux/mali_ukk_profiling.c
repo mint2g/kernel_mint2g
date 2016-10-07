@@ -33,7 +33,7 @@ int profiling_start_wrapper(struct mali_session_data *session_data, _mali_uk_pro
 	err = _mali_ukk_profiling_start(&kargs);
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	if (0 != put_user(kargs.limit, &uargs->limit))
@@ -60,7 +60,7 @@ int profiling_add_event_wrapper(struct mali_session_data *session_data, _mali_uk
 	err = _mali_ukk_profiling_add_event(&kargs);
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	return 0;
@@ -77,7 +77,7 @@ int profiling_stop_wrapper(struct mali_session_data *session_data, _mali_uk_prof
 	err = _mali_ukk_profiling_stop(&kargs);
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	if (0 != put_user(kargs.count, &uargs->count))
@@ -105,7 +105,7 @@ int profiling_get_event_wrapper(struct mali_session_data *session_data, _mali_uk
 	err = _mali_ukk_profiling_get_event(&kargs);
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	kargs.ctx = NULL; /* prevent kernel address to be returned to user space */
@@ -128,7 +128,7 @@ int profiling_clear_wrapper(struct mali_session_data *session_data, _mali_uk_pro
 	err = _mali_ukk_profiling_clear(&kargs);
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	return 0;
@@ -174,7 +174,7 @@ int profiling_report_sw_counters_wrapper(struct mali_session_data *session_data,
 
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	return 0;

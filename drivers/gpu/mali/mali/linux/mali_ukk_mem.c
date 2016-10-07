@@ -27,7 +27,7 @@ int mem_init_wrapper(struct mali_session_data *session_data, _mali_uk_init_mem_s
     err = _mali_ukk_init_mem(&kargs);
     if (_MALI_OSK_ERR_OK != err)
     {
-        return map_errcode(err);
+        return mali_map_errcode(err);
     }
 
     if (0 != put_user(kargs.mali_address_base, &uargs->mali_address_base)) goto mem_init_rollback;
@@ -59,7 +59,7 @@ int mem_term_wrapper(struct mali_session_data *session_data, _mali_uk_term_mem_s
     err = _mali_ukk_term_mem(&kargs);
     if (_MALI_OSK_ERR_OK != err)
     {
-        return map_errcode(err);
+        return mali_map_errcode(err);
     }
 
     return 0;
@@ -102,7 +102,7 @@ int mem_map_ext_wrapper(struct mali_session_data *session_data, _mali_uk_map_ext
     }
 
     /* Return the error that _mali_ukk_free_big_block produced */
-	return map_errcode(err_code);
+	return mali_map_errcode(err_code);
 }
 
 int mem_unmap_ext_wrapper(struct mali_session_data *session_data, _mali_uk_unmap_external_mem_s __user * argument)
@@ -124,7 +124,7 @@ int mem_unmap_ext_wrapper(struct mali_session_data *session_data, _mali_uk_unmap
 	err_code = _mali_ukk_unmap_external_mem( &uk_args );
 
 	/* Return the error that _mali_ukk_free_big_block produced */
-	return map_errcode(err_code);
+	return mali_map_errcode(err_code);
 }
 
 #if MALI_USE_UNIFIED_MEMORY_PROVIDER != 0
@@ -147,7 +147,7 @@ int mem_release_ump_wrapper(struct mali_session_data *session_data, _mali_uk_rel
 	err_code = _mali_ukk_release_ump_mem( &uk_args );
 
 	/* Return the error that _mali_ukk_free_big_block produced */
-	return map_errcode(err_code);
+	return mali_map_errcode(err_code);
 }
 
 int mem_attach_ump_wrapper(struct mali_session_data *session_data, _mali_uk_attach_ump_mem_s __user * argument)
@@ -187,7 +187,7 @@ int mem_attach_ump_wrapper(struct mali_session_data *session_data, _mali_uk_atta
     }
 
     /* Return the error that _mali_ukk_map_external_ump_mem produced */
-	return map_errcode(err_code);
+	return mali_map_errcode(err_code);
 }
 #endif /* MALI_USE_UNIFIED_MEMORY_PROVIDER */
 
@@ -202,7 +202,7 @@ int mem_query_mmu_page_table_dump_size_wrapper(struct mali_session_data *session
     kargs.ctx = session_data;
 
     err = _mali_ukk_query_mmu_page_table_dump_size(&kargs);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
     if (0 != put_user(kargs.size, &uargs->size)) return -EFAULT;
 
@@ -241,7 +241,7 @@ int mem_dump_mmu_page_table_wrapper(struct mali_session_data *session_data, _mal
     err = _mali_ukk_dump_mmu_page_table(&kargs);
     if (_MALI_OSK_ERR_OK != err)
     {
-        rc = map_errcode(err);
+        rc = mali_map_errcode(err);
         goto err_exit;
     }
 

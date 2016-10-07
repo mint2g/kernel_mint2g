@@ -59,7 +59,7 @@ int profiling_report_sw_counters_wrapper(struct mali_session_data *session_data,
 int vsync_event_report_wrapper(struct mali_session_data *session_data, _mali_uk_vsync_event_report_s __user *uargs);
 
 
-int map_errcode( _mali_osk_errcode_t err );
+int mali_map_errcode( _mali_osk_errcode_t err );
 
 #ifdef __cplusplus
 }

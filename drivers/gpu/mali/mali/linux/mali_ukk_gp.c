@@ -33,7 +33,7 @@ int gp_start_job_wrapper(struct mali_session_data *session_data, _mali_uk_gp_sta
 
     kargs.ctx = session_data;
     err = _mali_ukk_gp_start_job(&kargs);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
     kargs.ctx = NULL; /* prevent kernel address to be returned to user space */
     
@@ -64,7 +64,7 @@ int gp_get_core_version_wrapper(struct mali_session_data *session_data, _mali_uk
 
     kargs.ctx = session_data;
     err =  _mali_ukk_get_gp_core_version(&kargs);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
 	/* no known transactions to roll-back */
 
@@ -85,7 +85,7 @@ int gp_suspend_response_wrapper(struct mali_session_data *session_data, _mali_uk
 
     kargs.ctx = session_data;
     err = _mali_ukk_gp_suspend_response(&kargs);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
     if (0 != put_user(kargs.cookie, &uargs->cookie)) return -EFAULT;
 
@@ -103,7 +103,7 @@ int gp_get_number_of_cores_wrapper(struct mali_session_data *session_data, _mali
 
     kargs.ctx = session_data;
     err = _mali_ukk_get_gp_number_of_cores(&kargs);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
 	/* no known transactions to roll-back */
 

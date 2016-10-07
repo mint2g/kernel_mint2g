@@ -115,15 +115,15 @@ int mali_driver_init(void)
 
 	ret = _mali_dev_platform_register();
 	if (0 != ret) goto platform_register_failed;
-	ret = map_errcode(initialize_kernel_device());
+	ret = mali_map_errcode(initialize_kernel_device());
 	if (0 != ret) goto initialize_kernel_device_failed;
 
-	ret = map_errcode(mali_platform_init());
+	ret = mali_map_errcode(mali_platform_init());
 	if (0 != ret) goto platform_init_failed;
 
 	mali_osk_low_level_mem_init();
 
-	ret = map_errcode(mali_initialize_subsystems());
+	ret = mali_map_errcode(mali_initialize_subsystems());
 	if (0 != ret) goto initialize_subsystems_failed;
 
 	ret = initialize_sysfs();
@@ -287,7 +287,7 @@ static int mali_open(struct inode *inode, struct file *filp)
 
 	/* allocated struct to track this session */
     err = _mali_ukk_open((void **)&session_data);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
 	/* initialize file pointer */
 	filp->f_pos = 0;
@@ -306,12 +306,12 @@ static int mali_release(struct inode *inode, struct file *filp)
 	if (0 != MINOR(inode->i_rdev)) return -ENODEV;
 
     err = _mali_ukk_close((void **)&filp->private_data);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
 	return 0;
 }
 
-int map_errcode( _mali_osk_errcode_t err )
+int mali_map_errcode( _mali_osk_errcode_t err )
 {
     switch(err)
     {

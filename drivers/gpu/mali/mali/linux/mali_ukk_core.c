@@ -28,7 +28,7 @@ int get_api_version_wrapper(struct mali_session_data *session_data, _mali_uk_get
 
     kargs.ctx = session_data;
     err = _mali_ukk_get_api_version(&kargs);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
     if (0 != put_user(kargs.version, &uargs->version)) return -EFAULT;
     if (0 != put_user(kargs.compatible, &uargs->compatible)) return -EFAULT;
@@ -45,7 +45,7 @@ int wait_for_notification_wrapper(struct mali_session_data *session_data, _mali_
 
     kargs.ctx = session_data;
     err = _mali_ukk_wait_for_notification(&kargs);
-    if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+    if (_MALI_OSK_ERR_OK != err) return mali_map_errcode(err);
 
 	if(_MALI_NOTIFICATION_CORE_SHUTDOWN_IN_PROGRESS != kargs.type)
 	{
@@ -77,7 +77,7 @@ int post_notification_wrapper(struct mali_session_data *session_data, _mali_uk_p
 	err = _mali_ukk_post_notification(&kargs);
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	return 0;
@@ -94,7 +94,7 @@ int get_user_settings_wrapper(struct mali_session_data *session_data, _mali_uk_g
 	err = _mali_ukk_get_user_settings(&kargs);
 	if (_MALI_OSK_ERR_OK != err)
 	{
-		return map_errcode(err);
+		return mali_map_errcode(err);
 	}
 
 	kargs.ctx = NULL; /* prevent kernel address to be returned to user space */

@@ -37,7 +37,7 @@ KDIR ?= $(KDIR-$(CPU))
 
 export CONFIG
 
-export CONFIG_UMP := m
+export CONFIG_UMP := y
 ifeq ($(BUILD),debug)
 export CONFIG_UMP_DEBUG := y
 else
