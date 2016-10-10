@@ -229,11 +229,6 @@ int dhd_read_macaddr(struct dhd_info *dhd, struct ether_addr *mac)
 	char randommac[3]    = {0};
 	char buf[18]         = {0};
 	char *filepath_efs       = MACINFO_EFS;
-#ifdef CONFIG_TARGET_LOCALE_VZW
-	char *nvfilepath       = "/data/misc/wifi/.nvmac.info";
-#else
-	char *nvfilepath       = NVMACINFO;
-#endif
 	int ret = 0;
 
 		fp = filp_open(filepath_efs, O_RDONLY, 0);
