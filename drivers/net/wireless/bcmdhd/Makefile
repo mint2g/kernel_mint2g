@@ -205,7 +205,7 @@ DHDOFILES :=$(filter-out bcmsdh_sdmmc_linux.o,$(DHDOFILES))
 endif
 
 dhd-y := $(DHDOFILES)
-obj-y   += dhd.o
+obj-m   += dhd.o
 
 all:
 	@echo "$(MAKE) --no-print-directory -C $(KDIR) SUBDIRS=$(CURDIR) modules"
