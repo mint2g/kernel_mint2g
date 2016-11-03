@@ -80,7 +80,7 @@ static inline void flowi4_init_output(struct flowi4 *fl4, int oif,
 				      __u32 mark, __u8 tos, __u8 scope,
 				      __u8 proto, __u8 flags,
 				      __be32 daddr, __be32 saddr,
-				      __be16 dport, __be16 sport,
+				      __be16 dport, __be32 sport,
 				      uid_t uid)
 {
 	fl4->flowi4_oif = oif;
@@ -107,7 +107,7 @@ static inline void flowi4_update_output(struct flowi4 *fl4, int oif, __u8 tos,
 	fl4->daddr = daddr;
 	fl4->saddr = saddr;
 }
-				      
+
 
 struct flowi6 {
 	struct flowi_common	__fl_common;
