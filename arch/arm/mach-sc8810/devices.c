@@ -13,7 +13,7 @@
 
 #include <linux/kernel.h>
 #include <linux/platform_device.h>
-#include <linux/android_pmem.h>
+// #include <linux/android_pmem.h>
 #include <linux/ion.h>
 #include <mach/hardware.h>
 #include <mach/irqs.h>
