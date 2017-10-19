@@ -73,8 +73,4 @@ config NKERNEL_MUX_IO
 	  This option is used to support io interface for ts0710mux driver.
 endif
 
-config TEXT_OFFSET
-	hex  "Text offset configuration"
-	default 0x00008000
-
 endmenu

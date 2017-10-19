@@ -1950,6 +1950,10 @@ config ATAGS_PROC
 	  Should the atags used to boot the kernel be exported in an "atags"
 	  file in procfs. Useful with kexec.
 
+config TEXT_OFFSET
+	hex  "Offset of the kernel image from the start of RAM"
+	default 0x00008000
+
 config CRASH_DUMP
 	bool "Build kdump crash kernel (EXPERIMENTAL)"
 	depends on EXPERIMENTAL
