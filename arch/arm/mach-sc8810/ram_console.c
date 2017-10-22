@@ -34,7 +34,7 @@ int __init sprd_ramconsole_init(void)
 
 	res.start = SPRD_RAM_CONSOLE_START;
 	res.end = (SPRD_RAM_CONSOLE_START + SPRD_RAM_CONSOLE_SIZE - 1);
-	pr_info("alloc resouce for ramconsole: start:%x, size:%d\n",
+	pr_info("alloc resource for ram console: start:%x, size:%d\n",
 		res.start, SPRD_RAM_CONSOLE_SIZE);
 	if ((err = platform_device_add_resources(ram_console, &res, 1))) {
 		pr_err("ram console:Failed to add device resource (err = %d).\n", err);
