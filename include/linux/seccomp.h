@@ -7,9 +7,13 @@
 #include <linux/thread_info.h>
 #include <asm/seccomp.h>
 
+/* Valid operations for seccomp syscall. */
+#define SECCOMP_SET_MODE_STRICT	0
+#define SECCOMP_SET_MODE_FILTER	1
+
 typedef struct { int mode; } seccomp_t;
 
-extern void __secure_computing(int);
+extern int __secure_computing(int);
 static inline void secure_computing(int this_syscall)
 {
 	if (unlikely(test_thread_flag(TIF_SECCOMP)))
@@ -17,7 +21,7 @@ static inline void secure_computing(int this_syscall)
 }
 
 extern long prctl_get_seccomp(void);
-extern long prctl_set_seccomp(unsigned long);
+extern long prctl_set_seccomp(unsigned long, char __user *);
 
 #else /* CONFIG_SECCOMP */
 
