@@ -90,6 +90,7 @@
 #include <linux/jhash.h>
 #include <linux/rcupdate.h>
 #include <linux/times.h>
+#include <linux/uidgid.h>
 #include <linux/slab.h>
 #include <linux/prefetch.h>
 #include <net/dst.h>
@@ -3318,9 +3319,9 @@ static struct ctl_table empty[1];
 
 static struct ctl_table ipv4_skeleton[] =
 {
-	{ .procname = "route", 
+	{ .procname = "route",
 	  .mode = 0555, .child = ipv4_route_table},
-	{ .procname = "neigh", 
+	{ .procname = "neigh",
 	  .mode = 0555, .child = empty},
 	{ }
 };
