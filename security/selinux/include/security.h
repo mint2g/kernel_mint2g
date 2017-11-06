@@ -31,13 +31,17 @@
 #define POLICYDB_VERSION_BOUNDARY	24
 #define POLICYDB_VERSION_FILENAME_TRANS	25
 #define POLICYDB_VERSION_ROLETRANS	26
+#define POLICYDB_VERSION_NEW_OBJECT_DEFAULTS	27
+#define POLICYDB_VERSION_DEFAULT_TYPE	28
+#define POLICYDB_VERSION_CONSTRAINT_NAMES	29
+#define POLICYDB_VERSION_XPERMS_IOCTL	30
 
 /* Range of policy versions we understand*/
 #define POLICYDB_VERSION_MIN   POLICYDB_VERSION_BASE
 #ifdef CONFIG_SECURITY_SELINUX_POLICYDB_VERSION_MAX
 #define POLICYDB_VERSION_MAX	CONFIG_SECURITY_SELINUX_POLICYDB_VERSION_MAX_VALUE
 #else
-#define POLICYDB_VERSION_MAX	POLICYDB_VERSION_ROLETRANS
+#define POLICYDB_VERSION_MAX	POLICYDB_VERSION_XPERMS_IOCTL
 #endif
 
 /* Mask for just the mount related flags */
@@ -66,12 +70,15 @@ extern int selinux_enabled;
 enum {
 	POLICYDB_CAPABILITY_NETPEER,
 	POLICYDB_CAPABILITY_OPENPERM,
+	POLICYDB_CAPABILITY_REDHAT1,
+	POLICYDB_CAPABILITY_ALWAYSNETWORK,
 	__POLICYDB_CAPABILITY_MAX
 };
 #define POLICYDB_CAPABILITY_MAX (__POLICYDB_CAPABILITY_MAX - 1)
 
 extern int selinux_policycap_netpeer;
 extern int selinux_policycap_openperm;
+extern int selinux_policycap_alwaysnetwork;
 
 /*
  * type_datum properties
@@ -100,11 +107,38 @@ struct av_decision {
 	u32 flags;
 };
 
+#define XPERMS_ALLOWED 1
+#define XPERMS_AUDITALLOW 2
+#define XPERMS_DONTAUDIT 4
+
+#define security_xperm_set(perms, x) (perms[x >> 5] |= 1 << (x & 0x1f))
+#define security_xperm_test(perms, x) (1 & (perms[x >> 5] >> (x & 0x1f)))
+struct extended_perms_data {
+	u32 p[8];
+};
+
+struct extended_perms_decision {
+	u8 used;
+	u8 driver;
+	struct extended_perms_data *allowed;
+	struct extended_perms_data *auditallow;
+	struct extended_perms_data *dontaudit;
+};
+
+struct extended_perms {
+	u16 len;	/* length associated decision chain */
+	struct extended_perms_data drivers; /* flag drivers that are used */
+};
+
 /* definitions of av_decision.flags */
 #define AVD_FLAGS_PERMISSIVE	0x0001
 
 void security_compute_av(u32 ssid, u32 tsid,
-			 u16 tclass, struct av_decision *avd);
+			 u16 tclass, struct av_decision *avd,
+			 struct extended_perms *xperms);
+
+void security_compute_xperms_decision(u32 ssid, u32 tsid, u16 tclass,
+			 u8 driver, struct extended_perms_decision *xpermd);
 
 void security_compute_av_user(u32 ssid, u32 tsid,
 			     u16 tclass, struct av_decision *avd);
@@ -216,6 +250,14 @@ struct selinux_kernel_status {
 
 extern void selinux_status_update_setenforce(int enforcing);
 extern void selinux_status_update_policyload(int seqno);
+extern void selinux_complete_init(void);
+extern int selinux_disable(void);
+extern void exit_sel_fs(void);
+extern struct dentry *selinux_null;
+extern struct vfsmount *selinuxfs_mount;
+extern void selnl_notify_setenforce(int val);
+extern void selnl_notify_policyload(u32 seqno);
+extern int selinux_nlmsg_lookup(u16 sclass, u16 nlmsg_type, u32 *perm);
 
 #endif /* _SELINUX_SECURITY_H_ */
 
