@@ -354,8 +354,10 @@ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 CFLAGS_MODULE   =
 AFLAGS_MODULE   =
 LDFLAGS_MODULE  =
-CFLAGS_KERNEL	=
-AFLAGS_KERNEL	=
+CFLAGS_KERNEL	= -march=armv7-a -mtune=cortex-a5 -mfpu=neon \
+                  -mfloat-abi=softfp
+AFLAGS_KERNEL	= -march=armv7-a -mtune=cortex-a5 -mfpu=neon \
+                  -mfloat-abi=softfp
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
 
